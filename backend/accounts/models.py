@@ -18,6 +18,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
     is_deactivated = models.BooleanField(default=False)
     account_type = models.CharField(max_length=255)
 
@@ -27,10 +28,10 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['name', 'account_type']
 
     def get_full_name(self):
-        return self.first_name
+        return self.name
     
     def get_short_name(self):
-        return self.first_name
+        return self.name
     
     def __str__(self):
         return self.email
