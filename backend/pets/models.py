@@ -6,10 +6,14 @@ from customers.models import Customer
 class Species(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True,editable=False,unique=True)
     name = models.CharField(max_length=255)
+    def __str__(self):
+        return self.name
 
 class Weight(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True,editable=False,unique=True)
     weight_range = models.CharField(max_length=255)
+    def __str__(self):
+        return self.weight_range
 
 class Pet(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True,editable=False,unique=True)
@@ -19,3 +23,5 @@ class Pet(models.Model):
     gender = models.BooleanField(default=0)
     weight = models.ForeignKey(Weight, on_delete=models.SET_NULL, related_name="weight", blank=True, null=True)
     species = models.ForeignKey(Species, on_delete=models.SET_NULL, related_name="species", blank=True, null=True)
+    def __str__(self):
+        return self.name
