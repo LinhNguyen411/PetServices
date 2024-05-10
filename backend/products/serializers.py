@@ -1,11 +1,16 @@
 from rest_framework import serializers
 from .models import Product, Category, Supplier
-from pets.models import Species
+
+class SupplierSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Supplier
+        fields = ['id', 'name', 'address', 'email', 'phone_number']
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id','name']
+
 
 class ProductSerializer(serializers.ModelSerializer):
     category = serializers.ReadOnlyField(source='category.name')
