@@ -12,4 +12,7 @@ urlpatterns = [
 
     #products api
     path('api/', include('products.urls')),
+
+    #pets api
+    path('api/', include('pets.urls'))
 ]+static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
