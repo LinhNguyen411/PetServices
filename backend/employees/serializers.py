@@ -4,7 +4,7 @@ from .models import Employee, WorkSchedule
 class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
-        fields = ['id', 'first_name', 'last_name', 'phone_number','address']
+        fields = ['id', 'first_name', 'last_name','role', 'phone_number','address', 'photo']
 
 class WorkScheduleSerializer(serializers.ModelSerializer):
     employee = serializers.ReadOnlyField(source = 'employee.name')

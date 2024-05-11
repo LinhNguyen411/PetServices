@@ -10,9 +10,16 @@ urlpatterns = [
     #customers api
     path('api/', include('customers.urls')),
 
+    #employee api
+    path('api/', include('employees.urls')),
+
     #products api
     path('api/', include('products.urls')),
 
     #pets api
-    path('api/', include('pets.urls'))
+    path('api/', include('pets.urls')),
+
+    #services api
+    path('api/', include('services.urls')),
+
 ]+static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
