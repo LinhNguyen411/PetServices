@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'products.apps.ProductsConfig',
     'services.apps.ServicesConfig',
     'bills.apps.BillsConfig',
+    'api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
@@ -161,8 +162,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS')
 
-DOMAIN = config('DOMAIN')
-SITE_NAME = config('SITE_NAME')
+
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
@@ -172,7 +172,8 @@ SIMPLE_JWT = {
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES':[
-        'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES':(
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -199,3 +200,6 @@ DJOSER = {
         'user_delete': 'djoser.serializers.UserDeleteSerializer',
     }
 }
+
+DOMAIN = config('DOMAIN')
+SITE_NAME = config('SITE_NAME')

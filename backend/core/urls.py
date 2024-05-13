@@ -7,19 +7,7 @@ urlpatterns = [
     path('api/auth/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.jwt')),
 
-    #customers api
-    path('api/', include('customers.urls')),
-
-    #employee api
-    path('api/', include('employees.urls')),
-
-    #products api
-    path('api/', include('products.urls')),
-
-    #pets api
-    path('api/', include('pets.urls')),
-
-    #services api
-    path('api/', include('services.urls')),
+    #api
+    path('api/', include('api.urls')),
 
 ]+static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

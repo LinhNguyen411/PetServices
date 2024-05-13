@@ -9,11 +9,22 @@ class SpeciesSerializer(serializers.ModelSerializer):
 class WeightSerializer(serializers.ModelSerializer):
     class Meta:
         model = Weight
-        fields = ['id', 'weight']
+        fields = ['id','species', 'weight_range', 'weight_type']
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['species'] = {'id': instance.species.id, 'name': instance.species.name}
+
+        return representation
 
 class PetSerializer(serializers.ModelSerializer):
-    species = serializers.ReadOnlyField(source='species.name')
-    weight = serializers.ReadOnlyField(source='weight.weight_range')
     class Meta:
         model = Pet
-        fields = ['id', 'name', 'year_of_birth', 'owner', 'gender', 'weight', 'species']
+        fields = ['id', 'name', 'year_of_birth', 'owner', 'gender', 'weight', 'species', 'photo']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['species'] = {'id': instance.species.id, 'name': instance.species.name}
+        representation['weight'] = {'id': instance.weight.id, 'weight_range': instance.weight.weight_range, 'weight_type': instance.weight.weight_type}
+        representation['owner'] = {'id': instance.owner.id, 'name': instance.owner.full_name}
+
+        return representation

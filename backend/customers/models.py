@@ -14,4 +14,6 @@ class Customer(models.Model):
     photo = models.ImageField(upload_to=get_image_path, blank=True,null=True, default='global/no-image.jpg')
     @property
     def full_name(self):
-        return self.first_name + self.last_name
+        return self.first_name + " " + self.last_name
+    def __str__(self):
+        return f"{self.full_name} - {self.phone_number}"

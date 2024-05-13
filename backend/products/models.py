@@ -29,9 +29,9 @@ class Product(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(default=None, blank=True, null=True)
     image = models.ImageField(upload_to=get_image_path, blank=True,null=True, default='global/no-image.jpg')
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True,null=True,related_name="classify_category")
-    species = models.ForeignKey(Species, on_delete=models.SET_NULL, blank=True,null=True,related_name="classify_species")
-    supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL, blank=True,null=True,related_name="supply")
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL,null=True,related_name="classify_category")
+    species = models.ForeignKey(Species, on_delete=models.SET_NULL,null=True,related_name="classify_species")
+    supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL,null=True,related_name="supply")
     price = models.FloatField(default=0.0)
     slug = models.SlugField(default=None, blank=True)
     def __str__(self):
