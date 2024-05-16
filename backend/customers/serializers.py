@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Customer
+from pets.serializers import PetSerializer
 
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:

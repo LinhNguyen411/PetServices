@@ -2,6 +2,7 @@ django
 djoser
 Pillow
 psycopg2
+django-filter
 psycopg2-binary
 python-decouple
 django-cors-headers

@@ -1,0 +1,29 @@
+<div class="mt-5">
+  <h1>Sign In</h1>
+  <p>Sign Into Your Account</p>
+  <form class="form-group" [formGroup]="form" (submit)="login()">
+    <input
+      formControlName="email"
+      type="email"
+      class="form-control mb-3"
+      placeholder="Email"
+      required
+    />
+    <input
+      formControlName="password"
+      type="password"
+      class="form-control mb-3"
+      placeholder="Password"
+      minlength="6"
+      required
+    />
+    <button class="btn btn-primary" type="submit">Login</button>
+  </form>
+  <p class="mt-3">
+    Don't have an account? <a [routerLink]="['/', 'register']">Register</a>
+  </p>
+  <p class="mt-3">
+    Forgot your Password?
+    <a [routerLink]="['/', 'reset-password']">Reset Password</a>
+  </p>
+</div>

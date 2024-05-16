@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework',
     'corsheaders',
+    'django_filters',
 
     #my app
     'accounts.apps.AccountsConfig',
