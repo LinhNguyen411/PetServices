@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { AuthEmitter } from '../emitters/auth.emmiter';
 
 @Injectable({
   providedIn: 'root',
@@ -12,24 +11,28 @@ export class AuthService {
   private readonly AUTH_API = 'http://127.0.0.1:8000/api/auth/';
   private router = inject(Router);
   private readonly JWT_TOKEN = 'JWT_TOKEN';
+  public loggedIn?: BehaviorSubject<boolean>;
 
   private http = inject(HttpClient);
-  constructor() {}
+  constructor() {
+    this.loggedIn = new BehaviorSubject(this.isLoggedIn());
+  }
 
   login(user: { email: string; password: string }): Observable<any> {
     return this.http
       .post(this.AUTH_API + 'jwt/create/', user, { withCredentials: true })
       .pipe(
         tap((tokens) => {
-          AuthEmitter.isLoggedIn.emit(true);
+          this.loggedIn?.next(true);
           localStorage.setItem(this.JWT_TOKEN, JSON.stringify(tokens));
         })
       );
   }
   logout() {
     localStorage.removeItem(this.JWT_TOKEN);
-    AuthEmitter.isLoggedIn.emit(false);
-    this.router.navigate(['/login']);
+    this.loggedIn?.next(false);
+
+    this.router.navigate(['/home/login']);
   }
 
   getJWTToken(): string | null {

@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
   login(): void {
     this.authService.login(this.form.getRawValue()).subscribe((res) => {
       alert('Login success!');
-      this.router.navigate(['/', 'profile']);
+      this.router.navigate(['/', 'management', 'profile']);
     });
   }
 }

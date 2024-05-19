@@ -1,0 +1,144 @@
+.pet-navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: aqua;
+  border-bottom: 1px solid transparent;
+  height: 50px;
+  left: 0;
+  padding: 0 20px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 24;
+}
+.pet-nav-left {
+  margin-right: auto;
+}
+.pet-nav-brand {
+  margin-right: 20px;
+}
+.pet-nav-right {
+  margin-left: auto;
+}
+.pet-nav-right .pet-nav-item {
+  margin-left: 15px;
+}
+.pet-nav-left,
+.pet-nav-right,
+.pet-nav-item,
+.pet-nav-brand {
+  display: flex;
+  align-items: center;
+  color: orange;
+  font-weight: normal;
+  height: 50px;
+}
+.pet-nav-item {
+  text-decoration: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  padding: none;
+}
+.pet-nav-item:hover {
+  color: blue;
+}
+.sidebar-wrapper {
+  position: absolute;
+  top: 50px;
+}
+.sidebar {
+  padding-bottom: 70px;
+  position: fixed;
+  left: 0;
+  width: 200px;
+  height: calc(100% - 50px);
+  border-right: 1px solid orange;
+  background-color: aquamarine;
+  color: orange;
+  z-index: 20;
+  transition: all 0.25s ease-out;
+}
+.overflow-hidden {
+  overflow: hidden !important;
+}
+.content-wrapper {
+  width: 100%;
+  overflow-x: hidden;
+  margin-top: 50px;
+  padding-left: 200px;
+  padding-bottom: 50px;
+  transition: all 0.25s ease-out;
+}
+.sidebar-main-content {
+  padding-top: 15px;
+  text-align: center;
+  background-color: aquamarine;
+}
+.sidebar-item {
+  margin-bottom: 15px;
+  position: relative;
+  padding-left: 15px;
+}
+.sidebar-title {
+  position: relative;
+  padding: 15px;
+  border-top: 1px solid rgb(255, 205, 111);
+  border-bottom: 1px solid rgb(255, 205, 111);
+}
+#toggle-btn {
+  border: none;
+  background-color: transparent;
+  font-size: 2rem;
+  outline: none;
+  cursor: pointer;
+}
+#toggle-btn:hover {
+  color: white;
+}
+.overflow-y-scroll {
+  overflow-y: auto !important;
+  max-height: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: aqua white;
+}
+
+@media (max-width: 1200px) {
+  .pet-navbar {
+    padding: 0 15px;
+  }
+  .sidebar {
+    left: -200px;
+    width: 0;
+    transition: all 0.25s ease-out;
+  }
+
+  .sidebar-wrapper.is-opened .sidebar {
+    left: 0;
+    width: 200px;
+    transition: all 0.25s ease-out;
+  }
+  .content-wrapper {
+    padding-left: 0;
+    transition: all 0.25s ease-out;
+  }
+}
+
+@media (max-width: 768px) {
+  .pet-nav-brand {
+    display: flex;
+    justify-content: center;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+  .hidden-xs-down {
+    display: none !important;
+  }
+  .content-wrapper {
+    transition: all 0.25s ease-out;
+  }
+}

@@ -1,0 +1,85 @@
+<nav class="pet-navbar" id="top-nav-bar">
+  @if(isLoggedIn){
+  <div class="pet-nav-left d-xl-none">
+    <button id="toggle-btn" type="button" (click)="toggleMenu()">
+      <i class="bi bi-list"></i>
+    </button>
+  </div>
+  }
+  <div class="pet-nav-brand">
+    <h1>PETCARE</h1>
+  </div>
+
+  <div class="pet-nav-right">
+    @if (isLoggedIn) {
+    <a href="" class="pet-nav-item hidden-xs-down pb-0">
+      <i class="bi bi-bell"></i>
+    </a>
+    <a routerLink="profile" class="pet-nav-item hidden-xs-down pb-0">
+      <i class="bi bi-person"></i>
+    </a>
+    <button (click)="logout()" class="pet-nav-item">
+      <i class="bi bi-box-arrow-right"></i>
+    </button>
+    } @else {
+    <a routerLink="login" class="pet-nav-item">LOG IN</a>
+    }
+  </div>
+</nav>
+<div class="container-fluid">
+  <div class="row">
+    @if(isLoggedIn){
+    <div [ngClass]="{ 'is-opened': isToggle }" class="sidebar-wrapper">
+      <div
+        class="sidebar d-flex flex-column flex-nowrap overflow-hidden"
+        id="main-sidebar"
+      >
+        <div class="sidebar-logo hidden-xs-down" id="user-picture">
+          <img
+            src="{{ user.photo }}"
+            alt=""
+            style="height: 200px; width: 200px"
+          />
+        </div>
+        <div class="sidebar-title">
+          <h4 class="mb-0 wrap d-block text-center">{{ user.name }}</h4>
+        </div>
+        <div class="overflow-y-scroll">
+          <div class="sidebar-main-content">
+            <ul class="nav flex-column align-items-start">
+              <li class="sidebar-item">
+                <a href="">Home</a>
+              </li>
+            </ul>
+            <ul class="nav d-md-none flex-column align-items-start">
+              <li class="sidebar-item">
+                <a href="">Notification</a>
+              </li>
+              <li class="sidebar-item">
+                <a routerLink="profile">Profile</a>
+              </li>
+            </ul>
+            <ul class="nav flex-column align-items-start">
+              <li class="sidebar-item">
+                <a routerLink="pet">Pet</a>
+              </li>
+              <li class="sidebar-item">
+                <a routerLink="species">Species</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-wrapper">
+      <div class="container-fluid main-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    } @else {
+    <div style="margin: 50px" class="container">
+      <router-outlet></router-outlet>
+    </div>
+    }
+  </div>
+</div>

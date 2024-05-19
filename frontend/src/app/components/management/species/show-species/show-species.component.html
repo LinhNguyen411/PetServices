@@ -1,0 +1,79 @@
+<!-- Button trigger modal -->
+<button
+  type="button"
+  class="btn btn-primary float-right m-2"
+  data-bs-toggle="modal"
+  data-bs-target="#exampleModal"
+  (click)="addClick()"
+  data-backdrop="static"
+  data-keyboard="false"
+>
+  Add Species
+</button>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="3000"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ ModalTitle }}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <app-add-edit-species
+          [spe]="spe"
+          (submitted)="onSubmitted($event)"
+        ></app-add-edit-species>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Options</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for(item of species; track item) {
+    <tr>
+      <td>{{ item.id }}</td>
+      <td>{{ item.name }}</td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-primary mr-6"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+          (click)="editClick(item)"
+          data-backdrop="static"
+          data-keyboard="false"
+        >
+          Edit
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary mr-6"
+          (click)="deleteClick(item)"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
