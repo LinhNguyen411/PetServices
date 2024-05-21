@@ -5,14 +5,13 @@ import os
 
 # Create your models here.
 class Species(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True,editable=False,unique=True)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False, unique=True)
     name = models.CharField(max_length=255)
     def __str__(self):
         return self.name
 
 class Weight(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True,editable=False,unique=True)
-    species = models.ForeignKey(Species, on_delete=models.SET_NULL, related_name="weight_species", blank=True, null=True)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False, unique=True)
     weight_range = models.CharField(max_length=255)
     weight_type = models.CharField(max_length=50)
     def __str__(self):
@@ -22,9 +21,9 @@ def get_image_path(instance, filename):
     return os.path.join('pets', str(instance.id), filename)
 
 class Pet(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True,editable=False,unique=True)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False, unique=True)
     name = models.CharField(max_length=255)
-    year_of_birth = models.IntegerField(default=0)
+    age = models.IntegerField(default=0)
     owner = models.ForeignKey(Customer, on_delete=models.SET_NULL, related_name="pets", default=None,null=True,blank=True)
     gender = models.BooleanField(default=0)
     weight = models.ForeignKey(Weight, on_delete=models.SET_NULL, related_name="have_weight", blank=True, null=True)

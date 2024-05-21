@@ -32,12 +32,10 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL,null=True,related_name="classify_category")
     species = models.ForeignKey(Species, on_delete=models.SET_NULL,null=True,related_name="classify_species")
     supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL,null=True,related_name="supply")
+    quantity = models.IntegerField(default=0)
     price = models.FloatField(default=0.0)
     slug = models.SlugField(default=None, blank=True)
     def __str__(self):
         return self.name
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(Product, self).save(*args, **kwargs)
 
 

@@ -9,12 +9,7 @@ class SpeciesSerializer(serializers.ModelSerializer):
 class WeightSerializer(serializers.ModelSerializer):
     class Meta:
         model = Weight
-        fields = ['id','species', 'weight_range', 'weight_type']
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['species'] = {'id': instance.species.id, 'name': instance.species.name}
-
-        return representation
+        fields = ['id', 'weight_range', 'weight_type']
 
 class PetSerializer(serializers.ModelSerializer):
     class Meta:
