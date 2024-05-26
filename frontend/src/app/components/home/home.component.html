@@ -1,1 +1,29 @@
-<router-outlet></router-outlet>
+<nav class="pet-navbar" id="top-nav-bar">
+  <div class="pet-nav-brand">
+    <a routerLink="/" class="pet-nav-item">
+      <h1>PETCARE</h1>
+    </a>
+  </div>
+
+  <div class="pet-nav-right">
+    @if (isLoggedIn) {
+    <a class="pet-nav-item pet-nav-username" [routerLink]="['/', 'management']">
+      <img
+        src="{{ user.photo }}"
+        alt="{{ user.name }}"
+        class="pet-nav-avatar"
+      />
+      {{ user.name }}
+    </a>
+    <button class="pet-nav-item" (click)="logout()">
+      <i class="bi bi-box-arrow-right"></i>
+    </button>
+    } @else {
+    <a routerLink="login" class="pet-nav-item">LOG IN</a>
+    }
+  </div>
+</nav>
+
+<div class="content-wrapper">
+  <router-outlet></router-outlet>
+</div>

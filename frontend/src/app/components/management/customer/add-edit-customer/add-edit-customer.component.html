@@ -1,0 +1,45 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="form-group">
+  <div class="mb-3">
+    <div class="col-form-label">Customer Name:</div>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Enter Customer Name"
+      [ngClass]="{ 'is-invalid': submitted && dataForm.controls.name.errors }"
+      formControlName="name"
+    />
+  </div>
+
+  <div class="mb-3">
+    <div class="col-form-label">Address:</div>
+    <input
+      type="text"
+      class="form-control"
+      formControlName="address"
+      [ngClass]="{
+        'is-invalid': submitted && dataForm.controls.address.errors
+      }"
+      placeholder="Enter Address"
+    />
+  </div>
+
+  <div class="mb-3">
+    <div class="col-form-label">Phone Number:</div>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Enter Phone Number"
+      [ngClass]="{
+        'is-invalid': submitted && dataForm.controls.phone_number.errors
+      }"
+      formControlName="phone_number"
+    />
+  </div>
+  <div class="pet-model-footer">
+    @if(isUpdate){
+    <button class="btn pet-btn" type="submit">Update</button>
+    } @else{
+    <button class="btn pet-btn" type="submit">Add</button>
+    }
+  </div>
+</form>

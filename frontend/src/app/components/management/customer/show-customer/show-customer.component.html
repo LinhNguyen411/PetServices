@@ -1,0 +1,196 @@
+<h1 class="management-header">Customer Management</h1>
+<!-- Button trigger modal -->
+<div class="d-flex flex-column justify-content-end">
+  <div class="bd-search position-relative me-auto d-flex">
+    <input
+      type="text"
+      class="form-control search-input me-2"
+      [(ngModel)]="searchValue"
+      placeholder="Id, Name, Phone"
+    />
+    <button type="button" class="pet-btn" (click)="searchClick()">
+      Search
+    </button>
+  </div>
+  <div class="d-flex justify-content-between mt-4 mt-sm-2">
+    <div class="total-item mt-sm-2"><span>Totals: {{count}}</span></div>
+    <button
+      type="button"
+      class="add-btn float-right ml-auto mt-sm-2"
+      data-bs-toggle="modal"
+      data-bs-target="#updateModal"
+      (click)="addClick()"
+      data-backdrop="static"
+      data-keyboard="false"
+    >
+      <i class="bi bi-plus-square"></i> Add
+    </button>
+  </div>
+</div>
+
+<!-- Add Edit Modal -->
+<div
+  class="modal fade"
+  id="updateModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ ModalTitle }}</h5>
+        <button
+          id="edit-model-close-btn"
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <app-add-edit-customer
+          [data]="data"
+          (isSubmitted)="onSubmitted($event)"
+        ></app-add-edit-customer>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Deleate confirm model -->
+<div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Are you sure?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        This customer will be deleted!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="deleteClick()" data-bs-dismiss="modal">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th> <button class="sorting-btn" (click)="sortClick('name')">Name 
+        @if (isOrderName) {
+        <i class="bi bi-sort-up"></i>
+
+        }
+        @else {
+          <i class="bi bi-sort-down"></i>
+        }
+        </button></th>
+      @if(!isMobile){
+      <th>Address</th>
+      <th>Phone Number</th>
+      <th>Account</th>
+      }
+      <th>Options</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for(item of dataList; track item) {
+    <tr>
+      <td>{{ item.id }}</td>
+      <td>{{ item.name }}</td>
+      @if(!isMobile){
+      <td>{{ item.address }}</td>
+      <td>{{ item.phone_number }}</td>
+      <td>{{ item.account }}</td>
+      }
+      <td>
+        <button
+          type="button"
+          class="edit-btn mr-6"
+          data-bs-toggle="modal"
+          data-bs-target="#updateModal"
+          (click)="editClick(item)"
+          data-backdrop="static"
+          data-keyboard="false"
+        >
+          <i class="bi bi-pencil-square"></i>
+        </button>
+        <button
+          type="button"
+          class="delete-btn mr-6"
+          data-bs-toggle="modal"
+          data-bs-target="#deleteModal"
+          (click)="triggerDelete(item)"
+          data-backdrop="static"
+          data-keyboard="false"
+        >
+          <i class="bi bi-trash"></i>
+        </button>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
+
+<ul class="pagination justify-content-center justify-content-md-start">
+  <li class="page-item" [ngClass]="{ disabled: previous == null }">
+    <button
+      class="page-link"
+      (click)="paginationClick(current_page - 1)"
+      aria-label="Previous"
+    >
+      <span aria-hidden="true">&laquo;</span>
+    </button>
+  </li>
+
+  @if(current_page > 1){
+  <li class="page-item">
+    <button (click)="paginationClick(1)" class="page-link">1</button>
+  </li>
+  }
+  @if(current_page - 2 > 1){
+    <li class="page-item disabled">
+      <span class="page-link">...</span>
+    </li>
+  }
+  @if(current_page - 1 >1){
+    <li class="page-item ">
+      <button (click)="paginationClick(current_page-1)" class="page-link">{{current_page-1}}</button>
+    </li>
+  }
+  <li class="page-item active">
+    <span class="page-link">{{ current_page }}</span>
+  </li>
+  @if(current_page + 1 <max_page){
+    <li class="page-item">
+      <button (click)="paginationClick(current_page+1)" class="page-link">{{current_page+1}}</button>
+    </li>
+  }
+  @if(current_page + 2 <max_page){
+    <li class="page-item disabled">
+      <span class="page-link">...</span>
+    </li>
+  }
+
+  @if(current_page < max_page){
+  <li class="page-item">
+    <button (click)="paginationClick(max_page)" class="page-link">
+      {{ max_page }}
+    </button>
+  </li>
+  }
+  <li class="page-item" [ngClass]="{ disabled: next == null }">
+    <button
+      class="page-link"
+      (click)="paginationClick(current_page + 1)"
+      aria-label="Next"
+    >
+      <span aria-hidden="true">&raquo;</span>
+    </button>
+  </li>
+</ul>

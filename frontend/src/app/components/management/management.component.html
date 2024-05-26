@@ -6,9 +6,9 @@
     </button>
   </div>
   }
-  <div class="pet-nav-brand">
+  <a routerLink="/" class="pet-nav-item">
     <h1>PETCARE</h1>
-  </div>
+  </a>
 
   <div class="pet-nav-right">
     @if (isLoggedIn) {
@@ -48,23 +48,48 @@
           <div class="sidebar-main-content">
             <ul class="nav flex-column align-items-start">
               <li class="sidebar-item">
-                <a href="">Home</a>
+                <a href="" class="sidebar-link">Home</a>
               </li>
             </ul>
             <ul class="nav d-md-none flex-column align-items-start">
               <li class="sidebar-item">
-                <a href="">Notification</a>
+                <a href="" class="sidebar-link">Notification</a>
               </li>
               <li class="sidebar-item">
-                <a routerLink="profile">Profile</a>
+                <a routerLink="profile" class="sidebar-link">Profile</a>
               </li>
             </ul>
             <ul class="nav flex-column align-items-start">
               <li class="sidebar-item">
-                <a routerLink="pet">Pet</a>
-              </li>
-              <li class="sidebar-item">
-                <a routerLink="species">Species</a>
+                <a
+                  href="#"
+                  class="sidebar-link collapsed has-dropdown"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#auth"
+                  aria-expanded="false"
+                  aria-controls="auth"
+                >
+                  <i class="lni lni-protection"></i>
+                  <span>Management</span>
+                </a>
+                <ul
+                  id="auth"
+                  class="sidebar-dropdown list-unstyled collapse"
+                  data-bs-parent="#main-sidebar"
+                >
+                  <li class="sidebar-item">
+                    <a routerLink="customer" class="sidebar-link">Customer</a>
+                  </li>
+                  <li class="sidebar-item">
+                    <a routerLink="species" class="sidebar-link">Species</a>
+                  </li>
+                  <li class="sidebar-item">
+                    <a routerLink="weight" class="sidebar-link">Weight</a>
+                  </li>
+                  <li class="sidebar-item">
+                    <a routerLink="pet" class="sidebar-link">Pet</a>
+                  </li>
+                </ul>
               </li>
             </ul>
           </div>

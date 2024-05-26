@@ -1,1 +1,112 @@
-<p>add-edit-pet works!</p>
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="form-group">
+  <div class="row">
+    <div class="col-sm-6 col-12 row mb-2">
+      <div class="col-6 col-sm-12">
+        <img [src]="url" class="w-100" style="height: 200px" />
+      </div>
+      <div class="mt-sm-2 col-6 col-sm-12 d-flex align-items-center">
+        <input type="file" #fileInput (change)="onSelectFile($event)" />
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 row">
+      <div class="col-12">
+        <div class="mb-3 mb-sm-0">
+          <div class="col-form-label">Name</div>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="name"
+            [ngClass]="{
+              'is-invalid': submitted && dataForm.controls.name.errors
+            }"
+            placeholder="Enter Name"
+          />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="mb-3 mb-sm-0">
+          <div class="col-form-label">Age</div>
+          <input
+            type="number"
+            class="form-control"
+            formControlName="age"
+            [ngClass]="{
+              'is-invalid': submitted && dataForm.controls.age.errors
+            }"
+            placeholder="Enter Age"
+          />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="mb-3 mb-sm-0">
+          <div class="col-form-label">Gender</div>
+          <input
+            type="checkbox"
+            class="btn-check"
+            id="btn-check"
+            formControlName="gender"
+          />
+          <label class="btn pet-btn" for="btn-check">{{
+            dataForm.get("gender")?.value ? "Male" : "Female"
+          }}</label>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="mb-3 mb-sm-0">
+          <div class="col-form-label">Owner</div>
+          <input
+            (focusout)="searchCustomer()"
+            type="text"
+            class="form-control"
+            formControlName="owner"
+            [ngClass]="{
+              'is-invalid': submitted && dataForm.controls.owner.errors
+            }"
+          />
+          @if(customer){ {{ customer.name }}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <div class="col-form-label">Species</div>
+    <select
+      (change)="speciesChange()"
+      class="form-select"
+      formControlName="species"
+      [ngClass]="{
+        'is-invalid': submitted && dataForm.controls.species.errors
+      }"
+    >
+      <option value="" disabled>--Select Species--</option>
+      @for(item of speciesList; track item){
+      <option value="{{ item.id }}">{{ item.name }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <div class="col-form-label">Weight</div>
+    <select
+      class="form-select"
+      formControlName="weight"
+      [ngClass]="{
+        'is-invalid': submitted && dataForm.controls.weight.errors
+      }"
+    >
+      <option value="" disabled>--Select Weight--</option>
+      @for(item of weightList; track item){
+      <option value="{{ item.id }}">{{ item.weight_range }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="pet-model-footer">
+    @if(isUpdate){
+    <button class="btn pet-btn" type="submit">Update</button>
+    } @else{
+    <button class="btn pet-btn" type="submit">Add</button>
+    }
+  </div>
+</form>

@@ -10,9 +10,17 @@ const baseUrl = 'http://127.0.0.1:8000/api/species/';
 })
 export class SpeciesService {
   private http = inject(HttpClient);
+  private pagi_number: number = 1;
+  private ordering_value: string = '-name';
+
   constructor() {}
-  getAll(): Observable<Species[]> {
-    return this.http.get<Species[]>(baseUrl);
+  getAll(): Observable<any> {
+    return this.http.get<any>(
+      `${baseUrl}?
+      ${this.pagi_number == 1 ? '' : 'page=' + this.pagi_number}${
+        '&ordering=' + this.ordering_value
+      }`
+    );
   }
 
   get(id: string): Observable<Species> {
@@ -29,5 +37,12 @@ export class SpeciesService {
 
   delete(id: string): Observable<any> {
     return this.http.delete(`${baseUrl}${id}/`);
+  }
+
+  pagination(number: number): void {
+    this.pagi_number = number;
+  }
+  sort(value: string): void {
+    this.ordering_value = value;
   }
 }

@@ -1,0 +1,50 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="form-group">
+  <div class="mb-3">
+    <div class="col-form-label">Species</div>
+    <select
+      class="form-select"
+      formControlName="species"
+      [ngClass]="{
+        'is-invalid': submitted && dataForm.controls.species.errors
+      }"
+    >
+      <option value="" disabled>--Select Species--</option>
+      @for(item of speciesList; track item){
+      <option value="{{ item.id }}">{{ item.name }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <div class="col-form-label">Weight Range</div>
+    <input
+      type="text"
+      class="form-control"
+      formControlName="weight_range"
+      [ngClass]="{
+        'is-invalid': submitted && dataForm.controls.weight_range.errors
+      }"
+      placeholder="Enter Weight Range"
+    />
+  </div>
+
+  <div class="mb-3">
+    <div class="col-form-label">Weight Type:</div>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Enter Weight Type"
+      [ngClass]="{
+        'is-invalid': submitted && dataForm.controls.weight_type.errors
+      }"
+      formControlName="weight_type"
+    />
+  </div>
+  <div class="pet-model-footer">
+    @if(isUpdate){
+    <button class="btn pet-btn" type="submit">Update</button>
+    } @else{
+    <button class="btn pet-btn" type="submit">Add</button>
+    }
+  </div>
+</form>
