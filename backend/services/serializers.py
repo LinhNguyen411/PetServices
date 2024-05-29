@@ -5,7 +5,7 @@ from .models import Service, ServiceSurchanges
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
-        fields = ['id','name', 'description', 'species']
+        fields = ['id','name', 'description', 'species', 'price']
     
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -16,4 +16,4 @@ class ServiceSerializer(serializers.ModelSerializer):
 class ServiceSurchangeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceSurchanges
-        fields = ['id', 'service', 'weight'] 
+        fields = ['id', 'service', 'weight', 'surchange'] 

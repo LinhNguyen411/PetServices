@@ -6,17 +6,7 @@ class RoomSerializer(serializers.ModelSerializer):
         model = Room
         fields = ['id', 'number', 'is_booked']
 
-class ServiceBookingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ServiceBooking
-        fields = ['id', 'date_booked','date_start','stay_days', 'status','customer','pet', 'service','photo']
-    
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['customer'] = {'id': instance.customer.id, 'name': instance.customer.name}
-        representation['pet'] = {'id': instance.pet.id, 'name': instance.pet.name}
-        representation['service'] = {'id': instance.service.id, 'name': instance.service.name}
-        return representation
+
     
 class SubServiceSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,6 +14,19 @@ class SubServiceSerializer(serializers.ModelSerializer):
         fields = ['id', 'service_booking', 'service','status', 'photo']
     def to_representation(self, instance):
         representation = super().to_representation(instance)
+        representation['service'] = {'id': instance.service.id, 'name': instance.service.name}
+        return representation
+
+class ServiceBookingSerializer(serializers.ModelSerializer):
+    sub_booking = SubServiceSerializer(many=True)
+    class Meta:
+        model = ServiceBooking
+        fields = ['id', 'date_booked','date_start','stay_days', 'status','customer','pet', 'service','sub_booking','photo']
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['customer'] = {'id': instance.customer.id, 'name': instance.customer.name}
+        representation['pet'] = {'id': instance.pet.id, 'name': instance.pet.name}
         representation['service'] = {'id': instance.service.id, 'name': instance.service.name}
         return representation
 

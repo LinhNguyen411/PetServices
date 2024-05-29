@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Service, ServiceSurchanges
-from .serializers import ServiceSerializer
+from .serializers import ServiceSerializer, ServiceSurchangeSerializer
 
 
 class ServiceViewSet(ModelViewSet):
@@ -13,6 +13,6 @@ class ServiceViewSet(ModelViewSet):
 
 class ServiceSurchangesViewSet(ModelViewSet):
     queryset = ServiceSurchanges.objects.all()
-    serializer_class = ServiceSerializer
+    serializer_class = ServiceSurchangeSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['service', 'weight']

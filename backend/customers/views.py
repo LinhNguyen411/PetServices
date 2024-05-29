@@ -3,7 +3,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
 
-
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.pagination import PageNumberPagination
 
 from .models import Customer
 from .serializers import CustomerSerializer
@@ -13,6 +15,11 @@ from pets.serializers import PetSerializer
 class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    filter_backends = [SearchFilter,OrderingFilter,DjangoFilterBackend]
+    filterset_fields = ['account']
+    search_fields = ['id','name', 'phone_number']
+    pagination_class = PageNumberPagination
+    ordering_fields = ['name', 'address']
 
     @action(detail=True, methods=['get', 'post'])
     def pets(self, request, pk=None):

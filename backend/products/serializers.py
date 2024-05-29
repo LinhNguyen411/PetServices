@@ -10,13 +10,13 @@ class SupplierSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id','name', 'description']
+        fields = ['id','name']
 
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'name','category','species','supplier','description','price', 'image', 'quantity']
+        fields = ['id', 'name','category','species','supplier','description','price', 'image', 'quantity', 'photo']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
