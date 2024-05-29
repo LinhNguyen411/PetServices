@@ -4,7 +4,18 @@
   --shadow-color: #e1e1e1;
   --sub-text-color: #6f6f6f;
 }
-
+.border-none {
+  border: none !important;
+}
+.pet-small-btn {
+  border: none;
+  background-color: transparent;
+  color: var(--primary-color);
+  padding: 0;
+}
+.pet-small-btn:focus {
+  box-shadow: none;
+}
 a {
   text-decoration: none;
 }
@@ -71,7 +82,6 @@ a {
   top: 50px;
 }
 .sidebar {
-  padding-bottom: 70px;
   position: fixed;
   left: 0;
   width: 200px;
@@ -153,6 +163,7 @@ a {
   scrollbar-width: thin;
   scrollbar-color: var(--primary-color) white;
 }
+
 .edit-btn {
   color: #ffc107;
 }
@@ -162,6 +173,10 @@ a {
 .add-btn {
   color: #2ea1a1;
 }
+.show-btn {
+  color: #0d6efd;
+}
+
 .page-item {
   margin: 0 1px;
 }
@@ -197,6 +212,7 @@ a {
   color: var(--primary-color);
 }
 
+.show-btn,
 .add-btn,
 .edit-btn,
 .delete-btn {

@@ -1,0 +1,119 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="form-group">
+  <div class="row">
+    <div class="col-sm-6 col-12 row mb-2">
+      <div class="col-6 col-sm-12">
+        <img [src]="url" class="w-100" style="height: 200px" />
+      </div>
+      <div class="mt-sm-2 col-6 col-sm-12 d-flex align-items-center">
+        <input type="file" #fileInput (change)="onSelectFile($event)" />
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 row">
+      <div class="col-12">
+        <div class="mb-3 mb-sm-0">
+          <div class="col-form-label">Name</div>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="name"
+            [ngClass]="{
+              'is-invalid': submitted && dataForm.controls.name.errors
+            }"
+            placeholder="Enter Name"
+          />
+        </div>
+
+        <div class="mb-3 mb-sm-0">
+          <div class="col-form-label">Price</div>
+          <input
+            type="number"
+            class="form-control"
+            formControlName="price"
+            [ngClass]="{
+              'is-invalid': submitted && dataForm.controls.price.errors
+            }"
+            placeholder="Enter Price"
+          />
+        </div>
+
+        <div class="mb-3 mb-sm-0">
+          <div class="col-form-label">Quantity</div>
+          <input
+            type="number"
+            class="form-control"
+            formControlName="quantity"
+            [ngClass]="{
+              'is-invalid': submitted && dataForm.controls.quantity.errors
+            }"
+            placeholder="Enter Quantity"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <div class="col-form-label">Species</div>
+    <select
+      class="form-select"
+      formControlName="species"
+      [ngClass]="{
+        'is-invalid': submitted && dataForm.controls.species.errors
+      }"
+    >
+      <option value="" disabled>--Select Species--</option>
+      @for(item of speciesList; track item){
+      <option value="{{ item.id }}">{{ item.name }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <div class="col-form-label">Category</div>
+    <select
+      class="form-select"
+      formControlName="category"
+      [ngClass]="{
+        'is-invalid': submitted && dataForm.controls.category.errors
+      }"
+    >
+      <option value="" disabled>--Select Category--</option>
+      @for(item of categoryList; track item){
+      <option value="{{ item.id }}">{{ item.name }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <div class="col-form-label">Supplier</div>
+    <select
+      class="form-select"
+      formControlName="supplier"
+      [ngClass]="{
+        'is-invalid': submitted && dataForm.controls.supplier.errors
+      }"
+    >
+      <option value="" disabled>--Select Supplier--</option>
+      @for(item of supplierList; track item){
+      <option value="{{ item.id }}">{{ item.name }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="mb-3 mb-sm-0">
+    <div class="col-form-label">Description</div>
+    <textarea
+      class="form-control"
+      formControlName="description"
+      placeholder="Enter Description"
+    ></textarea>
+  </div>
+
+  <div class="pet-model-footer">
+    @if(isUpdate){
+    <button class="btn pet-btn" type="submit">Update</button>
+    } @else{
+    <button class="btn pet-btn" type="submit">Add</button>
+    }
+  </div>
+</form>

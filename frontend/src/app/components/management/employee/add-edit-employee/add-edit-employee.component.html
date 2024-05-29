@@ -1,0 +1,137 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="form-group">
+  <div class="row">
+    <div class="col-sm-6 col-12 mb-2">
+      <div class="col-6 col-sm-12">
+        <img [src]="url" class="w-100" style="height: 200px" />
+      </div>
+      <div class="mt-sm-2 col-6 col-sm-12 d-flex align-items-center">
+        <input type="file" #fileInput (change)="onSelectFile($event)" />
+      </div>
+    </div>
+    <div class="col-12 col-sm-6">
+      <div class="col-12">
+        <div class="mb-3 mb-sm-0">
+          <div class="col-form-label">Name</div>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="name"
+            [ngClass]="{
+              'is-invalid': submitted && dataForm.controls.name.errors
+            }"
+            placeholder="Enter Name"
+          />
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="mb-3 mb-sm-0">
+          <div class="col-form-label">Role</div>
+          <select
+            class="form-select"
+            formControlName="role"
+            [ngClass]="{
+              'is-invalid': submitted && dataForm.controls.role.errors
+            }"
+          >
+            <option value="" disabled>Choose Role</option>
+
+            <option value="e">Employee</option>
+            <option value="s">Security</option>
+            <option value="m">Management</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="mb-3 mb-sm-0">
+          <div class="col-form-label">Status</div>
+          <select
+            class="form-select"
+            formControlName="status"
+            [ngClass]="{
+              'is-invalid': submitted && dataForm.controls.status.errors
+            }"
+          >
+            <option value="" disabled>Choose Status</option>
+            <option value="w">Working</option>
+            <option value="q">Quit</option>
+            <option value="l">Leave</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <div class="mb-3 mb-sm-0">
+        <div class="col-form-label">Join Date</div>
+        <input
+          type="date"
+          class="form-control"
+          formControlName="date_of_joining"
+        />
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="mb-3 mb-sm-0">
+        <div class="col-form-label">Phone Number</div>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="phone_number"
+          [ngClass]="{
+            'is-invalid': submitted && dataForm.controls.phone_number.errors
+          }"
+          placeholder="Enter Phone Number"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3 mb-sm-0">
+    <div class="col-form-label">Address</div>
+    <input
+      type="text"
+      class="form-control"
+      formControlName="address"
+      [ngClass]="{
+        'is-invalid': submitted && dataForm.controls.address.errors
+      }"
+      placeholder="Enter Address"
+    />
+  </div>
+  @if(isUpdate){
+
+  <div class="mb-3 mb-sm-0">
+    <div class="col-form-label">Account</div>
+    @if(dataForm.controls.account.value){
+    <input
+      type="text"
+      class="form-control"
+      formControlName="account"
+      readonly
+    />
+    <button
+      class="btn pet-btn mt-2"
+      type="button"
+      (click)="account('password')"
+    >
+      Generate New Password
+    </button>
+    <span class="ms-2 text-danger">{{ new_pass }}</span> } @else {
+    <button class="btn pet-btn mt-2" type="submit" (click)="account('account')">
+      Generate New Account
+    </button>
+
+    }
+  </div>
+  }
+
+  <div class="pet-model-footer">
+    @if(isUpdate){
+    <button class="btn pet-btn" type="submit">Update</button>
+    } @else{
+    <button class="btn pet-btn" type="submit">Add</button>
+    }
+  </div>
+</form>

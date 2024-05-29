@@ -4,14 +4,22 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 
+import { EmployeeService } from './employee.service';
+import { CustomerService } from './customer.service';
+import { UserService } from './user.service';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private readonly AUTH_API = 'http://127.0.0.1:8000/api/auth/';
-  private router = inject(Router);
+
+  private userService = inject(UserService);
+  private employeeService = inject(EmployeeService);
+  private customerService = inject(CustomerService);
   private readonly JWT_TOKEN = 'JWT_TOKEN';
   public loggedIn?: BehaviorSubject<boolean>;
+  public userData?: any;
 
   private http = inject(HttpClient);
   constructor() {
@@ -31,8 +39,8 @@ export class AuthService {
   logout() {
     localStorage.removeItem(this.JWT_TOKEN);
     this.loggedIn?.next(false);
-
-    this.router.navigate(['/home/login']);
+    this.userService.setUser(null);
+    this.userService.setDataUser(null);
   }
 
   getJWTToken(): string | null {
@@ -44,11 +52,29 @@ export class AuthService {
 
   getCurrentAuthUser() {
     const accessToken = this.getJWTToken();
-    return this.http.get(this.AUTH_API + 'users/me/', {
-      headers: {
-        Authorization: 'JWT ' + accessToken,
-      },
-    });
+    return this.http
+      .get(this.AUTH_API + 'users/me/', {
+        headers: {
+          Authorization: 'JWT ' + accessToken,
+        },
+      })
+      .pipe(
+        tap((res: any) => {
+          if (res.account_type == 'e' || res.account_type == 'm') {
+            this.employeeService
+              .searchByAccount(res.id)
+              .subscribe((sub_res) => {
+                this.userService.setDataUser(sub_res.results[0]);
+              });
+          } else if (res.account_type == 'c') {
+            this.customerService
+              .searchByAccount(res.id)
+              .subscribe((sub_res) => {
+                this.userService.setDataUser(sub_res.results[0]);
+              });
+          }
+        })
+      );
   }
 
   isLoggedIn() {

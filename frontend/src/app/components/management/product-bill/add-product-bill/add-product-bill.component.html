@@ -1,0 +1,304 @@
+@if(userService.userData$ | async; as userData){
+<div
+  class="modal fade"
+  id="updateModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add item</h5>
+        <button
+          id="edit-model-close-btn"
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form
+          [formGroup]="subDataForm"
+          (ngSubmit)="addItem()"
+          class="row form-group"
+        >
+          <div class="col-12 col-sm-6">
+            <div class="mb-3 mb-sm-0">
+              <div class="col-form-label">Id</div>
+              <input
+                (focusout)="searchProduct()"
+                type="text"
+                class="form-control"
+                formControlName="id"
+                [ngClass]="{
+                  'is-invalid': subSubmitted && subDataForm.controls.id.errors
+                }"
+                placeholder="Enter ID"
+              />
+            </div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <div class="mb-3 mb-sm-0">
+              <div class="col-form-label">Quantity</div>
+              <input
+                type="number"
+                min="0"
+                class="form-control"
+                formControlName="quantity"
+                [ngClass]="{
+                  'is-invalid':
+                    subSubmitted && subDataForm.controls.quantity.errors
+                }"
+                placeholder="Enter ID"
+              />
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="mb-3 mb-sm-0">
+              <div class="col-form-label">Name</div>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"
+                [ngClass]="{
+                  'is-invalid': subSubmitted && subDataForm.controls.name.errors
+                }"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <div class="mb-3 mb-sm-0">
+              <div class="col-form-label">Price</div>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="price"
+                [ngClass]="{
+                  'is-invalid':
+                    subSubmitted && subDataForm.controls.price.errors
+                }"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <div class="mb-3 mb-sm-0">
+              <div class="col-form-label">Total</div>
+              <input
+                value="{{
+                  this.subDataForm.get('quantity')?.value *
+                    this.subDataForm.get('price')?.value
+                }}"
+                type="number"
+                class="form-control"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="pet-model-footer">
+            <button class="btn pet-btn" type="submit">Add Item</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="showModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered modal-lg modal-fullscreen-lg-down"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Invoices</h5>
+        <button
+          id="edit-model-close-btn"
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        @if(data){
+        <app-show-detail-product-bill
+          [data]="data"
+        ></app-show-detail-product-bill>
+
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="container d-flex align-items-center justify-content-center flex-column"
+>
+  <h1 class="management-header">Create Bill</h1>
+  <form [formGroup]="dataForm" class="form-group w-100" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-sm-6 col-12">
+        <div class="col-form-label">Employee</div>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="employee"
+          readonly
+        />
+      </div>
+      <div class="col-sm-6 col-12">
+        <div class="col-form-label">Customer</div>
+        <div class="col-12">
+          <div class="d-flex flex-row">
+            <input
+              placeholder="Search Customer Id, Name, Phone"
+              type="text"
+              class="form-control"
+              formControlName="customer"
+              [ngClass]="{
+                'is-invalid': submitted && dataForm.controls.customer.errors
+              }"
+            />
+            <button
+              class="btn pet-btn ms-2"
+              type="button"
+              (click)="searchCustomer()"
+            >
+              Search
+            </button>
+          </div>
+          <div class="text-success">
+            @if(customer){
+            {{ customer.name }} - {{ customer.phone_number }}
+
+            }
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-12">
+        <div class="col-form-label">Payment Method</div>
+        <select formControlName="payment_method" class="form-select">
+          <option value="off">Offline</option>
+          <option value="on">Online</option>
+        </select>
+      </div>
+      <div class="col-sm-6 col-12">
+        <div class="col-form-label">Grand Total</div>
+        <input
+          value="{{ grandTotal }}"
+          type="number"
+          class="form-control"
+          readonly
+        />
+      </div>
+    </div>
+    <table class="table mt-3">
+      <thead>
+        <tr>
+          <th>ID</th>
+          @if(!isMobile){
+          <th>Name</th>
+
+          }
+          <th>Price</th>
+          <th>Quantity</th>
+          @if(!isMobile){
+          <th>Total</th>
+
+          }
+          <th>
+            <button
+              data-bs-toggle="modal"
+              data-bs-target="#updateModal"
+              class="btn btn-success"
+              type="button"
+            >
+              +Add Item
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(item of itemList; track item) {
+        <tr>
+          <td>{{ item.product.id }}</td>
+          @if(!isMobile){
+
+          <td>{{ item.product.name }}</td>
+          }
+          <td>{{ item.product.price }}</td>
+          <td>
+            <button
+              type="button"
+              (click)="changeQuantity(item, 'minus')"
+              class="btn pet-small-btn"
+            >
+              <i class="bi bi-dash-square"></i>
+            </button>
+            {{ item.quantity }}
+            <button
+              type="button"
+              (click)="changeQuantity(item, 'plus')"
+              class="btn pet-small-btn"
+            >
+              <i class="bi bi-plus-square"></i>
+            </button>
+          </td>
+          @if(!isMobile){
+
+          <td>
+            {{
+              item.product.price && item.quantity
+                ? item.product.price * item.quantity
+                : 0
+            }}
+          </td>
+          }
+          <td>
+            <button
+              type="button"
+              class="delete-btn mr-6"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+              (click)="deleteClick(item)"
+              data-backdrop="static"
+              data-keyboard="false"
+            >
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+
+    @if(isCreatedBill){
+    <button
+      class="btn pet-btn me-2"
+      type="button"
+      data-bs-toggle="modal"
+      data-bs-target="#showModal"
+      data-backdrop="static"
+      data-keyboard="false"
+    >
+      Print Bill
+    </button>
+    <button class="btn pet-btn" type="button" (click)="refresh()">
+      Create New Bill
+    </button>
+    } @else{
+
+    <button class="btn pet-btn" type="submit">Submit</button>
+    }
+  </form>
+</div>
+}

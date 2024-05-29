@@ -12,9 +12,15 @@ import { SpeciesComponent } from './components/management/species/species.compon
 import { PetComponent } from './components/management/pet/pet.component';
 import { CustomerComponent } from './components/management/customer/customer.component';
 import { WeightComponent } from './components/management/weight/weight.component';
+import { CategoryComponent } from './components/management/category/category.component';
 
 import { HomeComponent } from './components/home/home.component';
 import { authGuard } from './guards/auth.guard';
+import { SupplierComponent } from './components/management/supplier/supplier.component';
+import { ProductComponent } from './components/management/product/product.component';
+import { EmployeeComponent } from './components/management/employee/employee.component';
+import { ProductBillComponent } from './components/management/product-bill/product-bill.component';
+import { AddProductBillComponent } from './components/management/product-bill/add-product-bill/add-product-bill.component';
 
 export const routes: Routes = [
   {
@@ -37,10 +43,20 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'profile', component: ProfileComponent },
+      { path: 'customer', component: CustomerComponent },
+
       { path: 'species', component: SpeciesComponent },
       { path: 'weight', component: WeightComponent },
       { path: 'pet', component: PetComponent },
-      { path: 'customer', component: CustomerComponent },
+
+      { path: 'category', component: CategoryComponent },
+      { path: 'supplier', component: SupplierComponent },
+      { path: 'product', component: ProductComponent },
+
+      { path: 'employee', component: EmployeeComponent },
+
+      { path: 'create-bill', component: AddProductBillComponent },
+      { path: 'product-bill', component: ProductBillComponent },
     ],
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },

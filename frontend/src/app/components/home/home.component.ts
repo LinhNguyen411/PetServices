@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { NgToastService } from 'ng-angular-popup';
+import { UserService } from '../../services/user.service';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -10,6 +11,7 @@ import { NgToastService } from 'ng-angular-popup';
   styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit {
+  userService = inject(UserService);
   authService = inject(AuthService);
   toast = inject(NgToastService);
   isLoggedIn?: boolean;
@@ -20,7 +22,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.authService.loggedIn?.subscribe((res) => (this.isLoggedIn = res));
 
-    this.authService.getCurrentAuthUser().subscribe((res) => {
+    this.userService.user$.subscribe((res) => {
       this.user = res;
     });
   }

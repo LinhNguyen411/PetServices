@@ -1,0 +1,19 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="form-group">
+  <div class="mb-3">
+    <div class="col-form-label">{{ componentName }} Name:</div>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Enter {{ componentName }} Name"
+      [ngClass]="{ 'is-invalid': submitted && dataForm.controls.name.errors }"
+      formControlName="name"
+    />
+  </div>
+  <div class="pet-model-footer">
+    @if(isUpdate){
+    <button class="btn pet-btn" type="submit">Update</button>
+    } @else{
+    <button class="btn pet-btn" type="submit">Add</button>
+    }
+  </div>
+</form>

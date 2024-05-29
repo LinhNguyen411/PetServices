@@ -1,8 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { NgToastService } from 'ng-angular-popup';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-management',
@@ -12,7 +13,9 @@ import { NgToastService } from 'ng-angular-popup';
   styleUrl: './management.component.css',
 })
 export class ManagementComponent implements OnInit {
+  userService = inject(UserService);
   toast = inject(NgToastService);
+  router = inject(Router);
   authService = inject(AuthService);
   isLoggedIn?: boolean;
   user?: any;
@@ -23,8 +26,8 @@ export class ManagementComponent implements OnInit {
   ngOnInit(): void {
     this.authService.loggedIn?.subscribe((res) => (this.isLoggedIn = res));
 
-    this.authService.getCurrentAuthUser().subscribe((res) => {
-      this.user = res;
+    this.userService.user$.subscribe((user) => {
+      this.user = user;
     });
   }
   logout() {
@@ -34,6 +37,7 @@ export class ManagementComponent implements OnInit {
       summary: 'Logged Out!',
       duration: 3000,
     });
+    this.router.navigate(['/', 'home', 'login']);
   }
   toggleMenu() {
     this.isToggle = !this.isToggle;

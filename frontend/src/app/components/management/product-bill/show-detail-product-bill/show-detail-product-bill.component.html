@@ -1,0 +1,114 @@
+@if(employee && customer && billItems){
+
+<div class="invoice-wrapper" id="print-area">
+  <div class="invoice">
+    <div class="invoice-container">
+      <div class="invoice-head">
+        <div class="invoice-head-top">
+          <div class="invoice-head-top-left text-start">
+            <h1 class="pet-nav-brand" style="font-weight: bold">PETCARE</h1>
+          </div>
+          <div class="invoice-head-top-right text-end">
+            <h3>Invoice</h3>
+          </div>
+        </div>
+        <div class="hr"></div>
+        <div class="invoice-head-middle">
+          <div class="invoice-head-middle-left text-start">
+            <p>
+              <span class="text-bold">Date: </span
+              >{{ bill?.date_created | date : "dd/MM/yyyy | H:mm:ss" }}
+            </p>
+          </div>
+          <div class="invoice-head-middle-right text-end">
+            <p><span class="text-bold">Invoice No: </span>{{ bill?.id }}</p>
+          </div>
+        </div>
+        <div class="hr"></div>
+        <div class="invoice-head-bottom">
+          <div class="invoice-head-bottom-left">
+            <ul>
+              <li class="text-bold">Employee:</li>
+              <li class="text-bold">#{{ employee.id }}</li>
+              <li>{{ employee.name }}</li>
+              <li>
+                <i class="bi bi-telephone"></i> {{ employee.phone_number }}
+              </li>
+            </ul>
+          </div>
+          <div class="invoice-head-bottom-right">
+            <ul class="text-end">
+              <li class="text-bold">Customer:</li>
+              <li class="text-bold">#{{ customer.id }}</li>
+              <li>{{ customer.name }}</li>
+              <li>
+                <i class="bi bi-telephone"></i> {{ customer.phone_number }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="overflow-view">
+        <div class="invoice-body">
+          <table>
+            <thead>
+              <tr>
+                <td class="text-bold">ID</td>
+                <td class="text-bold">Name</td>
+                <td class="text-bold">Rate</td>
+                <td class="text-bold">QTY</td>
+                <td class="text-bold text-end">Amount</td>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of billItems; track $index) {
+
+              <tr>
+                <td>{{ item.product.id }}</td>
+                <td>{{ item.product.name }}</td>
+                <td>
+                  {{ item.product.price | vietnamCurrency }}
+                </td>
+                <td>{{ item.quantity }}</td>
+                @if(item.sub_total){
+
+                <td class="text-end">{{ item.sub_total | vietnamCurrency }}</td>
+                }
+              </tr>
+              }
+            </tbody>
+          </table>
+          <div class="invoice-body-bottom">
+            <div class="invoice-body-info-item">
+              <div class="info-item-td text-end text-bold">Total:</div>
+              <div class="info-item-td text-end">
+                {{ bill?.total | vietnamCurrency }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="invoice-foot text-center">
+        <p>
+          <span class="text-bold text-center">NOTE:&nbsp;</span>This is computer
+          generated receipt and does not require physical signature.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="invoice-btns me-2">
+  <button
+    type="button"
+    class="invoice-btn"
+    [useExistingCss]="true"
+    printSectionId="print-area"
+    ngxPrint
+  >
+    <span>
+      <i class="bi bi-printer me-2"></i>
+    </span>
+    <span>Print</span>
+  </button>
+</div>
+}

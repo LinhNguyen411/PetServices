@@ -22,7 +22,7 @@
       <i class="bi bi-box-arrow-right"></i>
     </button>
     } @else {
-    <a routerLink="login" class="pet-nav-item">LOG IN</a>
+    <a [routerLink]="['/', 'home', 'login']" class="pet-nav-item">LOG IN</a>
     }
   </div>
 </nav>
@@ -61,6 +61,9 @@
             </ul>
             <ul class="nav flex-column align-items-start">
               <li class="sidebar-item">
+                <a routerLink="create-bill" class="sidebar-link">Create Bill</a>
+              </li>
+              <li class="sidebar-item">
                 <a
                   href="#"
                   class="sidebar-link collapsed has-dropdown"
@@ -88,6 +91,25 @@
                   </li>
                   <li class="sidebar-item">
                     <a routerLink="pet" class="sidebar-link">Pet</a>
+                  </li>
+                  <li class="sidebar-item">
+                    <a routerLink="category" class="sidebar-link">Category</a>
+                  </li>
+                  <li class="sidebar-item">
+                    <a routerLink="supplier" class="sidebar-link">Supplier</a>
+                  </li>
+                  <li class="sidebar-item">
+                    <a routerLink="product" class="sidebar-link">Product</a>
+                  </li>
+
+                  <li class="sidebar-item">
+                    <a routerLink="employee" class="sidebar-link">Employee</a>
+                  </li>
+
+                  <li class="sidebar-item">
+                    <a routerLink="product-bill" class="sidebar-link"
+                      >Product Bill</a
+                    >
                   </li>
                 </ul>
               </li>

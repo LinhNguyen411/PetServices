@@ -48,4 +48,10 @@ export class CustomerService {
   sort(value: string): void {
     this.ordering_value = value;
   }
+  searchByAccount(id: any): Observable<any> {
+    return this.http.get<any>(`${baseUrl}?account=${id}`);
+  }
+  searchByValue(value: any): Observable<any> {
+    return this.http.get<any>(`${baseUrl}?search=${value}`);
+  }
 }
