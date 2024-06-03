@@ -1,50 +1,41 @@
 from rest_framework import serializers
-from .models import Room, ServiceBooking, SubService, Diary, PetCheckInOut
+from .models import Room, ServiceBooking, Diary,SubServiceBooking
 
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
-        fields = ['id', 'number', 'is_booked']
+        fields = ['id', 'name', 'is_booked']
 
-
-    
-class SubServiceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SubService
-        fields = ['id', 'service_booking', 'service','status', 'photo']
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['service'] = {'id': instance.service.id, 'name': instance.service.name}
-        return representation
 
 class ServiceBookingSerializer(serializers.ModelSerializer):
-    sub_booking = SubServiceSerializer(many=True)
     class Meta:
         model = ServiceBooking
-        fields = ['id', 'date_booked','date_start','stay_days', 'status','customer','pet', 'service','sub_booking','photo']
+        fields = ['id', 'date_booked','date_start','stay_days', 'status','customer','pet', 'service', 'room','note']
     
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['customer'] = {'id': instance.customer.id, 'name': instance.customer.name}
-        representation['pet'] = {'id': instance.pet.id, 'name': instance.pet.name}
-        representation['service'] = {'id': instance.service.id, 'name': instance.service.name}
+        representation['customer'] = {'id': instance.customer.id, 'name': instance.customer.name, 'phone_number': instance.customer.phone_number}
+        representation['pet'] = {'id': instance.pet.id, 'name': instance.pet.name, 'species': instance.pet.species.id}
+        representation['service'] = {'id': instance.service.id, 'name': instance.service.name, 'price': instance.service.price}
+        representation['room'] = {'id': instance.room.id, 'name': instance.room.name}
+        return representation
+
+class SubServiceBookingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubServiceBooking
+        fields = ['id', 'booking', 'service','is_completed']
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['service'] = {'id': instance.service.id, 'name': instance.service.name, 'price': instance.service.price}
         return representation
 
 class DiarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Diary
-        fields = ['id', 'content', 'employee','booking', 'time']
+        fields = ['id', 'content', 'employee','booking', 'time', 'photo']
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['employee'] = {'id': instance.employee.id, 'name': instance.employee.name}
         return representation
     
-class PetCheckInOutSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PetCheckInOut
-        fields = ['id', 'date_checked_in', 'emp_checked_in','date_checked_out', 'emp_checked_out','booking','is_picked_up']
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['emp_checked_in'] = {'id': instance.emp_checked_in.id, 'name': instance.emp_checked_in.name} if instance.emp_checked_in else instance.emp_checked_in
-        representation['emp_checked_out'] = {'id': instance.emp_checked_out.id, 'name': instance.emp_checked_out.name} if instance.emp_checked_out else instance.emp_checked_out
-        return representation

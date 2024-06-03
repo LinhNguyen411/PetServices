@@ -7,8 +7,8 @@ from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 
 
-from .models import ServiceBill, ProductBill, ProductBillItem
-from .serializers import ServiceBillSerializer, ProductBillSerializer, ProductBillItemSerializer
+from .models import ServiceBill, ProductBill, ProductBillItem, Surcharge
+from .serializers import ServiceBillSerializer, ProductBillSerializer, ProductBillItemSerializer,SurchargeSerializer
 
 # Create your views here.
 class ServiceBillViewSet(ModelViewSet):
@@ -17,8 +17,15 @@ class ServiceBillViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend,OrderingFilter, SearchFilter]
     pagination_class = PageNumberPagination
     search_fields = ['id']
-    filterset_fields = ['employee', 'payment_method']
+    filterset_fields = ['employee', 'payment_method', 'booking']
     ordering_fields = [ 'date_created']
+
+class SurchargeViewSet(ModelViewSet):
+    queryset = Surcharge.objects.all()
+    serializer_class = SurchargeSerializer
+    filter_backends = [DjangoFilterBackend]
+    pagination_class = PageNumberPagination
+    filterset_fields = ['bill']
 
 class ProductBillViewSet(ModelViewSet):
     queryset = ProductBill.objects.all()

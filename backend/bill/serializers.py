@@ -1,6 +1,11 @@
 from rest_framework import serializers
-from .models import ServiceBill, ProductBill, ProductBillItem
-from services.models import ServiceSurchanges
+from .models import ServiceBill,Surcharge, ProductBill, ProductBillItem
+from booking.models import SubServiceBooking
+
+class SurchargeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Surcharge
+        fields = ['id', 'bill', 'reasons', 'price']
 
 class ServiceBillSerializer(serializers.ModelSerializer):
     total = serializers.SerializerMethodField(method_name="get_total")
@@ -8,18 +13,18 @@ class ServiceBillSerializer(serializers.ModelSerializer):
         model = ServiceBill
         fields = ['id', 'date_created', 'booking','employee','payment_method', 'total']
     def get_total(self, serviceBill:ServiceBill):
-        surchanges = ServiceSurchanges.objects.all()
         total_price = 0
         stay_days = serviceBill.booking.stay_days
         main_service = serviceBill.booking.service
-        weight = serviceBill.booking.pet.weight
-        surchange = surchanges.filter(service = main_service.id, weight = weight.id)
-        total_price += main_service.price * stay_days + (surchange[0].surchange if surchange.exists() == True else 0)
-        sub_bookings = serviceBill.booking.sub_booking.all()
-        for sub_booking in sub_bookings:
-            sub_service = sub_booking.service
-            surchange = surchanges.filter(service = sub_service.id, weight = weight.id)
-            total_price += main_service.price + (surchange[0].surchange if surchange.exists() == True else 0)
+        total_price = main_service.price * stay_days
+        surcharges = serviceBill.bill_surcharges.all()
+        sub_bookings = SubServiceBooking.objects.filter(booking = serviceBill.booking)
+        if sub_bookings.exists():
+            for sub_booking in sub_bookings:
+                if sub_booking.is_completed:
+                    total_price += sub_booking.service.price
+        for surcharge in surcharges:
+            total_price += surcharge.price
         return total_price
 
 

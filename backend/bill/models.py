@@ -29,6 +29,10 @@ class ServiceBill(models.Model):
             unique_id = random.randint(100000, 999999)
         return unique_id
 
+class Surcharge(models.Model):
+    bill = models.ForeignKey(ServiceBill, related_name='bill_surcharges', on_delete=models.CASCADE)
+    reasons = models.TextField()
+    price = models.FloatField()
 
 class ProductBill(models.Model):
     id = models.IntegerField(primary_key=True, editable=False)

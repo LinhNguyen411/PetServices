@@ -1,6 +1,6 @@
 from django.db import models
 import random
-from pets.models import Weight,Species
+from pets.models import Species
 # Create your models here.
 class Service(models.Model):
     id = models.IntegerField(primary_key=True, editable=False)
@@ -8,6 +8,7 @@ class Service(models.Model):
     description = models.TextField()
     species =  models.ForeignKey(Species, on_delete=models.PROTECT,related_name="for_species")
     price = models.FloatField(default=0)
+    is_one_day = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -22,12 +23,3 @@ class Service(models.Model):
     
     def __str__(self):
         return f"{self.name} - {self.species.name}"
-
-class ServiceSurchanges(models.Model):
-    service = models.ForeignKey(
-        Service, on_delete=models.PROTECT,related_name="surchange_service"
-    )
-    weight = models.ForeignKey(
-        Weight, on_delete=models.PROTECT,related_name="surchange_weight"
-    )
-    surchange = models.FloatField(default=0)

@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
-from .models import Room, ServiceBooking, SubService, Diary, PetCheckInOut
-from .serializers import RoomSerializer, SubServiceSerializer, ServiceBookingSerializer, DiarySerializer, PetCheckInOutSerializer
+from .models import Room, ServiceBooking, Diary, SubServiceBooking
+from .serializers import RoomSerializer, ServiceBookingSerializer, DiarySerializer, SubServiceBookingSerializer
 
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter,OrderingFilter
@@ -20,25 +20,21 @@ class ServiceBookingViewSet(ModelViewSet):
     queryset = ServiceBooking.objects.all()
     serializer_class = ServiceBookingSerializer
     pagination_class = PageNumberPagination
-    filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_fields = ['status']
-    search_fields = ['id']
-
-class SubServiceViewSet(ModelViewSet):
-    queryset = SubService.objects.all()
-    serializer_class = SubServiceSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['service_booking']
-
+    filter_backends = [DjangoFilterBackend, SearchFilter,OrderingFilter]
+    filterset_fields = ['status', 'pet', 'service', 'customer']
+    search_fields = ['id', 'date_start']
 
 class DiaryViewSet(ModelViewSet):
     queryset = Diary.objects.all()
     serializer_class = DiarySerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend,OrderingFilter]
     filterset_fields = ['booking']
+    ordering_fields = ['time']
 
-class PetCheckInOutViewSet(ModelViewSet):
-    queryset = PetCheckInOut.objects.all()
-    serializer_class = PetCheckInOutSerializer
-    filter_backends = [DjangoFilterBackend]
+class SubServiceBookingViewSet(ModelViewSet):
+    queryset = SubServiceBooking.objects.all()
+    serializer_class = SubServiceBookingSerializer
+    filter_backends = [DjangoFilterBackend,OrderingFilter]
     filterset_fields = ['booking']
+    ordering_fields = ['is_completed']
+
