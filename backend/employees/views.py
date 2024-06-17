@@ -12,6 +12,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.pagination import PageNumberPagination
 
+import unidecode
+
 import random
 import string
 
@@ -25,9 +27,9 @@ def generate_random_password(length):
 
 def generate_random_email_with_username(username):
     domains = "petcares.com"
-    formatted_username = username.replace(" ", "").lower()
-    return formatted_username + generate_random_number(4) + "@" + domains
-
+    formatted_username = unidecode.unidecode(username).replace(" ", "").lower()
+    random_number = ''.join(random.choices('0123456789', k=4))
+    return f"{formatted_username}{random_number}@{domains}"
 def generate_random_account_with_username(username):
     account = {
         "name": username,
@@ -80,7 +82,6 @@ class EmployeeViewSet(ModelViewSet):
                 email = account["email"]
                 password = account["password"]
                 account["password"] = make_password(password)
-                print(employee.photo)
                 account["photo"] = employee.photo
                 serializer = AccountSerializer(data = account)
                 if serializer.is_valid():

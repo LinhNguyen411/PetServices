@@ -9,6 +9,7 @@ from services.views import ServiceViewSet
 from booking.views import RoomViewSet, ServiceBookingViewSet, DiaryViewSet, SubServiceBookingViewSet
 from bill.views import ServiceBillViewSet, ProductBillViewSet, ProductBillItemViewSet,SurchargeViewSet
 from accounts.views import UserAccountViewSet
+from consignment.views import ProvideGoodsViewSet, ServicePackageViewSet, ServicePackageDetailViewSet, ConsignmentViewSet, ConsignmentDetailViewSet, ConsignmentDiaryViewSet, CareDetailViewSet, ConsignmentInvoiceViewSet
 
 router = DefaultRouter()
 router.register('customers', CustomerViewSet)
@@ -34,6 +35,18 @@ router.register('service_bills', ServiceBillViewSet)
 router.register('surcharges', SurchargeViewSet)
 router.register('product_bills', ProductBillViewSet)
 router.register('product_bill_items', ProductBillItemViewSet)
+
+router.register('provide_goods', ProvideGoodsViewSet)
+router.register('service_packages', ServicePackageViewSet)
+router.register('service_package_details', ServicePackageDetailViewSet)
+router.register('consignments', ConsignmentViewSet)
+router.register('consignment_details', ConsignmentDetailViewSet)
+router.register('consignment_diaries', ConsignmentDiaryViewSet)
+router.register('care_details', CareDetailViewSet)
+router.register('consignment_invoices', ConsignmentInvoiceViewSet)
+
+
+
 
 router.register('accounts', UserAccountViewSet)
 

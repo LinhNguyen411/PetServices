@@ -15,6 +15,7 @@ class PetSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['species'] = {'id': instance.species.id, 'name': instance.species.name}
-        representation['owner'] = {'id': instance.owner.id, 'name': instance.owner.name}
+        if instance.owner:
+            representation['owner'] = {'id': instance.owner.id, 'name': instance.owner.name}
 
         return representation

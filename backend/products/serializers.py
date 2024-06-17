@@ -20,8 +20,9 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['species'] = {'id': instance.species.id, 'name': instance.species.name}
-        representation['category'] = {'id': instance.category.id, 'name': instance.category.name}
-        representation['supplier'] = {'id': instance.supplier.id, 'name': instance.supplier.name}
+        if instance.species and instance.category and instance.supplier:
+            representation['species'] = {'id': instance.species.id, 'name': instance.species.name}
+            representation['category'] = {'id': instance.category.id, 'name': instance.category.name}
+            representation['supplier'] = {'id': instance.supplier.id, 'name': instance.supplier.name}
 
         return representation

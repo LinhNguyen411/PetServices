@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'django_filters',
+    'django_cleanup.apps.CleanupConfig',
 
     #my app
     'accounts.apps.AccountsConfig',
@@ -56,6 +57,7 @@ INSTALLED_APPS = [
     'services.apps.ServicesConfig',
     'booking.apps.BookingConfig',
     'bill.apps.BillConfig',
+    'consignment.apps.ConsignmentConfig',
     'api.apps.ApiConfig',
 ]
 
@@ -173,10 +175,10 @@ SIMPLE_JWT = {
 }
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES':[
+    'DEFAULT_PERMISSION_CLASSES':(
         # 'rest_framework.permissions.IsAuthenticated',
         'rest_framework.permissions.AllowAny',
-    ],
+    ),
     'DEFAULT_AUTHENTICATION_CLASSES':(
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),

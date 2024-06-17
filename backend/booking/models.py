@@ -24,6 +24,7 @@ def get_main_image_path(instance, filename):
 
 class Room(models.Model):
     name = models.CharField(max_length=20)
+    price = models.FloatField(default=0)
     is_booked = models.BooleanField(default=False, blank=True)
 
     def __str__(self):
@@ -60,7 +61,7 @@ class SubServiceBooking(models.Model):
 class Diary(models.Model):
     time = models.DateTimeField(default=datetime.now, blank=True)
     employee = models.ForeignKey(Employee, related_name='employee_diary', on_delete=models.PROTECT)
-    booking = models.ForeignKey(ServiceBooking, related_name='booking_diary', on_delete=models.PROTECT)
+    booking = models.ForeignKey(ServiceBooking, related_name='booking_diary', on_delete=models.CASCADE)
     content = models.TextField()
     photo = models.ImageField(upload_to=get_main_image_path, blank=True,null=True, default='global/no-image.jpg')
 

@@ -15,5 +15,5 @@ class ServiceViewSet(ModelViewSet):
     pagination_class = PageNumberPagination
     search_fields = ['id', 'name', 'description']
     ordering_fields = ['name', 'price']
-    filterset_fields = ['species']
+    filterset_fields = ['species', 'is_one_day']
 

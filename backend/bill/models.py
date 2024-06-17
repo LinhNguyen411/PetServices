@@ -53,6 +53,6 @@ class ProductBill(models.Model):
         return unique_id
 
 class ProductBillItem(models.Model):
-    bill = models.ForeignKey(ProductBill, on_delete=models.PROTECT, related_name='bill_item')
-    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='product_item')
+    bill = models.ForeignKey(ProductBill, on_delete=models.CASCADE, related_name='bill_item')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_item')
     quantity = models.IntegerField(default=1)
