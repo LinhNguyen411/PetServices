@@ -1,13 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable, forkJoin } from 'rxjs';
+import { concatMap, switchMap } from 'rxjs/operators';
 
 import { ProductBill } from '../models/product-bill.model';
 import { ProductBillItem } from '../models/product-bill-item.model';
+import { backendURL } from '../untils/global';
 
-import { Observable, from, forkJoin } from 'rxjs';
-import { concatMap, tap, map, switchMap } from 'rxjs/operators';
-
-const baseUrl = 'http://127.0.0.1:8000/api/product_bills/';
+const baseUrl = backendURL + 'api/product_bills/';
 
 @Injectable({
   providedIn: 'root',

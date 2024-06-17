@@ -5,6 +5,6 @@ export class Pet {
   gender?: boolean;
   owner?: any;
   species?: any;
-  weight?: any;
+  weight?: number;
   photo?: string;
 }

@@ -1,17 +1,77 @@
+@if(isCustomer){
+<form [formGroup]="subDataForm" (ngSubmit)="onSubmit()" class="form-group">
+  <div class="row justify-content-between">
+    <div class="col-sm-6 col-12 mb-2 row pe-0">
+      <div class="col-6 col-sm-12">
+        <img [src]="url" class="w-100" style="height: 200px" />
+      </div>
+      <div class="mt-sm-2 col-6 col-sm-12 d-flex align-items-center">
+        <input type="file" #fileInput (change)="onSelectFile($event)" />
+      </div>
+    </div>
+    <div class="col-12 col-sm-6">
+      <div class="col-12">
+        <div class="mb-3 mb-sm-0">
+          <div class="col-form-label">Tên tài khoản</div>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="username"
+            [ngClass]="{
+              'is-invalid': submitted && subDataForm.controls.username.errors
+            }"
+            placeholder="Nhập tên tài khoản"
+          />
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="mb-3 mb-sm-0">
+          <div class="col-form-label">Email</div>
+          <input
+            readonly
+            type="text"
+            class="form-control"
+            formControlName="email"
+          />
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="mt-4 mb-sm-0">
+          @if(message){
+          <p>{{ message }}</p>
+          } @else{
+
+          <button (click)="changePassword()" class="pet-btn p-2" type="button">
+            Đổi mật khẩu
+          </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+}
+
 <form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="form-group">
+  @if(dataForm.controls.id.value){
   <div class="mb-3">
-    <div class="col-form-label">Customer Name:</div>
+    <div class="col-form-label">ID Khách hàng:</div>
+    <input readonly type="text" class="form-control" formControlName="id" />
+  </div>
+  }
+  <div class="mb-3">
+    <div class="col-form-label">Họ tên khách hàng:</div>
     <input
       type="text"
       class="form-control"
-      placeholder="Enter Customer Name"
+      placeholder="Nhập họ tên khách hàng"
       [ngClass]="{ 'is-invalid': submitted && dataForm.controls.name.errors }"
       formControlName="name"
     />
   </div>
 
   <div class="mb-3">
-    <div class="col-form-label">Address:</div>
+    <div class="col-form-label">Địa chỉ:</div>
     <input
       type="text"
       class="form-control"
@@ -19,16 +79,16 @@
       [ngClass]="{
         'is-invalid': submitted && dataForm.controls.address.errors
       }"
-      placeholder="Enter Address"
+      placeholder="Nhập địa chỉ"
     />
   </div>
 
   <div class="mb-3">
-    <div class="col-form-label">Phone Number:</div>
+    <div class="col-form-label">Số điện thoại:</div>
     <input
       type="text"
       class="form-control"
-      placeholder="Enter Phone Number"
+      placeholder="Nhập số điện thoại"
       [ngClass]="{
         'is-invalid': submitted && dataForm.controls.phone_number.errors
       }"
@@ -37,9 +97,9 @@
   </div>
   <div class="pet-model-footer">
     @if(isUpdate){
-    <button class="btn pet-btn" type="submit">Update</button>
+    <button class="btn pet-btn" type="submit">Cập nhật</button>
     } @else{
-    <button class="btn pet-btn" type="submit">Add</button>
+    <button class="btn pet-btn" type="submit">Thêm</button>
     }
   </div>
 </form>

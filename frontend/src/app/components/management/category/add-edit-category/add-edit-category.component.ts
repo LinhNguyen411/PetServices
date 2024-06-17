@@ -9,6 +9,8 @@ import { NgToastService } from 'ng-angular-popup';
 import { CommonModule } from '@angular/common';
 
 import { CategoryService } from '../../../../services/category.service';
+import { ToastServiceService } from '../../../../services/toast-service.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-add-edit-category',
@@ -19,7 +21,8 @@ import { CategoryService } from '../../../../services/category.service';
 })
 export class AddEditCategoryComponent {
   private dataService = inject(CategoryService);
-  toast = inject(NgToastService);
+  private spinner = inject(NgxSpinnerService);
+  private toast = inject(ToastServiceService);
   formBuilder = inject(FormBuilder);
   dataForm!: FormGroup;
   submitted?: boolean;
@@ -44,18 +47,13 @@ export class AddEditCategoryComponent {
       next: (res) => {
         this.isSubmitted.emit(true);
 
-        this.toast.success({
-          detail: 'SUCCESS',
-          summary: 'Add Item Successfully',
-          duration: 2000,
-        });
+        this.toast.addSuccess();
       },
       error: (err) => {
-        this.toast.error({
-          detail: 'FAILED',
-          summary: 'Failed To Add',
-          duration: 2000,
-        });
+        this.toast.addFail();
+      },
+      complete: () => {
+        this.spinner.hide();
       },
     });
   }
@@ -65,18 +63,13 @@ export class AddEditCategoryComponent {
         next: (res) => {
           this.isSubmitted.emit(true);
 
-          this.toast.success({
-            detail: 'SUCCESS',
-            summary: 'Update Item Successfully',
-            duration: 2000,
-          });
+          this.toast.updateSuccess();
         },
         error: (err) => {
-          this.toast.error({
-            detail: 'FAILED',
-            summary: 'Failed To Update',
-            duration: 2000,
-          });
+          this.toast.updateFail();
+        },
+        complete: () => {
+          this.spinner.hide();
         },
       });
     }
@@ -84,6 +77,7 @@ export class AddEditCategoryComponent {
   onSubmit(): void {
     this.submitted = true;
     if (this.dataForm.valid) {
+      this.spinner.show();
       var data = {
         name: this.dataForm.get('name')!.value,
       };

@@ -1,0 +1,86 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="form-group">
+  <div class="row">
+    <div class="col-12">
+      <div class="mb-3 mb-sm-0">
+        <div class="col-form-label">Tên dịch vụ</div>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="name"
+          [ngClass]="{
+            'is-invalid': submitted && dataForm.controls.name.errors
+          }"
+          placeholder="Nhập tên dịch vụ"
+        />
+      </div>
+    </div>
+    <div class="col-12 row">
+      <div class="col-9">
+        <div class="mb-3">
+          <div class="col-form-label">Loài</div>
+          <select
+            class="form-select"
+            formControlName="species"
+            [ngClass]="{
+              'is-invalid': submitted && dataForm.controls.species.errors
+            }"
+          >
+            <option value="" disabled>--Chọn loài--</option>
+            @for(item of speciesList; track item){
+            <option value="{{ item.id }}">{{ item.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="mb-3 mb-sm-0">
+          <div class="col-form-label">Loại dịch vụ</div>
+          <input
+            type="checkbox"
+            class="btn-check"
+            id="btn-check"
+            formControlName="is_one_day"
+          />
+          <label class="btn pet-btn" for="btn-check">{{
+            dataForm.get("is_one_day")?.value ? "Dịch vụ chính" : "Dịch vụ phụ"
+          }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="mb-3 mb-sm-0">
+        <div class="col-form-label">Giá</div>
+        <input
+          type="number"
+          class="form-control"
+          formControlName="price"
+          [ngClass]="{
+            'is-invalid': submitted && dataForm.controls.price.errors
+          }"
+          placeholder="Nhập giá"
+        />
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="mb-3 mb-sm-0">
+        <div class="col-form-label">Mô tà</div>
+        <textarea
+          class="form-control"
+          formControlName="description"
+          placeholder="Nhập mô tả"
+          [ngClass]="{
+            'is-invalid': submitted && dataForm.controls.description.errors
+          }"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="pet-model-footer">
+    @if(isUpdate){
+    <button class="btn pet-btn" type="submit">Cập nhật</button>
+    } @else{
+    <button class="btn pet-btn" type="submit">Thêm</button>
+    }
+  </div>
+</form>

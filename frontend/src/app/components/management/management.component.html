@@ -12,9 +12,6 @@
 
   <div class="pet-nav-right">
     @if (isLoggedIn) {
-    <a href="" class="pet-nav-item hidden-xs-down pb-0">
-      <i class="bi bi-bell"></i>
-    </a>
     <a routerLink="profile" class="pet-nav-item hidden-xs-down pb-0">
       <i class="bi bi-person"></i>
     </a>
@@ -22,10 +19,12 @@
       <i class="bi bi-box-arrow-right"></i>
     </button>
     } @else {
-    <a [routerLink]="['/', 'home', 'login']" class="pet-nav-item">LOG IN</a>
+    <a [routerLink]="['/', 'home', 'login']" class="pet-nav-item">Đăng Nhập</a>
     }
   </div>
 </nav>
+@if(userService.userData$ | async; as userData){
+
 <div class="container-fluid">
   <div class="row">
     @if(isLoggedIn){
@@ -48,20 +47,103 @@
           <div class="sidebar-main-content">
             <ul class="nav flex-column align-items-start">
               <li class="sidebar-item">
-                <a href="" class="sidebar-link">Home</a>
-              </li>
-            </ul>
-            <ul class="nav d-md-none flex-column align-items-start">
-              <li class="sidebar-item">
-                <a href="" class="sidebar-link">Notification</a>
-              </li>
-              <li class="sidebar-item">
-                <a routerLink="profile" class="sidebar-link">Profile</a>
+                <a [routerLink]="['/', 'management']" class="sidebar-link"
+                  >Trang chính</a
+                >
               </li>
             </ul>
             <ul class="nav flex-column align-items-start">
               <li class="sidebar-item">
-                <a routerLink="create-bill" class="sidebar-link">Create Bill</a>
+                <a
+                  [routerLink]="['/', 'management', 'consignment-dashboard']"
+                  class="sidebar-link"
+                  >Thú cưng ký gửi</a
+                >
+              </li>
+            </ul>
+            <ul class="nav d-md-none flex-column align-items-start">
+              <li class="sidebar-item">
+                <a routerLink="profile" class="sidebar-link"
+                  >Thông tin cá nhân</a
+                >
+              </li>
+            </ul>
+            <ul class="nav flex-column align-items-start">
+              @if(user.account_type == 'c'){
+              <li class="sidebar-item">
+                <a routerLink="pet" class="sidebar-link">Thú cưng của bạn</a>
+              </li>
+              <li class="sidebar-item">
+                <a routerLink="service-booking/create" class="sidebar-link"
+                  >Đăng ký dịch vụ</a
+                >
+              </li>
+
+              <li class="sidebar-item">
+                <a routerLink="service-booking/show" class="sidebar-link"
+                  >Dịch vụ đã đặt</a
+                >
+              </li>
+
+              } @else {
+
+              <li class="sidebar-item">
+                <a
+                  [routerLink]="['/', 'management', 'consignment', 'create']"
+                  class="sidebar-link"
+                  >Ký gửi thú cưng</a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  [routerLink]="['/', 'management', 'consignment', 'show']"
+                  class="sidebar-link"
+                  >Ký gửi đã tạo</a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a routerLink="create-bill" class="sidebar-link"
+                  >Tạo hóa đơn sản phẩm</a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a routerLink="service-booking/create" class="sidebar-link"
+                  >Tạo lịch đặt dịch vụ</a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a routerLink="service-booking/show" class="sidebar-link"
+                  >Dịch vụ đã đặt</a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  href="#"
+                  class="sidebar-link collapsed has-dropdown"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#bill"
+                  aria-expanded="false"
+                  aria-controls="auth"
+                >
+                  <i class="lni lni-protection"></i>
+                  <span>Hóa đơn</span>
+                </a>
+                <ul
+                  id="bill"
+                  class="sidebar-dropdown list-unstyled collapse"
+                  data-bs-parent="#main-sidebar"
+                >
+                  <li class="sidebar-item">
+                    <a routerLink="product-bill" class="sidebar-link"
+                      >Hóa đơn sản phẩm</a
+                    >
+                  </li>
+                  <li class="sidebar-item">
+                    <a routerLink="service-bill" class="sidebar-link"
+                      >Hóa đơn dịch vụ</a
+                    >
+                  </li>
+                </ul>
               </li>
               <li class="sidebar-item">
                 <a
@@ -73,7 +155,7 @@
                   aria-controls="auth"
                 >
                   <i class="lni lni-protection"></i>
-                  <span>Management</span>
+                  <span>Quản lý thông tin</span>
                 </a>
                 <ul
                   id="auth"
@@ -81,52 +163,77 @@
                   data-bs-parent="#main-sidebar"
                 >
                   <li class="sidebar-item">
-                    <a routerLink="customer" class="sidebar-link">Customer</a>
+                    <a routerLink="customer" class="sidebar-link">Khách hàng</a>
                   </li>
                   <li class="sidebar-item">
-                    <a routerLink="species" class="sidebar-link">Species</a>
+                    <a routerLink="pet" class="sidebar-link">Thú cưng</a>
                   </li>
                   <li class="sidebar-item">
-                    <a routerLink="weight" class="sidebar-link">Weight</a>
+                    <a routerLink="product" class="sidebar-link">Sản phẩm</a>
                   </li>
-                  <li class="sidebar-item">
-                    <a routerLink="pet" class="sidebar-link">Pet</a>
-                  </li>
-                  <li class="sidebar-item">
-                    <a routerLink="category" class="sidebar-link">Category</a>
-                  </li>
-                  <li class="sidebar-item">
-                    <a routerLink="supplier" class="sidebar-link">Supplier</a>
-                  </li>
-                  <li class="sidebar-item">
-                    <a routerLink="product" class="sidebar-link">Product</a>
-                  </li>
+                  @if(user.account_type == 'm'){
 
                   <li class="sidebar-item">
-                    <a routerLink="employee" class="sidebar-link">Employee</a>
+                    <a routerLink="species" class="sidebar-link">Loài</a>
                   </li>
-
                   <li class="sidebar-item">
-                    <a routerLink="product-bill" class="sidebar-link"
-                      >Product Bill</a
+                    <a routerLink="category" class="sidebar-link"
+                      >Loại sản phẩm</a
                     >
                   </li>
+                  <li class="sidebar-item">
+                    <a routerLink="supplier" class="sidebar-link"
+                      >Nhà cung cấp</a
+                    >
+                  </li>
+
+                  <li class="sidebar-item">
+                    <a routerLink="employee" class="sidebar-link">Nhân viên</a>
+                  </li>
+
+                  <li class="sidebar-item">
+                    <a routerLink="service" class="sidebar-link">Dịch vụ</a>
+                  </li>
+
+                  <li class="sidebar-item">
+                    <a routerLink="room" class="sidebar-link">Chuồng</a>
+                  </li>
+                  <li class="sidebar-item">
+                    <a routerLink="provide-goods" class="sidebar-link"
+                      >Dịch vụ, sản phẩm</a
+                    >
+                  </li>
+                  <li class="sidebar-item">
+                    <a routerLink="service-package" class="sidebar-link"
+                      >Gói dịch vụ</a
+                    >
+                  </li>
+                  }
                 </ul>
               </li>
+
+              }
             </ul>
           </div>
         </div>
       </div>
     </div>
     <div class="content-wrapper">
-      <div class="container-fluid main-content">
-        <router-outlet></router-outlet>
+      <div
+        class="container-fluid main-content d-flex justify-content-center w-100"
+      >
+        <div class="w-100">
+          <router-outlet></router-outlet>
+        </div>
       </div>
-    </div>
-    } @else {
-    <div style="margin: 50px" class="container">
-      <router-outlet></router-outlet>
     </div>
     }
   </div>
 </div>
+
+} @else { @if(!isHaveData){
+<div class="container">
+  <app-complete-profile></app-complete-profile>
+</div>
+
+} }

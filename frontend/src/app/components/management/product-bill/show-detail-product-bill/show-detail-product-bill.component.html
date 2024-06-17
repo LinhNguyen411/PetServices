@@ -9,26 +9,26 @@
             <h1 class="pet-nav-brand" style="font-weight: bold">PETCARE</h1>
           </div>
           <div class="invoice-head-top-right text-end">
-            <h3>Invoice</h3>
+            <h3>Hóa đơn</h3>
           </div>
         </div>
         <div class="hr"></div>
         <div class="invoice-head-middle">
           <div class="invoice-head-middle-left text-start">
             <p>
-              <span class="text-bold">Date: </span
+              <span class="text-bold">Ngày tạo: </span
               >{{ bill?.date_created | date : "dd/MM/yyyy | H:mm:ss" }}
             </p>
           </div>
           <div class="invoice-head-middle-right text-end">
-            <p><span class="text-bold">Invoice No: </span>{{ bill?.id }}</p>
+            <p><span class="text-bold">Hóa đơn số: </span>{{ bill?.id }}</p>
           </div>
         </div>
         <div class="hr"></div>
         <div class="invoice-head-bottom">
           <div class="invoice-head-bottom-left">
             <ul>
-              <li class="text-bold">Employee:</li>
+              <li class="text-bold">Nhân viên:</li>
               <li class="text-bold">#{{ employee.id }}</li>
               <li>{{ employee.name }}</li>
               <li>
@@ -38,7 +38,7 @@
           </div>
           <div class="invoice-head-bottom-right">
             <ul class="text-end">
-              <li class="text-bold">Customer:</li>
+              <li class="text-bold">Khách hàng:</li>
               <li class="text-bold">#{{ customer.id }}</li>
               <li>{{ customer.name }}</li>
               <li>
@@ -54,10 +54,10 @@
             <thead>
               <tr>
                 <td class="text-bold">ID</td>
-                <td class="text-bold">Name</td>
-                <td class="text-bold">Rate</td>
-                <td class="text-bold">QTY</td>
-                <td class="text-bold text-end">Amount</td>
+                <td class="text-bold">Tên</td>
+                <td class="text-bold">Giá</td>
+                <td class="text-bold">Số lượng</td>
+                <td class="text-bold text-end">Tạm tính</td>
               </tr>
             </thead>
             <tbody>
@@ -80,7 +80,9 @@
           </table>
           <div class="invoice-body-bottom">
             <div class="invoice-body-info-item">
-              <div class="info-item-td text-end text-bold">Total:</div>
+              <div class="info-item-td text-end text-bold">
+                Tổng tiền<noscript></noscript>:
+              </div>
               <div class="info-item-td text-end">
                 {{ bill?.total | vietnamCurrency }}
               </div>
@@ -90,8 +92,8 @@
       </div>
       <div class="invoice-foot text-center">
         <p>
-          <span class="text-bold text-center">NOTE:&nbsp;</span>This is computer
-          generated receipt and does not require physical signature.
+          <span class="text-bold text-center">Lưu ý:&nbsp;</span>Kiểm tra kỹ hóa
+          đơn trước khi thanh toán.
         </p>
       </div>
     </div>
@@ -108,7 +110,7 @@
     <span>
       <i class="bi bi-printer me-2"></i>
     </span>
-    <span>Print</span>
+    <span>In hóa đơn</span>
   </button>
 </div>
 }

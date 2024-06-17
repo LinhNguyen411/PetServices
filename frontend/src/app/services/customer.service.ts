@@ -2,8 +2,9 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Customer } from '../models/customer.model';
+import { backendURL } from '../untils/global';
 
-const baseUrl = 'http://127.0.0.1:8000/api/customers/';
+const baseUrl = backendURL + 'api/customers/';
 
 @Injectable({
   providedIn: 'root',
@@ -53,5 +54,9 @@ export class CustomerService {
   }
   searchByValue(value: any): Observable<any> {
     return this.http.get<any>(`${baseUrl}?search=${value}`);
+  }
+
+  updateAccount(id: string, data: any) {
+    return this.http.post(`${baseUrl}${id}/account/`, data);
   }
 }

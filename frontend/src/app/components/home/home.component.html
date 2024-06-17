@@ -1,29 +1,65 @@
-<nav class="pet-navbar" id="top-nav-bar">
-  <div class="pet-nav-brand">
-    <a routerLink="/" class="pet-nav-item">
-      <h1>PETCARE</h1>
-    </a>
-  </div>
-
-  <div class="pet-nav-right">
-    @if (isLoggedIn) {
-    <a class="pet-nav-item pet-nav-username" [routerLink]="['/', 'management']">
-      <img
-        src="{{ user.photo }}"
-        alt="{{ user.name }}"
-        class="pet-nav-avatar"
-      />
-      {{ user.name }}
-    </a>
-    <button class="pet-nav-item" (click)="logout()">
-      <i class="bi bi-box-arrow-right"></i>
+<nav class="navbar p-0 navbar-expand-lg bg-pet navbar-dark fixed-top">
+  <div class="container-fluid">
+    <div class="pet-nav-brand me-4">
+      <a routerLink="/" class="pet-nav-item fw-bold">PETCARE</a>
+    </div>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navmenu"
+    >
+      <span class="navbar-toggler-icon"></span>
     </button>
-    } @else {
-    <a routerLink="login" class="pet-nav-item">LOG IN</a>
-    }
+    <div class="collapse navbar-collapse pb-2 pb-lg-0" id="navmenu">
+      <ul class="navbar-nav w-100">
+        @if(router.url == '/home'){
+        <li class="pet-nav-item me-3">
+          <a (click)="scrollTo('anchor')" class="pet-nav-link">Trang chủ</a>
+        </li>
+        <li class="pet-nav-item me-3">
+          <a (click)="scrollTo('about')" class="pet-nav-link">Giới thiệu</a>
+        </li>
+        <li class="pet-nav-item me-3">
+          <a (click)="scrollTo('anchor2')" class="pet-nav-link">Dịch vụ</a>
+        </li>
+        <li class="pet-nav-item me-3">
+          <a (click)="scrollTo('questions')" class="pet-nav-link">Câu hỏi</a>
+        </li>
+        <li class="pet-nav-item me-3">
+          <a (click)="scrollTo('contact')" class="pet-nav-link">Liên hệ</a>
+        </li>
+
+        <hr />
+        } @if(userService.user$ | async; as user){
+        <li class="pet-nav-item ms-lg-auto">
+          <a [routerLink]="['/', 'management']" class="pet-nav-link">
+            <div class="d-flex">
+              <img [src]="user.photo" class="avatar" />
+              <div>{{ user.name }}</div>
+            </div>
+          </a>
+        </li>
+        <button (click)="logout()" class="pet-nav-item ms-lg-2">
+          <i class="bi bi-box-arrow-right"></i>
+        </button>
+        } @else {
+
+        <li class="pet-nav-item ms-lg-auto">
+          <a [routerLink]="['/', 'home', 'login']" class="pet-nav-link"
+            >Đăng nhập</a
+          >
+        </li>
+        <li class="pet-nav-item ms-lg-2">
+          <a [routerLink]="['/', 'home', 'register']" class="pet-nav-link"
+            >Đăng ký</a
+          >
+        </li>
+        }
+      </ul>
+    </div>
   </div>
 </nav>
-
 <div class="content-wrapper">
   <router-outlet></router-outlet>
 </div>

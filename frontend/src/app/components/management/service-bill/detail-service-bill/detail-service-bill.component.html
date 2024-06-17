@@ -1,0 +1,157 @@
+@if(employee && surcharges && bill && booking && subBookings){
+
+<div class="invoice-wrapper" id="print-area">
+  <div class="invoice">
+    <div class="invoice-container">
+      <div class="invoice-head">
+        <div class="invoice-head-top">
+          <div class="invoice-head-top-left text-start">
+            <h1 class="pet-nav-brand" style="font-weight: bold">PETCARE</h1>
+          </div>
+          <div class="invoice-head-top-right text-end">
+            <h3>Hóa đơn dịch vụ</h3>
+          </div>
+        </div>
+        <div class="hr"></div>
+        <div class="invoice-head-middle">
+          <div class="invoice-head-middle-left text-start">
+            <p>
+              <span class="text-bold">Ngày tạo: </span
+              >{{ bill.date_created | date : "dd/MM/yyyy | H:mm:ss" }}
+            </p>
+          </div>
+          <div class="invoice-head-middle-right text-end">
+            <p><span class="text-bold">Hóa đơn số: </span>{{ bill.id }}</p>
+          </div>
+          <div class="invoice-head-middle-left text-start"></div>
+          <div class="invoice-head-middle-right text-end">
+            <p><span class="text-bold">Mã đặt: </span>{{ bill.booking }}</p>
+          </div>
+        </div>
+        <div class="hr"></div>
+        <div class="invoice-head-bottom">
+          <div class="invoice-head-bottom-left">
+            <ul>
+              <li class="text-bold">Nhân viên:</li>
+              <li class="text-bold">#{{ employee.id }}</li>
+              <li>{{ employee.name }}</li>
+              <li>
+                <i class="bi bi-telephone"></i> {{ employee.phone_number }}
+              </li>
+            </ul>
+          </div>
+          <div class="invoice-head-bottom-right">
+            <ul class="text-end">
+              <li class="text-bold">Khách hàng:</li>
+              <li class="text-bold">#{{ booking.customer.id }}</li>
+              <li>{{ booking.customer.name }}</li>
+              <li>
+                <i class="bi bi-telephone"></i>
+                {{ booking.customer.phone_number }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="overflow-view">
+        <div class="invoice-body">
+          <table>
+            <thead>
+              <tr>
+                <td class="text-bold">ID</td>
+                <td class="text-bold">Tên</td>
+                <td class="text-bold">Giá</td>
+                <td class="text-bold">Ngày</td>
+                <td class="text-bold text-end">Tạm tính</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ booking.service.id }}</td>
+                <td>{{ booking.service.name }}</td>
+                <td>{{ booking.service.price | vietnamCurrency }}</td>
+                <td>{{ booking.stay_days }}</td>
+                @if(booking.stay_days && booking.service.price){
+
+                <td class="text-end">
+                  {{
+                    booking.stay_days * booking.service.price | vietnamCurrency
+                  }}
+                </td>
+                }
+              </tr>
+              @for (item of subBookings; track $index) { @if(item.is_completed){
+              <tr>
+                <td>{{ item.service.id }}</td>
+                <td>{{ item.service.name }}</td>
+                <td>
+                  {{ item.service.price | vietnamCurrency }}
+                </td>
+                <td>1</td>
+                <td class="text-end">
+                  {{ item.service.price | vietnamCurrency }}
+                </td>
+              </tr>
+
+              } }
+            </tbody>
+            <thead>
+              <tr>
+                @if(surcharges.length > 0){
+                <td colspan="4" class="text-bold">Phụ thu:</td>
+                <td></td>
+
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for(item of surcharges; track $index){
+              <tr>
+                <td colspan="4">Lý do: {{ item.reasons }}</td>
+                <td class="text-end">{{ item.price | vietnamCurrency }}</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+          <div class="invoice-body-info-item">
+            @if(surcharges.length == 0){
+            <div class="info-item-td text-end text-bold">Tổng phụ thu:</div>
+            <div class="info-item-td text-end">
+              {{ 0 | vietnamCurrency }}
+            </div>
+            }
+          </div>
+          <div class="invoice-body-bottom">
+            <div class="invoice-body-info-item">
+              <div class="info-item-td text-end text-bold">Tổng tiền:</div>
+              <div class="info-item-td text-end">
+                {{ bill.total | vietnamCurrency }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="invoice-foot text-center">
+        <p>
+          <span class="text-bold text-center">Lưu ý:&nbsp;</span>Xem kỹ chi tiết
+          hóa đơn trước khi thực hiện thanh toán.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="invoice-btns me-2">
+  <button
+    type="button"
+    class="invoice-btn"
+    [useExistingCss]="true"
+    printSectionId="print-area"
+    ngxPrint
+  >
+    <span>
+      <i class="bi bi-printer me-2"></i>
+    </span>
+    <span>In hóa đơn</span>
+  </button>
+</div>
+}

@@ -1,19 +1,19 @@
 <form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="form-group">
   <div class="mb-3">
-    <div class="col-form-label">Species Name:</div>
+    <div class="col-form-label">Tên loài:</div>
     <input
       type="text"
       class="form-control"
-      placeholder="Enter Species Name"
+      placeholder="Nhập tên loài"
       [ngClass]="{ 'is-invalid': submitted && dataForm.controls.name.errors }"
       formControlName="name"
     />
   </div>
   <div class="pet-model-footer">
     @if(isUpdate){
-    <button class="btn pet-btn" type="submit">Update</button>
+    <button class="btn pet-btn" type="submit">Cập nhật</button>
     } @else{
-    <button class="btn pet-btn" type="submit">Add</button>
+    <button class="btn pet-btn" type="submit">Thêm</button>
     }
   </div>
 </form>

@@ -1,37 +1,36 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { NgToastService } from 'ng-angular-popup';
+import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, RouterLink, CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit {
   userService = inject(UserService);
   authService = inject(AuthService);
-  toast = inject(NgToastService);
-  isLoggedIn?: boolean;
-  user?: any;
-  isToggle: boolean = false;
-  title = 'PetCares';
-  constructor() {}
-  ngOnInit(): void {
-    this.authService.loggedIn?.subscribe((res) => (this.isLoggedIn = res));
 
-    this.userService.user$.subscribe((res) => {
-      this.user = res;
+  router = inject(Router);
+  user?: any;
+  ngOnInit(): void {
+    this.userService.user$.subscribe((user) => {
+      this.user = user;
     });
   }
-  logout() {
-    this.authService.logout();
-    this.toast.success({
-      detail: 'SUCCESS',
-      summary: 'Logged Out!',
-      duration: 3000,
+  scrollTo(element: any): void {
+    (document.getElementById(element) as HTMLElement).scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest',
     });
+  }
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/', 'home', 'login']);
   }
 }

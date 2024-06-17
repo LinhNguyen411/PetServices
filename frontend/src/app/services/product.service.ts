@@ -4,7 +4,9 @@ import { Observable } from 'rxjs';
 
 import { Product } from '../models/product.model';
 
-const baseUrl = 'http://127.0.0.1:8000/api/products/';
+import { backendURL } from '../untils/global';
+
+const baseUrl = backendURL + 'api/products/';
 
 @Injectable({
   providedIn: 'root',

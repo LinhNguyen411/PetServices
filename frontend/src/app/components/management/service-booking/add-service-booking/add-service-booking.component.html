@@ -1,0 +1,169 @@
+@if(userService.userData$ | async;as userData){
+<div
+  class="container d-flex align-items-center justify-content-center flex-column"
+>
+  <h1 class="management-header">Đăng ký dịch vụ</h1>
+  <form [formGroup]="dataForm" class="form-group w-100" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-sm-6 col-12">
+        <div class="col-form-label">Khách hàng</div>
+        <div class="col-12">
+          <div class="d-flex flex-row">
+            <input
+              [readOnly]="user.account_type == 'c'"
+              placeholder="Tìm id, tên, số điện thoại"
+              type="text"
+              class="form-control"
+              formControlName="customer"
+              [ngClass]="{
+                'is-invalid': submitted && dataForm.controls.customer.errors
+              }"
+            />
+            @if(user.account_type != 'c'){
+
+            <button
+              class="btn pet-btn ms-2"
+              type="button"
+              (click)="searchCustomer()"
+            >
+              Tìm
+            </button>
+            }
+          </div>
+          <div class="text-success">
+            @if(customer){
+            {{ customer.name }} - {{ customer.phone_number }}
+
+            }
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-12">
+        <div class="col-form-label">Thú cưng</div>
+        <select
+          (change)="onPetChange()"
+          formControlName="pet"
+          class="form-select"
+          [ngClass]="{
+            'is-invalid': submitted && dataForm.controls.pet.errors
+          }"
+        >
+          <option value="" disabled>--Chọn Thú cưng--</option>
+          @for(pet of petList; track pet){
+          <option value="{{ pet.id }}">{{ pet.name }}</option>
+          }
+        </select>
+      </div>
+      <div class="col-sm-6 col-12">
+        <div class="col-form-label">Dịch vụ</div>
+        <select
+          (change)="onMainServiceChange()"
+          formControlName="service"
+          class="form-select"
+          [ngClass]="{
+            'is-invalid': submitted && dataForm.controls.service.errors
+          }"
+        >
+          <option value="" disabled>--Chọn Dịch vụ--</option>
+          @for(service of serviceList; track service){
+          <option value="{{ service.id }}">{{ service.name }}</option>
+          }
+        </select>
+      </div>
+      <div class="col-sm-6 col-12">
+        <div class="col-form-label">Chuồng</div>
+        <select
+          formControlName="room"
+          class="form-select"
+          [ngClass]="{
+            'is-invalid': submitted && dataForm.controls.room.errors
+          }"
+        >
+          <option value="" disabled>--Chọn Chuồng--</option>
+          @for(room of roomList; track room){
+          <option value="{{ room.id }}">Chuồng {{ room.name }}</option>
+          }
+        </select>
+      </div>
+      <div class="col-sm-6 col-12">
+        <div class="col-form-label">Ngày bắt đầu</div>
+        <input
+          type="date"
+          class="form-control"
+          formControlName="date_start"
+          [ngClass]="{
+            'is-invalid': submitted && dataForm.controls.date_start.errors
+          }"
+        />
+      </div>
+      <div class="col-sm-6 col-12">
+        <div class="col-form-label">Số ngày ở lại</div>
+        <input
+          type="number"
+          class="form-control"
+          formControlName="stay_days"
+          [ngClass]="{
+            'is-invalid': submitted && dataForm.controls.stay_days.errors
+          }"
+        />
+      </div>
+      <div class="col-12">
+        <div class="col-form-label">Ghi chú</div>
+        <textarea class="form-control" formControlName="note"></textarea>
+      </div>
+    </div>
+    <div class="col-8">
+      <h4>Dịch vụ phụ</h4>
+      <select class="form-select" formControlName="sub_service">
+        <option value="" disabled>--Chọn Dịch vụ phụ--</option>
+        <option *ngFor="let c of subServiceList" [ngValue]="c">
+          {{ c.name }}
+        </option>
+      </select>
+      <button
+        type="button"
+        class="btn pet-btn me-2 mt-2"
+        (click)="addSubService()"
+      >
+        Thêm
+      </button>
+      <table class="table mt-3">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Tên</th>
+            <th>Chức năng</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(item of subBookingList; track $index) {
+          <tr>
+            <td>
+              {{ $index }}
+            </td>
+            <td>
+              {{ item.service.name }}
+            </td>
+            <td>
+              <button
+                type="button"
+                class="delete-btn mr-6"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteModal"
+                (click)="deleteClick(item)"
+                data-backdrop="static"
+                data-keyboard="false"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <button class="btn pet-btn" type="submit">Đăng ký</button>
+  </form>
+</div>
+
+}

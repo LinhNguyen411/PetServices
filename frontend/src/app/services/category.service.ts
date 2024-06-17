@@ -2,8 +2,9 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Category } from '../models/category.model';
+import { backendURL } from '../untils/global';
 
-const baseUrl = 'http://127.0.0.1:8000/api/categories/';
+const baseUrl = backendURL + 'api/categories/';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ const baseUrl = 'http://127.0.0.1:8000/api/categories/';
 export class CategoryService {
   private http = inject(HttpClient);
   private pagi_number: number = 1;
-  private ordering_value: string = '-name';
+  private ordering_value: string = '-na   me';
 
   constructor() {}
   getAll(): Observable<any> {

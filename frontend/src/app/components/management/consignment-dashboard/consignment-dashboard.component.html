@@ -1,0 +1,64 @@
+<div class="row px-sm-2">
+  <div class="col-12 shadow p-2 p-sm-4 mt-3 mb-3" style="height: 85vh">
+    <div class="border-pet h-100">
+      <div class="group-title">Thú cưng đang ký gửi tại cửa hàng</div>
+      <div class="px-3">
+        <div class="service-emp-wrap row overflow-y-scroll">
+          @if(detailList?.length == 0){
+          <div class="text-center">
+            Không có thú cưng nào đang ký gửi tại cửa hàng
+          </div>
+          } @for(item of detailList; track $index){
+          <div class="col-12 col-md-6 mb-2">
+            <div class="service-card-emp border d-flex align-items-center pe-2">
+              <div class="text-center mt-2">
+                <img src="{{ item.pet.photo }}" alt="" class="card-img" />
+              </div>
+              <div class="card-body">
+                <div class="card-item">
+                  <span class="text-pet">Thú cưng: </span>{{ item.pet.name }}
+                </div>
+                <div class="card-item hidden-xs-down">
+                  <span class="text-pet">Ngày ký gửi: </span
+                  >{{ item.date_time_create }}
+                </div>
+                <div class="card-item">
+                  <span class="text-pet">Gói dịch vụ: </span
+                  >{{ item.package.name }}
+                </div>
+                @if(item.last_diary){
+                <div class="card-item">
+                  <span class="text-pet">Nhật ký mới nhất: </span>({{
+                    item.last_diary.date_time_create
+                      | date : "dd/MM/yy H:mm:ss"
+                  }}) {{ item.last_diary.employee }}:
+                  {{ item.last_diary.content }}
+                </div>
+
+                }
+              </div>
+              <div class="text-center">
+                <a
+                  [routerLink]="[
+                    '/',
+                    'management',
+                    'consignment',
+                    'consignment-detail',
+                    item.id
+                  ]"
+                  type="button"
+                  class="show-btn text-center"
+                >
+                  <i class="bi bi-eye"></i>
+                  Chi tiết
+                </a>
+              </div>
+            </div>
+          </div>
+
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

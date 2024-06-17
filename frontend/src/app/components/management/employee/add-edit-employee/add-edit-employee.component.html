@@ -1,31 +1,44 @@
 <form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="form-group">
-  <div class="row">
-    <div class="col-sm-6 col-12 mb-2">
+  <div class="row justify-content-between">
+    <div class="col-sm-6 col-12 mb-2 row pe-0">
       <div class="col-6 col-sm-12">
         <img [src]="url" class="w-100" style="height: 200px" />
       </div>
+      @if(!isEmployee){
       <div class="mt-sm-2 col-6 col-sm-12 d-flex align-items-center">
         <input type="file" #fileInput (change)="onSelectFile($event)" />
       </div>
+
+      }
     </div>
     <div class="col-12 col-sm-6">
       <div class="col-12">
         <div class="mb-3 mb-sm-0">
-          <div class="col-form-label">Name</div>
+          <div class="col-form-label">Tên</div>
           <input
+            [readonly]="isEmployee"
             type="text"
             class="form-control"
             formControlName="name"
             [ngClass]="{
               'is-invalid': submitted && dataForm.controls.name.errors
             }"
-            placeholder="Enter Name"
+            placeholder="Điền tên nhân viên"
           />
         </div>
       </div>
       <div class="col-12">
         <div class="mb-3 mb-sm-0">
-          <div class="col-form-label">Role</div>
+          <div class="col-form-label">Chức vụ</div>
+          @if(isEmployee){
+          <input
+            readonly
+            type="text"
+            class="form-control"
+            [value]="getRole()"
+          />
+          } @else {
+
           <select
             class="form-select"
             formControlName="role"
@@ -33,17 +46,26 @@
               'is-invalid': submitted && dataForm.controls.role.errors
             }"
           >
-            <option value="" disabled>Choose Role</option>
+            <option value="" disabled>--Chọn chức vụ--</option>
 
-            <option value="e">Employee</option>
-            <option value="s">Security</option>
-            <option value="m">Management</option>
+            <option value="e">Nhân viên</option>
+            <option value="s">Bảo vệ</option>
+            <option value="m">Quản lý</option>
           </select>
+          }
         </div>
       </div>
       <div class="col-12">
         <div class="mb-3 mb-sm-0">
-          <div class="col-form-label">Status</div>
+          <div class="col-form-label">Trạng thái</div>
+          @if(isEmployee){
+          <input
+            readonly
+            type="text"
+            class="form-control"
+            [value]="getStatus()"
+          />
+          } @else {
           <select
             class="form-select"
             formControlName="status"
@@ -51,11 +73,12 @@
               'is-invalid': submitted && dataForm.controls.status.errors
             }"
           >
-            <option value="" disabled>Choose Status</option>
-            <option value="w">Working</option>
-            <option value="q">Quit</option>
-            <option value="l">Leave</option>
+            <option value="" disabled>--Chọn trạng thái--</option>
+            <option value="w">Làm việc</option>
+            <option value="q">Nghỉ việc</option>
+            <option value="l">Tạm nghỉ</option>
           </select>
+          }
         </div>
       </div>
     </div>
@@ -64,8 +87,9 @@
   <div class="row">
     <div class="col-6">
       <div class="mb-3 mb-sm-0">
-        <div class="col-form-label">Join Date</div>
+        <div class="col-form-label">Ngày vào</div>
         <input
+          [readonly]="isEmployee"
           type="date"
           class="form-control"
           formControlName="date_of_joining"
@@ -74,36 +98,38 @@
     </div>
     <div class="col-6">
       <div class="mb-3 mb-sm-0">
-        <div class="col-form-label">Phone Number</div>
+        <div class="col-form-label">Số điện thoại</div>
         <input
+          [readonly]="isEmployee"
           type="text"
           class="form-control"
           formControlName="phone_number"
           [ngClass]="{
             'is-invalid': submitted && dataForm.controls.phone_number.errors
           }"
-          placeholder="Enter Phone Number"
+          placeholder="Điền số điện thoại"
         />
       </div>
     </div>
   </div>
 
   <div class="mb-3 mb-sm-0">
-    <div class="col-form-label">Address</div>
+    <div class="col-form-label">Địa chỉ</div>
     <input
+      [readonly]="isEmployee"
       type="text"
       class="form-control"
       formControlName="address"
       [ngClass]="{
         'is-invalid': submitted && dataForm.controls.address.errors
       }"
-      placeholder="Enter Address"
+      placeholder="Điền địa chỉ"
     />
   </div>
   @if(isUpdate){
 
   <div class="mb-3 mb-sm-0">
-    <div class="col-form-label">Account</div>
+    <div class="col-form-label">Tài khoản</div>
     @if(dataForm.controls.account.value){
     <input
       type="text"
@@ -116,22 +142,23 @@
       type="button"
       (click)="account('password')"
     >
-      Generate New Password
+      Tạo mật khẩu mới
     </button>
     <span class="ms-2 text-danger">{{ new_pass }}</span> } @else {
     <button class="btn pet-btn mt-2" type="submit" (click)="account('account')">
-      Generate New Account
+      Tạo tài khoản nhân viên
     </button>
 
     }
   </div>
-  }
-
+  } @if(!isEmployee){
   <div class="pet-model-footer">
     @if(isUpdate){
-    <button class="btn pet-btn" type="submit">Update</button>
+    <button class="btn pet-btn" type="submit">Cập nhật</button>
     } @else{
-    <button class="btn pet-btn" type="submit">Add</button>
+    <button class="btn pet-btn" type="submit">Thêm</button>
     }
   </div>
+
+  }
 </form>

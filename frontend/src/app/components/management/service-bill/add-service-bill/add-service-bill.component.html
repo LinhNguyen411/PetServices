@@ -1,0 +1,103 @@
+<form [formGroup]="dataForm" class="form-group" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col-12 col-sm-6">
+      <div class="mb-2 mb-sm-0">
+        <div class="col-form-label">Nhân viên</div>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="employee"
+          readonly
+        />
+      </div>
+    </div>
+    <div class="col-12 col-sm-6">
+      <div class="mb-2 mb-sm-0">
+        <div class="col-form-label">Khách hàng</div>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="customer"
+          readonly
+        />
+      </div>
+    </div>
+    <div class="col-12 col-sm-6">
+      <div class="mb-2 mb-sm-0">
+        <div class="col-form-label">Mã đặt</div>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="booking"
+          readonly
+        />
+      </div>
+    </div>
+    <div class="col-12 col-sm-6">
+      <div class="mb-2 mb-sm-0">
+        <div class="col-form-label">Phương thức thanh toán</div>
+        <select class="form-select" formControlName="payment_method">
+          <option value="off">Trực tiếp</option>
+          <option value="on">Trực tuyến</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-12">
+      <form
+        [formGroup]="subDataForm"
+        class="form-group row"
+        (ngSubmit)="addItem()"
+      >
+        <div class="col-form-label">Phụ thu</div>
+        <div class="col-12 d-flex align-items-center mb-2">
+          Lý do:<input
+            type="text"
+            class="ms-2 form-control"
+            formControlName="reasons"
+            [ngClass]="{
+              'is-invalid': subSubmitted && subDataForm.controls.reasons.errors
+            }"
+            placeholder="Nhập lí do"
+          />
+        </div>
+        <div class="col-6 d-flex align-items-center mb-2">
+          Số tiền phụ thu:<input
+            type="text"
+            class="ms-2 form-control"
+            formControlName="price"
+            [ngClass]="{
+              'is-invalid': subSubmitted && subDataForm.controls.price.errors
+            }"
+            placeholder="Nhập số tiền"
+          />
+        </div>
+        <div class="col-6 text-end">
+          <button type="submit" class="ms-3 btn pet-btn">Thêm</button>
+        </div>
+      </form>
+    </div>
+    <div
+      class="col-12 border mt-2 p-2 overflow-hidden"
+      style="max-height: 300px"
+    >
+      <div class="d-flex flex-column overflow-y-scroll pb-1">
+        @for(item of surcharges; track $index){
+        <div class="col-12 border my-1 p-1 d-flex">
+          <div class="ms-1 me-auto">{{ item.reasons }}:{{ item.price }}</div>
+          <button
+            (click)="deleteClick(item)"
+            type="button"
+            class="delete-btn mr-6"
+          >
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+
+        }
+      </div>
+    </div>
+  </div>
+  <div class="pet-model-footer">
+    <button class="btn pet-btn" type="submit">Tạo hóa đơn</button>
+  </div>
+</form>

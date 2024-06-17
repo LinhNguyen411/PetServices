@@ -1,0 +1,11 @@
+.pet-img {
+  margin: 0.5rem 0;
+  width: 200px;
+  height: 200px;
+}
+@media (max-width: 768px) {
+  .pet-img {
+    width: 150px;
+    height: 150px;
+  }
+}

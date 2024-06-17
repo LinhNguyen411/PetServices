@@ -11,7 +11,7 @@
     <div class="col-12 col-sm-6 row">
       <div class="col-12">
         <div class="mb-3 mb-sm-0">
-          <div class="col-form-label">Name</div>
+          <div class="col-form-label">Tên sản phẩm</div>
           <input
             type="text"
             class="form-control"
@@ -19,12 +19,12 @@
             [ngClass]="{
               'is-invalid': submitted && dataForm.controls.name.errors
             }"
-            placeholder="Enter Name"
+            placeholder="Nhập tên sản phẩm"
           />
         </div>
 
         <div class="mb-3 mb-sm-0">
-          <div class="col-form-label">Price</div>
+          <div class="col-form-label">Giá</div>
           <input
             type="number"
             class="form-control"
@@ -32,12 +32,12 @@
             [ngClass]="{
               'is-invalid': submitted && dataForm.controls.price.errors
             }"
-            placeholder="Enter Price"
+            placeholder="Nhập giá"
           />
         </div>
 
         <div class="mb-3 mb-sm-0">
-          <div class="col-form-label">Quantity</div>
+          <div class="col-form-label">Số lượng</div>
           <input
             type="number"
             class="form-control"
@@ -45,7 +45,7 @@
             [ngClass]="{
               'is-invalid': submitted && dataForm.controls.quantity.errors
             }"
-            placeholder="Enter Quantity"
+            placeholder="Nhập số lượng"
           />
         </div>
       </div>
@@ -53,7 +53,7 @@
   </div>
 
   <div class="mb-3">
-    <div class="col-form-label">Species</div>
+    <div class="col-form-label">Loài</div>
     <select
       class="form-select"
       formControlName="species"
@@ -61,7 +61,7 @@
         'is-invalid': submitted && dataForm.controls.species.errors
       }"
     >
-      <option value="" disabled>--Select Species--</option>
+      <option value="" disabled>--Chọn loài--</option>
       @for(item of speciesList; track item){
       <option value="{{ item.id }}">{{ item.name }}</option>
       }
@@ -69,7 +69,7 @@
   </div>
 
   <div class="mb-3">
-    <div class="col-form-label">Category</div>
+    <div class="col-form-label">Phân loại</div>
     <select
       class="form-select"
       formControlName="category"
@@ -77,7 +77,7 @@
         'is-invalid': submitted && dataForm.controls.category.errors
       }"
     >
-      <option value="" disabled>--Select Category--</option>
+      <option value="" disabled>--Chọn loại sản phẩm--</option>
       @for(item of categoryList; track item){
       <option value="{{ item.id }}">{{ item.name }}</option>
       }
@@ -85,7 +85,7 @@
   </div>
 
   <div class="mb-3">
-    <div class="col-form-label">Supplier</div>
+    <div class="col-form-label">Nhà cung cấp</div>
     <select
       class="form-select"
       formControlName="supplier"
@@ -93,7 +93,7 @@
         'is-invalid': submitted && dataForm.controls.supplier.errors
       }"
     >
-      <option value="" disabled>--Select Supplier--</option>
+      <option value="" disabled>--Chọn nhà cung cấp--</option>
       @for(item of supplierList; track item){
       <option value="{{ item.id }}">{{ item.name }}</option>
       }
@@ -101,7 +101,7 @@
   </div>
 
   <div class="mb-3 mb-sm-0">
-    <div class="col-form-label">Description</div>
+    <div class="col-form-label">Mô tả</div>
     <textarea
       class="form-control"
       formControlName="description"
@@ -111,9 +111,9 @@
 
   <div class="pet-model-footer">
     @if(isUpdate){
-    <button class="btn pet-btn" type="submit">Update</button>
+    <button class="btn pet-btn" type="submit">Cập nhật</button>
     } @else{
-    <button class="btn pet-btn" type="submit">Add</button>
+    <button class="btn pet-btn" type="submit">Thêm</button>
     }
   </div>
 </form>

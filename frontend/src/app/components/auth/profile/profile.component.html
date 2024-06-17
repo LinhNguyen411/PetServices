@@ -1,5 +1,12 @@
-@if(user){
-<h1>Welcome {{ user.name }}</h1>
-} @else{
-<h1>Please Login</h1>
-}
+@if(userService.userData$ | async; as userData){
+
+<h1 class="my-5 text-sub-pet">Xin chào {{ userData.name }}</h1>
+@if(user.account_type == 'm'){
+<app-add-edit-employee [data]="userData"></app-add-edit-employee>
+
+} @if(user.account_type == 'e' ){
+
+<app-add-edit-employee [data]="userData" [isEmp]="true"></app-add-edit-employee>
+} @if(user.account_type == 'c'){
+<app-add-edit-customer [data]="userData" [isCus]="true"></app-add-edit-customer>
+} }

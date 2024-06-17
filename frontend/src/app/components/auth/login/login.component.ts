@@ -10,6 +10,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { NgToastService } from 'ng-angular-popup';
 import { CommonModule } from '@angular/common';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +26,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private toast: NgToastService
+    private toast: NgToastService,
+    private spinner: NgxSpinnerService
   ) {}
   ngOnInit(): void {
     this.submitted = false;
@@ -37,23 +39,25 @@ export class LoginComponent implements OnInit {
   login(): void {
     this.submitted = true;
     if (this.form.valid) {
+      this.spinner.show();
       this.authService.login(this.form.getRawValue()).subscribe({
         next: (res) => {
           this.toast.success({
-            detail: 'SUCCESS',
-            summary: 'Login Successfully!',
+            detail: 'Thành công',
+            summary: 'Đăng nhập thành công!',
             duration: 3000,
           });
+          this.spinner.hide();
           this.router.navigate(['/', 'management', 'profile']);
         },
         error: (e) => {
-          console.log(e.error);
+          this.spinner.hide();
           this.toast.error({
-            detail: 'ERROR',
+            detail: 'Thất bại',
             summary:
               e.error.detail !== undefined
-                ? 'Password Wrong!'
-                : 'Missing value',
+                ? 'Sai mật khẩu'
+                : 'Thông tin không chính xác',
             duration: 3000,
           });
         },

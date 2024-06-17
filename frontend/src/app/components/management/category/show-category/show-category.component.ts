@@ -1,11 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { NgToastService } from 'ng-angular-popup';
 
 import { AddEditCategoryComponent } from '../add-edit-category/add-edit-category.component';
 import { Category } from '../../../../models/category.model';
 import { CategoryService } from '../../../../services/category.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastServiceService } from '../../../../services/toast-service.service';
 
 @Component({
   selector: 'app-show-category',
@@ -15,9 +16,10 @@ import { CategoryService } from '../../../../services/category.service';
   styleUrl: './show-category.component.css',
 })
 export class ShowCategoryComponent implements OnInit {
-  private toast = inject(NgToastService);
+  private toast = inject(ToastServiceService);
   private dataService = inject(CategoryService);
-  componentName = 'Category';
+  private spinner = inject(NgxSpinnerService);
+  componentName = 'loại sản phẩm';
 
   searchValue: string = '';
   orderValue: string = 'name';
@@ -55,6 +57,7 @@ export class ShowCategoryComponent implements OnInit {
     });
   }
   paginationClick(value: number) {
+    if (value == 0) value = 1;
     this.current_page = value;
     this.dataService.pagination(value);
     this.refresh();
@@ -73,7 +76,7 @@ export class ShowCategoryComponent implements OnInit {
       id: '',
       name: '',
     };
-    this.ModalTitle = 'Add ' + this.componentName;
+    this.ModalTitle = 'Thêm ' + this.componentName;
   }
 
   editClick(item: any): void {
@@ -81,7 +84,7 @@ export class ShowCategoryComponent implements OnInit {
       id: item.id,
       name: item.name,
     };
-    this.ModalTitle = 'Edit ' + +this.componentName;
+    this.ModalTitle = 'Cập nhật ' + this.componentName;
   }
 
   triggerDelete(item: any): void {
@@ -90,6 +93,7 @@ export class ShowCategoryComponent implements OnInit {
 
   deleteClick(): void {
     if (this.data.id) {
+      this.spinner.show();
       this.dataService.delete(this.data.id).subscribe({
         next: (res) => {
           this.count -= 1;
@@ -98,18 +102,12 @@ export class ShowCategoryComponent implements OnInit {
             this.current_page = this.max_page;
           }
           this.paginationClick(this.current_page);
-          this.toast.success({
-            detail: 'SUCCESS',
-            summary: 'Delete Item Successfully',
-            duration: 3000,
-          });
+          this.toast.deleteSuccess();
+          this.spinner.hide();
         },
         error: (err) => {
-          this.toast.error({
-            detail: 'FAILED',
-            summary: 'FAILED TO DELETE',
-            duration: 3000,
-          });
+          this.toast.deleteFail();
+          this.spinner.hide();
         },
       });
     }

@@ -1,4 +1,4 @@
-<h1 class="management-header">{{componentName | titlecase}} Management</h1>
+<h1 class="management-header">Quản lý {{componentName | titlecase}}</h1>
 <!-- Button trigger modal -->
 <div class="d-flex flex-column justify-content-end">
     <div class="bd-search position-relative me-auto d-flex">
@@ -6,14 +6,14 @@
           type="text"
           class="form-control search-input me-2"
           [(ngModel)]="searchValue"
-          placeholder="Name, Phone"
+          placeholder="Tên, SĐT"
         />
         <button type="button" class="pet-btn" (click)="searchClick()">
-          Search
+          Tìm
         </button>
       </div>
   <div class="d-flex justify-content-between mt-4 mt-sm-2">
-    <div class="total-item mt-sm-2"><span>Totals: {{count}}</span></div>
+    <div class="total-item mt-sm-2"><span>Tổng: {{count}}</span></div>
     <button
       type="button"
       class="add-btn float-right ml-auto mt-sm-2"
@@ -23,7 +23,7 @@
       data-backdrop="static"
       data-keyboard="false"
     >
-      <i class="bi bi-plus-square"></i> Add
+      <i class="bi bi-plus-square"></i> Thêm
     </button>
   </div>
 </div>
@@ -63,15 +63,15 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Are you sure?</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Bạn có chắc không?</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        This {{componentName | lowercase}} will be deleted!
+        {{componentName | uppercase}} này sẽ bị xóa!
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-danger" (click)="deleteClick()" data-bs-dismiss="modal">Confirm</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-danger" (click)="deleteClick()" data-bs-dismiss="modal">Xác nhận</button>
       </div>
     </div>
   </div>
@@ -81,7 +81,7 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th> <button class="sorting-btn" (click)="sortClick('name')">Name 
+      <th> <button class="sorting-btn" (click)="sortClick('name')">Tên 
         @if (isOrderName) {
         <i class="bi bi-sort-up"></i>
 
@@ -91,11 +91,11 @@
         }
         </button></th>
         @if(!isMobile){
-            <th>Address</th>
+            <th>Địa chỉ</th>
             <th>Email</th>
         }
-    <th>Phone Number</th>
-      <th>Options</th>
+    <th>Số điện thoại</th>
+      <th>Chức năng</th>
     </tr>
   </thead>
   <tbody>

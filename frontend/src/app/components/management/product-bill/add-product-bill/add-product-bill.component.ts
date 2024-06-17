@@ -15,7 +15,6 @@ import { UserService } from '../../../../services/user.service';
 
 import { CustomerService } from '../../../../services/customer.service';
 
-import { Product } from '../../../../models/product.model';
 import { ProductService } from '../../../../services/product.service';
 
 import { ProductBillItem } from '../../../../models/product-bill-item.model';
@@ -24,6 +23,8 @@ import { Router } from '@angular/router';
 
 import { ShowDetailProductBillComponent } from '../show-detail-product-bill/show-detail-product-bill.component';
 import { ProductBill } from '../../../../models/product-bill.model';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastServiceService } from '../../../../services/toast-service.service';
 
 @Component({
   selector: 'app-add-product-bill',
@@ -38,6 +39,8 @@ import { ProductBill } from '../../../../models/product-bill.model';
   styleUrl: './add-product-bill.component.css',
 })
 export class AddProductBillComponent implements OnInit {
+  private toast = inject(ToastServiceService);
+  private spinner = inject(NgxSpinnerService);
   userData?: any;
   userService = inject(UserService);
 
@@ -48,7 +51,6 @@ export class AddProductBillComponent implements OnInit {
   private customerService = inject(CustomerService);
   private productService = inject(ProductService);
   private billService = inject(ProductBillService);
-  private toast = inject(NgToastService);
   private formBuilder = inject(FormBuilder);
   grandTotal: number = 0;
 
@@ -124,7 +126,6 @@ export class AddProductBillComponent implements OnInit {
     }
   }
   searchProduct() {
-    console.log('hello');
     if (this.subDataForm.get('id')?.value) {
       this.productService.get(this.subDataForm.get('id')?.value).subscribe({
         next: (res) => {
@@ -177,13 +178,10 @@ export class AddProductBillComponent implements OnInit {
   onSubmit(): void {
     this.submitted = true;
     if (this.itemList.length == 0) {
-      this.toast.error({
-        detail: 'FAILED',
-        summary: 'Please add more item',
-        duration: 3000,
-      });
+      this.toast.fail('Hãy thêm sản phẩm');
     }
     if (this.dataForm.valid && this.itemList.length > 0) {
+      this.spinner.show();
       var data = {
         employee: this.dataForm.get('employee')?.value,
         customer: this.dataForm.get('customer')?.value,
@@ -193,18 +191,12 @@ export class AddProductBillComponent implements OnInit {
         next: (res) => {
           this.data = res;
           this.isCreatedBill = true;
-          this.toast.success({
-            detail: 'SUCCESS',
-            summary: 'Bill Created Successfully',
-            duration: 3000,
-          });
+          this.toast.success('Hóa đơn được tạo thành công');
+          this.spinner.hide();
         },
         error: (e) => {
-          this.toast.error({
-            detail: 'FAILED',
-            summary: 'FAILED TO CREATE BILL',
-            duration: 3000,
-          });
+          this.toast.fail('Tạo hóa đơn thất bại');
+          this.spinner.hide();
         },
       });
     }

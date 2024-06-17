@@ -1,20 +1,20 @@
 <form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="form-group">
   <div class="mb-3">
-    <div class="col-form-label">{{ componentName }} Name:</div>
+    <div class="col-form-label">Tên nhà cung cấp:</div>
     <input
       type="text"
       class="form-control"
-      placeholder="Enter {{ componentName }} Name"
+      placeholder="Nhập tên {{ componentName }}"
       [ngClass]="{ 'is-invalid': submitted && dataForm.controls.name.errors }"
       formControlName="name"
     />
   </div>
   <div class="mb-3">
-    <div class="col-form-label">Address:</div>
+    <div class="col-form-label">Địa chỉ:</div>
     <input
       type="text"
       class="form-control"
-      placeholder="Enter Address"
+      placeholder="Nhập địa chỉ"
       [ngClass]="{
         'is-invalid': submitted && dataForm.controls.address.errors
       }"
@@ -26,7 +26,7 @@
     <input
       type="email"
       class="form-control"
-      placeholder="Enter Email"
+      placeholder="Nhập Email"
       [ngClass]="{
         'is-invalid': submitted && dataForm.controls.email.errors
       }"
@@ -35,11 +35,11 @@
   </div>
 
   <div class="mb-3">
-    <div class="col-form-label">Phone Number:</div>
+    <div class="col-form-label">Số điện thoại:</div>
     <input
       type="text"
       class="form-control"
-      placeholder="Enter Phone Number"
+      placeholder="Nhập số điện thoại"
       [ngClass]="{
         'is-invalid': submitted && dataForm.controls.phone_number.errors
       }"
@@ -49,9 +49,9 @@
 
   <div class="pet-model-footer">
     @if(isUpdate){
-    <button class="btn pet-btn" type="submit">Update</button>
+    <button class="btn pet-btn" type="submit">Cập nhật</button>
     } @else{
-    <button class="btn pet-btn" type="submit">Add</button>
+    <button class="btn pet-btn" type="submit">Thêm</button>
     }
   </div>
 </form>

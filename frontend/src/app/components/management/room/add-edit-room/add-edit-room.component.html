@@ -1,0 +1,29 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="form-group">
+  <div class="mb-3">
+    <div class="col-form-label">Tên chuồng:</div>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Nhập tên chuồng"
+      [ngClass]="{ 'is-invalid': submitted && dataForm.controls.name.errors }"
+      formControlName="name"
+    />
+  </div>
+  <div class="mb-3">
+    <div class="col-form-label">Giá:</div>
+    <input
+      type="number"
+      class="form-control"
+      placeholder="Nhập giá"
+      [ngClass]="{ 'is-invalid': submitted && dataForm.controls.price.errors }"
+      formControlName="price"
+    />
+  </div>
+  <div class="pet-model-footer">
+    @if(isUpdate){
+    <button class="btn pet-btn" type="submit">Cập nhật</button>
+    } @else{
+    <button class="btn pet-btn" type="submit">Thêm</button>
+    }
+  </div>
+</form>

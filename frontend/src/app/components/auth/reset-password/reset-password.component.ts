@@ -9,6 +9,7 @@ import {
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { NgToastService } from 'ng-angular-popup';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-reset-password',
@@ -21,6 +22,7 @@ export class ResetPasswordComponent implements OnInit {
   form!: FormGroup;
   message?: string;
   submitted?: boolean;
+  spinner = inject(NgxSpinnerService);
   toast = inject(NgToastService);
   constructor(
     private formBuilder: FormBuilder,
@@ -35,17 +37,19 @@ export class ResetPasswordComponent implements OnInit {
   submit(): void {
     this.submitted = true;
     if (this.form.valid) {
+      this.spinner.show();
       this.authService.reset_password(this.form.getRawValue()).subscribe({
         next: (res) => {
-          this.message = 'Please check your email to reset password';
+          this.message = 'Chúng tôi đã gửi email thay đổi mật khẩu đến bạn';
+          this.spinner.hide();
         },
         error: (e) => {
-          console.log(e.error);
           this.toast.error({
-            detail: 'ERROR',
-            summary: 'Account not found',
+            detail: 'Thất bại',
+            summary: 'Tài khoản không có trong hệ thống',
             duration: 3000,
           });
+          this.spinner.hide();
         },
       });
     }

@@ -3,7 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Supplier } from '../models/supplier.model';
 
-const baseUrl = 'http://127.0.0.1:8000/api/suppliers/';
+import { backendURL } from '../untils/global';
+
+const baseUrl = backendURL + 'api/suppliers/';
 
 @Injectable({
   providedIn: 'root',

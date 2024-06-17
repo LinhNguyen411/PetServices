@@ -17,6 +17,8 @@ import { CommonModule } from '@angular/common';
 
 import { Employee } from '../../../../models/employee.model';
 import { EmployeeService } from '../../../../services/employee.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastServiceService } from '../../../../services/toast-service.service';
 
 @Component({
   selector: 'app-add-edit-employee',
@@ -27,7 +29,8 @@ import { EmployeeService } from '../../../../services/employee.service';
 })
 export class AddEditEmployeeComponent {
   private dataService = inject(EmployeeService);
-  toast = inject(NgToastService);
+  private spinner = inject(NgxSpinnerService);
+  private toast = inject(ToastServiceService);
   formBuilder = inject(FormBuilder);
   dataForm!: FormGroup;
   submitted?: boolean;
@@ -38,9 +41,15 @@ export class AddEditEmployeeComponent {
   @ViewChild('fileInput') fileInput: any;
 
   customer?: any;
+  isEmployee: boolean = false;
 
   @Output() isSubmitted = new EventEmitter<boolean>();
 
+  @Input() set isEmp(value: boolean) {
+    if (value) {
+      this.isEmployee = value;
+    }
+  }
   @Input() set data(value: Employee) {
     this.dataForm = this.formBuilder.group({
       id: value.id,
@@ -68,18 +77,12 @@ export class AddEditEmployeeComponent {
       next: (res) => {
         this.isSubmitted.emit(true);
 
-        this.toast.success({
-          detail: 'SUCCESS',
-          summary: 'Add Item Successfully',
-          duration: 2000,
-        });
+        this.toast.addSuccess();
+        this.spinner.hide();
       },
       error: (err) => {
-        this.toast.error({
-          detail: 'FAILED',
-          summary: 'Failed To Add',
-          duration: 2000,
-        });
+        this.toast.addFail();
+        this.spinner.hide();
       },
     });
   }
@@ -88,20 +91,13 @@ export class AddEditEmployeeComponent {
       this.dataService.update(this.dataForm.get('id')!.value, data).subscribe({
         next: (res) => {
           this.isSubmitted.emit(true);
-
-          this.toast.success({
-            detail: 'SUCCESS',
-            summary: 'Update Item Successfully',
-            duration: 2000,
-          });
+          this.toast.updateSuccess();
+          this.spinner.hide();
         },
         error: (err) => {
           console.log(err);
-          this.toast.error({
-            detail: 'FAILED',
-            summary: 'Failed To Update',
-            duration: 2000,
-          });
+          this.toast.updateFail();
+          this.spinner.hide();
         },
       });
     }
@@ -110,6 +106,7 @@ export class AddEditEmployeeComponent {
     this.submitted = true;
     console.log(this.dataForm.invalid);
     if (this.dataForm.valid) {
+      this.spinner.show();
       var data = new FormData();
       data.append('name', this.dataForm.get('name')!.value);
       data.append('role', this.dataForm.get('role')!.value);
@@ -121,7 +118,6 @@ export class AddEditEmployeeComponent {
       data.append('address', this.dataForm.get('address')!.value);
       data.append('status', this.dataForm.get('status')!.value);
       if (this.fileInput.nativeElement.files[0]) {
-        console.log('have file');
         data.append('photo', this.fileInput.nativeElement.files[0]);
       }
 
@@ -143,48 +139,52 @@ export class AddEditEmployeeComponent {
   }
   account(action: string): void {
     if (action == 'account') {
+      this.spinner.show();
       this.dataService
         .account(this.dataForm.get('id')?.value, 'create_account')
         .subscribe({
           next: (res) => {
             this.isSubmitted.emit(true);
 
-            this.toast.success({
-              detail: 'SUCCESS',
-              summary: 'Account Created Successfully',
-              duration: 2000,
-            });
+            this.toast.success('Tạo tài khoản nhân viên thành công');
+            this.spinner.hide();
           },
           error: (err) => {
             console.log(err);
-            this.toast.error({
-              detail: 'FAILED',
-              summary: 'Failed To Create Account',
-              duration: 2000,
-            });
+            this.toast.fail('Tạo tài khoản nhân viên thất bại');
+            this.spinner.hide();
           },
         });
     } else if (action == 'password') {
+      this.spinner.show();
       this.dataService
         .account(this.dataForm.get('id')?.value, 'generate_password')
         .subscribe({
           next: (res) => {
             this.new_pass = res.new_pass;
-            this.toast.success({
-              detail: 'SUCCESS',
-              summary: 'New Password Generated Successfully',
-              duration: 2000,
-            });
+            this.spinner.hide();
+            this.toast.success('Tạo mật khẩu mới thành công');
           },
           error: (err) => {
             console.log(err);
-            this.toast.error({
-              detail: 'FAILED',
-              summary: 'Failed To Generate New Password',
-              duration: 2000,
-            });
+            this.spinner.hide();
+            this.toast.fail('Tạo mật khẩu mới thất bại');
           },
         });
     }
+  }
+  getRole(): string {
+    let Roles: { [index: string]: string } = {};
+    Roles['e'] = 'Nhân viên';
+    Roles['m'] = 'Quản lý';
+    Roles['s'] = 'Bảo vệ';
+    return Roles[this.dataForm.controls.role.value];
+  }
+  getStatus(): string {
+    let Status: { [index: string]: string } = {};
+    Status['w'] = 'Làm việc';
+    Status['q'] = 'Nghỉ việc';
+    Status['l'] = 'Tạm nghỉ';
+    return Status[this.dataForm.controls.status.value];
   }
 }

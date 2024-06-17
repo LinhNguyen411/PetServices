@@ -1,0 +1,272 @@
+<!-- diary modal -->
+<div
+  class="modal fade"
+  id="diaryDetail"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nhật ký</h5>
+        <button
+          id="diary-close-btn"
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="mb-3">
+            <div class="col-form-label">Loại</div>
+            <select
+              class="form-select"
+              [(ngModel)]="choice_value"
+              (ngModelChange)="onChange()"
+            >
+              <option [ngValue]="'pk'">{{ data?.package.name }}</option>
+              <option [ngValue]="'an'">Khác</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <div class="col-form-label">Dịch vụ</div>
+            <select class="form-select" [(ngModel)]="goods_value">
+              <option value="" disabled>--Chọn dịch vụ--</option>
+              @if(is_select_package){ @for(item of packageGoodsList; track
+              $index){
+              <option [ngValue]="item.goods">{{ item.goods.name }}</option>
+
+              } } @else { @for(item of goodsList; track $index){
+              <option [ngValue]="item">{{ item.name }}</option>
+
+              } }
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div (click)="onSubmit()" class="btn pet-btn">Xác nhận</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- bill modal -->
+<div
+  class="modal fade"
+  id="billModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    [ngClass]="{ 'modal-lg': data?.is_paid }"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Hóa đơn</h5>
+        <button
+          id="bill-close-btn"
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        @if(data?.is_paid && id){
+        <app-consignment-invoice [data]="id"></app-consignment-invoice>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="mt-2">
+    <a
+      [routerLink]="[
+        '/',
+        'management',
+        'consignment',
+        'detail',
+        data?.consignment
+      ]"
+      class="pet-link"
+      ><i class="bi bi-box-arrow-in-left"></i> Quay lại trang ký gửi tổng</a
+    >
+  </div>
+  <div class="d-flex justify-content-between flex-column flex-md-row">
+    <h1 class="text-pet text-center my-3">Chi tiết ký gửi thú cưng</h1>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-md-4 border me-md-2 ms-md-5">
+      <div class="card w-100 border-none">
+        <div class="row">
+          <div
+            class="col-12 col-sm-4 col-md-12 d-flex justify-content-center mt-3"
+          >
+            <img [src]="data?.pet.photo" class="pet-img rounded-circle" />
+          </div>
+          <div class="col-12 col-sm-8 col-md-12">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><b>Tên: </b>{{ data?.pet.name }}</li>
+              <li class="list-group-item">
+                <b>Loài: </b>{{ data?.pet.species }}
+              </li>
+              <li class="list-group-item">
+                <b>Cân nặng: </b>{{ data?.pet.weight }}kg
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-7 border mt-2 mt-md-0">
+      <div class="row">
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            <div class="col-form-label">Mã phiếu gửi</div>
+            <input
+              type="text"
+              class="form-control"
+              [ngModel]="data?.consignment"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            <div class="col-form-label">Trạng thái</div>
+            <input
+              type="text"
+              class="form-control"
+              [value]="
+                data?.is_paid ? 'Đã thanh toán và trao trả' : 'Đang chăm sóc'
+              "
+              readonly
+            />
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            <div class="col-form-label">Chuồng</div>
+            <input
+              type="text"
+              class="form-control"
+              [ngModel]="data?.room.name"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            <div class="col-form-label">Ngày đặt</div>
+            <input
+              type="text"
+              class="form-control"
+              [ngModel]="data?.date_time_create | date : 'dd-MM-yyyy'"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            <div class="col-form-label">Số ngày đã ở</div>
+            <input
+              type="text"
+              class="form-control"
+              [ngModel]="data?.total_days"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            @if(data?.is_paid){
+            <button
+              class="pet-btn btn"
+              style="margin-top: 2.25rem"
+              data-bs-toggle="modal"
+              data-bs-target="#billModal"
+            >
+              Xem hóa đơn
+            </button>
+            } @else {
+            <button
+              class="pet-btn btn"
+              style="margin-top: 2.25rem"
+              (click)="onPaid()"
+            >
+              Trao trả thú cưng và thanh toán
+            </button>
+
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="col-12 col-md-5 me-md-2 border mt-2 p-2 ms-md-5 overflow-hidden"
+      style="max-height: 300px; height: 300px"
+    >
+      <div class="d-flex justify-content-between">
+        <h4 class="text-pet">Dịch vụ đã sử dụng</h4>
+      </div>
+      <div class="d-flex flex-column overflow-y-scroll">
+        <div class="col-12 border my-1 p-1 d-flex">
+          <div class="ms-1 me-auto">
+            Gói dịch vụ: {{ this.data?.package.name }}
+          </div>
+        </div>
+        @for(item of careList; track $index){
+        <div class="col-12 border my-1 p-1 d-flex">
+          <div class="ms-1 me-auto">
+            {{ item.goods.name }}
+            <span class="text-sub-pet">x{{ item.count }}</span>
+          </div>
+        </div>
+
+        }
+      </div>
+    </div>
+    <div
+      class="col-12 col-md-6 border mt-2 p-2 overflow-hidden"
+      style="max-height: 300px; height: 300px"
+    >
+      <div class="d-flex justify-content-between">
+        <h4 class="text-pet">Nhật ký</h4>
+        @if(!data?.is_paid){
+        <button
+          data-bs-toggle="modal"
+          data-bs-target="#diaryDetail"
+          data-backdrop="static"
+          data-keyboard="false"
+          class="btn pet-btn"
+        >
+          Ghi nhật ký
+        </button>
+
+        }
+      </div>
+      <div class="d-flex flex-column overflow-y-scroll">
+        @for(item of diaryList; track $index){
+        <div class="col-12 border my-1 p-1 d-flex">
+          <div class="ms-1 me-auto">
+            {{ item.date_time_create | date : "dd/MM/yy H:mm:ss" }} -
+            {{ item.employee.name }}:
+            {{ item.content }}
+          </div>
+        </div>
+
+        }
+      </div>
+    </div>
+  </div>
+</div>

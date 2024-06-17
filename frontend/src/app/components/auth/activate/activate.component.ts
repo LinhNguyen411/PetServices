@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-activate',
@@ -10,6 +11,8 @@ import { AuthService } from '../../../services/auth.service';
   styleUrl: './activate.component.css',
 })
 export class ActivateComponent implements OnInit {
+  private spinner = inject(NgxSpinnerService);
+  message?: string;
   authService = inject(AuthService);
   activateRoute = inject(ActivatedRoute);
   router = inject(Router);
@@ -22,9 +25,10 @@ export class ActivateComponent implements OnInit {
     this.verify();
   }
   verify() {
+    this.spinner.show();
     this.authService.verify(this.data).subscribe(() => {
-      alert('Your account verify successfully!');
-      this.router.navigate(['/', 'login']);
+      this.spinner.hide();
+      this.message = 'Tài khoản của bạn đã được kích hoạt thành công';
     });
   }
 }

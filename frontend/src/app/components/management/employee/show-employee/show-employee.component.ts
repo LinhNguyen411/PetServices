@@ -7,6 +7,8 @@ import { NgToastService } from 'ng-angular-popup';
 import { AddEditEmployeeComponent } from '../add-edit-employee/add-edit-employee.component';
 import { EmployeeService } from '../../../../services/employee.service';
 import { Employee } from '../../../../models/employee.model';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastServiceService } from '../../../../services/toast-service.service';
 
 @Component({
   selector: 'app-show-employee',
@@ -16,10 +18,35 @@ import { Employee } from '../../../../models/employee.model';
   styleUrl: './show-employee.component.css',
 })
 export class ShowEmployeeComponent implements OnInit {
-  private toast = inject(NgToastService);
+  showStatus(value?: string): string {
+    switch (value) {
+      case 'w':
+        return 'Làm việc';
+      case 'q':
+        return 'Nghỉ việc';
+      case 'l':
+        return 'Tạm nghỉ';
+      default:
+        return '';
+    }
+  }
+  showRole(value?: string): string {
+    switch (value) {
+      case 'm':
+        return 'Quản lý';
+      case 'e':
+        return 'Nhân viên';
+      case 's':
+        return 'Bảo vệ';
+      default:
+        return '';
+    }
+  }
+  private spinner = inject(NgxSpinnerService);
+  private toast = inject(ToastServiceService);
   private observer = inject(BreakpointObserver);
   private dataService = inject(EmployeeService);
-  componentName = 'Employee';
+  componentName = 'nhân viên';
 
   isMobile: boolean = true;
 
@@ -83,8 +110,8 @@ export class ShowEmployeeComponent implements OnInit {
     this.refresh();
   }
   paginationClick(value: number) {
+    if (value == 0) value = 1;
     this.current_page = value;
-
     this.dataService.pagination(value);
 
     this.refresh();
@@ -119,7 +146,7 @@ export class ShowEmployeeComponent implements OnInit {
       photo: '',
       account: '',
     };
-    this.ModalTitle = 'Add ' + this.componentName;
+    this.ModalTitle = 'Thêm ' + this.componentName;
   }
 
   editClick(item: any): void {
@@ -134,7 +161,7 @@ export class ShowEmployeeComponent implements OnInit {
       photo: item.photo,
       account: item.account,
     };
-    this.ModalTitle = 'Edit ' + this.componentName;
+    this.ModalTitle = 'Cập nhật ' + this.componentName;
   }
   triggerDelete(item: any): void {
     this.data.id = item.id;
@@ -142,6 +169,7 @@ export class ShowEmployeeComponent implements OnInit {
 
   deleteClick(): void {
     if (this.data.id) {
+      this.spinner.show();
       this.dataService.delete(this.data.id).subscribe({
         next: (res) => {
           this.count -= 1;
@@ -150,18 +178,12 @@ export class ShowEmployeeComponent implements OnInit {
             this.current_page = this.max_page;
           }
           this.paginationClick(this.current_page);
-          this.toast.success({
-            detail: 'SUCCESS',
-            summary: 'Delete Item Successfully',
-            duration: 3000,
-          });
+          this.toast.deleteSuccess();
+          this.spinner.hide();
         },
         error: (err) => {
-          this.toast.error({
-            detail: 'FAILED',
-            summary: 'FAILED TO DELETE',
-            duration: 3000,
-          });
+          this.toast.deleteFail();
+          this.spinner.hide();
         },
       });
     }

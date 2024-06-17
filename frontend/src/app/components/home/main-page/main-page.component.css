@@ -1,0 +1,100 @@
+p {
+  text-align: justify;
+}
+
+.text-justify {
+  text-align: justify !important;
+}
+
+.pet-link {
+  font-size: 3rem;
+  color: white;
+}
+
+.pet-link:hover {
+  color: var(--sub-text-color);
+}
+
+.pet-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.pet-btn-white {
+  padding: 5px;
+  border-color: white;
+  color: white;
+}
+.pet-btn-white:hover {
+  background-color: white;
+  color: var(--primary-color);
+}
+
+/* navbar */
+
+/* content */
+
+.home-thumnail {
+  height: 70vh;
+  background-image: url("../../../../images/thumnail.jpeg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+@media (max-width: 1200px) {
+  .pet-navbar {
+    padding: 0 15px;
+  }
+  .content-wrapper {
+    padding-left: 0;
+    transition: all 0.25s ease-out;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    transition: all 0.25s ease-out;
+  }
+}
+
+.pet-nav-avatar {
+  margin-right: 10px;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+}
+
+@media (max-width: 768px) {
+  .pet-nav-avatar {
+    display: none;
+  }
+  .pet-nav-item.pet-nav-username {
+    font-size: 1.25rem;
+  }
+}
+
+.card-body div i::before,
+.card-body div i::before {
+  font-size: 10rem;
+}
+
+.card:hover {
+  position: relative;
+  bottom: 2px;
+  box-shadow: 0px 4px 12px 3px #41464b;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: var(--primary-color);
+  color: white;
+  box-shadow: none;
+}
+.accordion-button:not(.collapsed)::after {
+  background-image: url("../../../../images/svg-edited.svg");
+}
+
+#map {
+  border-radius: 10px;
+}

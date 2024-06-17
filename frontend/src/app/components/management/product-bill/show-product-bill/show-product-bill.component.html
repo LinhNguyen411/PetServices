@@ -1,4 +1,4 @@
-<h1 class="management-header">{{componentName}} Management</h1>
+<h1 class="management-header">{{componentName| titlecase}}</h1>
 <!-- Button trigger modal -->
 <div class="d-flex flex-column justify-content-end">
   <div class="bd-search position-relative me-auto d-flex">
@@ -9,11 +9,11 @@
       placeholder="Id"
     />
     <button type="button" class="pet-btn" (click)="searchClick()">
-      Search
+      Tìm
     </button>
   </div>
   <div class="d-flex justify-content-between mt-4 mt-sm-2">
-    <div class="total-item mt-sm-2"><span>Totals: {{count}}</span></div>
+    <div class="total-item mt-sm-2"><span>Tổng: {{count}}</span></div>
   </div>
 </div>
 
@@ -28,7 +28,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg modal-fullscreen-lg-down">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Invoices</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Hóa đơn</h5>
         <button
           id="edit-model-close-btn"
           type="button"
@@ -51,15 +51,15 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Are you sure?</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Bạn có chắc không?</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        This {{componentName | lowercase}} will be deleted!
+        {{componentName | lowercase}} này sẽ bị xóa!
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-danger" (click)="deleteClick()" data-bs-dismiss="modal">Confirm</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-danger" (click)="deleteClick()" data-bs-dismiss="modal">Xác nhận</button>
       </div>
     </div>
   </div>
@@ -69,7 +69,7 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th> <button class="sorting-btn" (click)="sortClick('date')">Date Created 
+      <th> <button class="sorting-btn" (click)="sortClick('date')">Ngày tạo 
         @if (isOrderDate) {
         <i class="bi bi-sort-up"></i>
 
@@ -78,13 +78,13 @@
           <i class="bi bi-sort-down"></i>
         }
         </button></th>
-        <th>Employee</th>
+        <th>Nhân viên</th>
         @if(!isMobile){
-            <th>Customer</th>
-            <th>Payment Method</th>
-            <th>Total</th>
+            <th>Khách hàng</th>
+            <th>Phương thức thanh toán</th>
+            <th>Tổng tiền</th>
           }
-      <th>Options</th>
+      <th>Chức năng</th>
     </tr>
   </thead>
   <tbody>
@@ -96,7 +96,7 @@
       
       @if(!isMobile){
           <td>{{item.customer}}</td>
-        <td>{{item.payment_method == "offline"? "off":"online" }}</td>
+        <td>{{item.payment_method == "off"? "Trực tiếp":"Trực tuyến" }}</td>
         <td>{{ item.total }}</td>
       }
       <td>

@@ -1,3 +1,23 @@
 .auth-img {
   background-image: url(../../../../images/register-img.jpg);
 }
+.register-wrap {
+  right: 0;
+  display: flex;
+  width: 210%;
+  justify-content: space-between;
+  position: relative;
+  transition: all 1s ease-in-out;
+}
+.account-form {
+  width: 45%;
+}
+
+.register-wrap.is-image {
+  right: 110%;
+}
+
+.avatar {
+  height: 200px;
+  width: 200px;
+}

@@ -7,6 +7,8 @@ import { NgToastService } from 'ng-angular-popup';
 import { AddEditCustomerComponent } from '../add-edit-customer/add-edit-customer.component';
 import { Customer } from '../../../../models/customer.model';
 import { CustomerService } from '../../../../services/customer.service';
+import { ToastServiceService } from '../../../../services/toast-service.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-show-customer',
   standalone: true,
@@ -15,7 +17,8 @@ import { CustomerService } from '../../../../services/customer.service';
   styleUrl: './show-customer.component.css',
 })
 export class ShowCustomerComponent implements OnInit {
-  private toast = inject(NgToastService);
+  private toast = inject(ToastServiceService);
+  private spinner = inject(NgxSpinnerService);
   private observer = inject(BreakpointObserver);
   private dataService = inject(CustomerService);
 
@@ -76,6 +79,7 @@ export class ShowCustomerComponent implements OnInit {
   }
   paginationClick(value: number) {
     this.current_page = value;
+    if (value == 0) this.current_page = 1;
 
     this.dataService.pagination(value);
 
@@ -100,7 +104,7 @@ export class ShowCustomerComponent implements OnInit {
       phone_number: '',
       account: null,
     };
-    this.ModalTitle = 'Add Customer';
+    this.ModalTitle = 'Thêm khách hàng';
   }
 
   editClick(item: Customer): void {
@@ -111,7 +115,7 @@ export class ShowCustomerComponent implements OnInit {
       phone_number: item.phone_number,
       account: item.account,
     };
-    this.ModalTitle = 'Edit Customer';
+    this.ModalTitle = 'Cập nhật khách hàng';
   }
   triggerDelete(item: Customer): void {
     this.data.id = item.id;
@@ -119,6 +123,7 @@ export class ShowCustomerComponent implements OnInit {
 
   deleteClick(): void {
     if (this.data.id) {
+      this.spinner.show();
       this.dataService.delete(this.data.id).subscribe({
         next: (res) => {
           this.count -= 1;
@@ -127,18 +132,12 @@ export class ShowCustomerComponent implements OnInit {
             this.current_page = this.max_page;
           }
           this.paginationClick(this.current_page);
-          this.toast.success({
-            detail: 'SUCCESS',
-            summary: 'Delete Item Successfully',
-            duration: 3000,
-          });
+          this.toast.deleteSuccess();
+          this.spinner.hide();
         },
         error: (err) => {
-          this.toast.error({
-            detail: 'FAILED',
-            summary: 'FAILED TO DELETE',
-            duration: 3000,
-          });
+          this.toast.deleteFail();
+          this.spinner.hide();
         },
       });
     }

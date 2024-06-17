@@ -21,6 +21,8 @@ import { Supplier } from '../../../../models/supplier.model';
 
 import { Product } from '../../../../models/product.model';
 import { ProductService } from '../../../../services/product.service';
+import { ToastServiceService } from '../../../../services/toast-service.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-add-edit-product',
@@ -31,7 +33,9 @@ import { ProductService } from '../../../../services/product.service';
 })
 export class AddEditProductComponent {
   private dataService = inject(ProductService);
-  toast = inject(NgToastService);
+  private spinner = inject(NgxSpinnerService);
+  toast = inject(ToastServiceService);
+
   formBuilder = inject(FormBuilder);
   dataForm!: FormGroup;
   submitted?: boolean;
@@ -73,18 +77,12 @@ export class AddEditProductComponent {
       next: (res) => {
         this.isSubmitted.emit(true);
 
-        this.toast.success({
-          detail: 'SUCCESS',
-          summary: 'Add Item Successfully',
-          duration: 2000,
-        });
+        this.toast.addSuccess();
+        this.spinner.hide();
       },
       error: (err) => {
-        this.toast.error({
-          detail: 'FAILED',
-          summary: 'Failed To Add',
-          duration: 2000,
-        });
+        this.toast.addFail();
+        this.spinner.hide();
       },
     });
   }
@@ -94,19 +92,13 @@ export class AddEditProductComponent {
         next: (res) => {
           this.isSubmitted.emit(true);
 
-          this.toast.success({
-            detail: 'SUCCESS',
-            summary: 'Update Item Successfully',
-            duration: 2000,
-          });
+          this.toast.updateSuccess();
+          this.spinner.hide();
         },
         error: (err) => {
           console.log(err);
-          this.toast.error({
-            detail: 'FAILED',
-            summary: 'Failed To Update',
-            duration: 2000,
-          });
+          this.toast.updateFail();
+          this.spinner.hide();
         },
       });
     }
@@ -114,6 +106,7 @@ export class AddEditProductComponent {
   onSubmit(): void {
     this.submitted = true;
     if (this.dataForm.valid) {
+      this.spinner.show();
       var data = new FormData();
       data.append('name', this.dataForm.get('name')!.value);
       data.append('description', this.dataForm.get('description')!.value);

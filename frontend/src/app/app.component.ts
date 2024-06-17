@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NgToastModule } from 'ng-angular-popup';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
@@ -8,7 +9,7 @@ import { UserService } from './services/user.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgToastModule],
+  imports: [RouterOutlet, NgToastModule, NgxSpinnerModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -29,9 +30,7 @@ export class AppComponent implements OnInit {
         this.authService.logout();
       }
     } else {
-      this.authService.getCurrentAuthUser().subscribe((res) => {
-        this.userService.setUser(res);
-      });
+      this.authService.getCurrentAuthUser().subscribe((res) => {});
     }
   }
 }

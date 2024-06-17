@@ -1,0 +1,235 @@
+<div
+  class="modal fade"
+  id="petModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Thêm thú cưng</h5>
+        <button
+          id="add-pet-close-btn"
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <app-add-edit-pet
+          [speciesList]="speciesList"
+          [data]="pet_data"
+          (isSubmitted)="onPetSubmitted($event)"
+        ></app-add-edit-pet>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="cusModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Thêm khách hàng</h5>
+        <button
+          id="add-cus-close-btn"
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <app-add-edit-customer
+          [data]="customer_data"
+          (customer)="onCusSubmitted($event)"
+        ></app-add-edit-customer>
+      </div>
+    </div>
+  </div>
+</div>
+@if(userService.userData$ | async;as userData){
+<div
+  class="container d-flex align-items-center justify-content-center flex-column"
+>
+  <h1 class="management-header">Ký gửi thú cưng</h1>
+  <form [formGroup]="dataForm" class="form-group w-100" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-sm-6 col-12">
+        <div class="col-form-label">Nhân viên</div>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="employee"
+          readonly
+        />
+      </div>
+      <div class="col-sm-6 col-12">
+        <div class="col-form-label">Khách hàng</div>
+        <div class="col-12">
+          <div class="d-flex flex-row">
+            <input
+              [readOnly]="user.account_type == 'c'"
+              placeholder="Tìm id, tên, số điện thoại"
+              type="text"
+              class="form-control"
+              formControlName="customer"
+              [ngClass]="{
+                'is-invalid': submitted && dataForm.controls.customer.errors
+              }"
+            />
+            @if(user.account_type != 'c'){
+
+            <button
+              class="btn pet-btn ms-2"
+              type="button"
+              (click)="searchCustomer()"
+            >
+              Tìm
+            </button>
+
+            }
+          </div>
+          <div class="text-success">
+            @if(customer){
+            {{ customer.name }} - {{ customer.phone_number }}
+
+            }
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-12"></div>
+      <div class="col-sm-6 col-12 mt-2">
+        <button
+          class="btn pet-btn"
+          type="button"
+          data-bs-toggle="modal"
+          data-bs-target="#cusModal"
+        >
+          Thêm khách hàng
+        </button>
+      </div>
+      <hr class="mt-4" />
+      <h3 class="text-pet">Chi tiết ký gửi</h3>
+      <form
+        [formGroup]="subDataForm"
+        class="col-12 row"
+        (ngSubmit)="onSubSubmit()"
+      >
+        <div class="col-sm-5 col-12">
+          <div class="col-form-label">Thú cưng</div>
+          <select
+            formControlName="pet"
+            class="form-select"
+            [ngClass]="{
+              'is-invalid': submitted && dataForm.controls.pet.errors
+            }"
+          >
+            <option value="" disabled>--Chọn Thú cưng--</option>
+            @for(pet of petList; track pet){
+            <option [ngValue]="pet">{{ pet.name }}</option>
+            }
+          </select>
+          @if(customer){
+          <button
+            class="pet-btn btn mt-2"
+            data-bs-toggle="modal"
+            data-bs-target="#petModal"
+          >
+            Thêm thú cưng
+          </button>
+
+          }
+        </div>
+        <div class="col-sm-5 col-12">
+          <div class="col-form-label">Gói dịch vụ</div>
+          <select
+            formControlName="package"
+            class="form-select"
+            [ngClass]="{
+              'is-invalid': submitted && dataForm.controls.service.errors
+            }"
+          >
+            <option value="" disabled>--Chọn gói dịch vụ--</option>
+            @for(package of packageList; track package){
+            <option [ngValue]="package">{{ package.name }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-sm-5 col-12">
+          <div class="col-form-label">Buồng</div>
+          <select
+            formControlName="room"
+            class="form-select"
+            [ngClass]="{
+              'is-invalid': submitted && dataForm.controls.room.errors
+            }"
+          >
+            <option value="" disabled>--Chọn Buồng--</option>
+            @for(room of roomList; track room){
+            <option [ngValue]="room">{{ room.name }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-sm-5 col-12">
+          <div class="col-form-label mb-4"></div>
+          <button class="btn pet-btn" type="submit">Thêm</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-8">
+      <table class="table mt-3">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Thú cưng</th>
+            <th>Gói dịch vụ</th>
+            <th>Buồng</th>
+            <th>Chức năng</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(item of itemList; track $index) {
+          <tr>
+            <td>
+              {{ $index }}
+            </td>
+            <td>
+              {{ item.pet.name }}
+            </td>
+            <td>
+              {{ item.package.name }}
+            </td>
+            <td>
+              {{ item.room.name }}
+            </td>
+            <td>
+              <button
+                type="button"
+                class="delete-btn mr-6"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteModal"
+                (click)="deleteClick(item)"
+                data-backdrop="static"
+                data-keyboard="false"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <button class="btn pet-btn" type="submit">Đăng ký</button>
+  </form>
+</div>
+}

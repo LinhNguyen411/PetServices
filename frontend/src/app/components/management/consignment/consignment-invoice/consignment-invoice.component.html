@@ -1,0 +1,149 @@
+@if(bill && consignment && careList && detail){
+
+<div class="invoice-wrapper" id="print-area">
+  <div class="invoice">
+    <div class="invoice-container">
+      <div class="invoice-head">
+        <div class="invoice-head-top">
+          <div class="invoice-head-top-left text-start">
+            <h1 class="pet-nav-brand" style="font-weight: bold">PETCARE</h1>
+          </div>
+          <div class="invoice-head-top-right text-end">
+            <h3>Hóa đơn ký gửi</h3>
+          </div>
+        </div>
+        <div class="hr"></div>
+        <div class="invoice-head-middle">
+          <div class="invoice-head-middle-left text-start">
+            <p>
+              <span class="text-bold">Ngày tạo: </span
+              >{{ bill.date_time_create | date : "dd/MM/yyyy | H:mm:ss" }}
+            </p>
+          </div>
+          <div class="invoice-head-middle-right text-end">
+            <p><span class="text-bold">Hóa đơn số: </span>{{ bill.id }}</p>
+          </div>
+          <div class="invoice-head-middle-left text-start">
+            <p>
+              <span class="text-bold">Mã ký gửi: </span>{{ consignment.id }}
+            </p>
+          </div>
+          <div class="invoice-head-middle-right text-end">
+            <p>
+              <span class="text-bold">Thú cưng: </span>{{ detail.pet.name }}
+            </p>
+          </div>
+        </div>
+        <div class="hr"></div>
+        <div class="invoice-head-bottom">
+          <div class="invoice-head-bottom-left">
+            <ul>
+              <li class="text-bold">Nhân viên:</li>
+              <li class="text-bold">#{{ bill.employee.id }}</li>
+              <li>{{ bill.employee.name }}</li>
+              <li>
+                <i class="bi bi-telephone"></i> {{ bill.employee.phone_number }}
+              </li>
+            </ul>
+          </div>
+          <div class="invoice-head-bottom-right">
+            <ul class="text-end">
+              <li class="text-bold">Khách hàng:</li>
+              <li class="text-bold">#{{ consignment.customer.id }}</li>
+              <li>{{ consignment.customer.name }}</li>
+              <li>
+                <i class="bi bi-telephone"></i>
+                {{ consignment.customer.phone_number }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="overflow-view">
+        <div class="invoice-body">
+          <table>
+            <thead>
+              <tr>
+                <td class="text-bold">Tên</td>
+                <td class="text-bold">Giá</td>
+                <td class="text-bold">Số lần</td>
+                <td class="text-bold text-end">Tạm tính</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ detail.package.name }}</td>
+                <td>
+                  {{ detail.package.price | vietnamCurrency }}
+                </td>
+                <td>{{ detail.total_days }}</td>
+
+                <td class="text-end">
+                  {{
+                    detail.package.price * detail.total_days | vietnamCurrency
+                  }}
+                </td>
+              </tr>
+              <tr>
+                <td>{{ detail.room.name }}</td>
+                <td>
+                  {{ detail.room.price | vietnamCurrency }}
+                </td>
+                <td>{{ detail.total_days }}</td>
+
+                <td class="text-end">
+                  {{ detail.room.price * detail.total_days | vietnamCurrency }}
+                </td>
+              </tr>
+              @for (item of careList; track $index) {
+
+              <tr>
+                <td>{{ item.goods.name }}</td>
+                <td>
+                  {{ item.goods.price | vietnamCurrency }}
+                </td>
+                <td>{{ item.count }}</td>
+                @if(item.sub_total){
+
+                <td class="text-end">{{ item.sub_total | vietnamCurrency }}</td>
+                }
+              </tr>
+              }
+            </tbody>
+          </table>
+          <div class="invoice-body-bottom">
+            <div class="invoice-body-info-item">
+              <div class="info-item-td text-end text-bold">
+                Tổng tiền<noscript></noscript>:
+              </div>
+              <div class="info-item-td text-end">
+                {{ bill.total | vietnamCurrency }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="invoice-foot text-center">
+        <p>
+          <span class="text-bold text-center">Lưu ý:&nbsp;</span>Kiểm tra kỹ hóa
+          đơn trước khi thanh toán.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="invoice-btns me-2">
+  <button
+    type="button"
+    class="invoice-btn"
+    [useExistingCss]="true"
+    printSectionId="print-area"
+    ngxPrint
+  >
+    <span>
+      <i class="bi bi-printer me-2"></i>
+    </span>
+    <span>In hóa đơn</span>
+  </button>
+</div>
+}

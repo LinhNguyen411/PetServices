@@ -10,6 +10,8 @@ import { CommonModule } from '@angular/common';
 
 import { Species } from '../../../../models/species.model';
 import { SpeciesService } from '../../../../services/species.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastServiceService } from '../../../../services/toast-service.service';
 
 @Component({
   selector: 'app-add-edit-species',
@@ -19,8 +21,9 @@ import { SpeciesService } from '../../../../services/species.service';
   styleUrl: './add-edit-species.component.css',
 })
 export class AddEditSpeciesComponent {
+  private spinner = inject(NgxSpinnerService);
+  private toast = inject(ToastServiceService);
   private SpeciesService = inject(SpeciesService);
-  toast = inject(NgToastService);
   formBuilder = inject(FormBuilder);
   dataForm!: FormGroup;
   submitted?: boolean;
@@ -43,19 +46,12 @@ export class AddEditSpeciesComponent {
     this.SpeciesService.create(data).subscribe({
       next: (res) => {
         this.isSubmitted.emit(true);
-
-        this.toast.success({
-          detail: 'SUCCESS',
-          summary: 'Add Item Successfully',
-          duration: 2000,
-        });
+        this.toast.addSuccess();
+        this.spinner.hide();
       },
       error: (err) => {
-        this.toast.error({
-          detail: 'FAILED',
-          summary: 'Failed To Add',
-          duration: 2000,
-        });
+        this.toast.addFail();
+        this.spinner.hide();
       },
     });
   }
@@ -68,18 +64,12 @@ export class AddEditSpeciesComponent {
         next: (res) => {
           this.isSubmitted.emit(true);
 
-          this.toast.success({
-            detail: 'SUCCESS',
-            summary: 'Update Item Successfully',
-            duration: 2000,
-          });
+          this.toast.updateSuccess();
+          this.spinner.hide();
         },
         error: (err) => {
-          this.toast.error({
-            detail: 'FAILED',
-            summary: 'Failed To Update',
-            duration: 2000,
-          });
+          this.toast.updateFail();
+          this.spinner.hide();
         },
       });
     }
@@ -87,6 +77,7 @@ export class AddEditSpeciesComponent {
   onSubmit(): void {
     this.submitted = true;
     if (this.dataForm.valid) {
+      this.spinner.show();
       var data = {
         name: this.dataForm.get('name')!.value,
       };

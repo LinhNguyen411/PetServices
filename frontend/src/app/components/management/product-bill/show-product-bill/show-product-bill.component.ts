@@ -7,6 +7,8 @@ import { ShowDetailProductBillComponent } from '../show-detail-product-bill/show
 import { ProductBill } from '../../../../models/product-bill.model';
 import { ProductBillService } from '../../../../services/product-bill.service';
 import { NgToastService } from 'ng-angular-popup';
+import { ToastServiceService } from '../../../../services/toast-service.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-show-product-bill',
@@ -15,11 +17,12 @@ import { NgToastService } from 'ng-angular-popup';
   templateUrl: './show-product-bill.component.html',
   styleUrl: './show-product-bill.component.css',
 })
-export class ShowProductBillComponent {
-  private toast = inject(NgToastService);
+export class ShowProductBillComponent implements OnInit {
+  private spinner = inject(NgxSpinnerService);
+  private toast = inject(ToastServiceService);
   private observer = inject(BreakpointObserver);
   private dataService = inject(ProductBillService);
-  componentName = 'Product Bill';
+  componentName = 'hóa đơn dịch vụ';
 
   isMobile: boolean = true;
 
@@ -78,6 +81,8 @@ export class ShowProductBillComponent {
     this.refresh();
   }
   paginationClick(value: number) {
+    if (value == 0) value = 1;
+
     this.current_page = value;
 
     this.dataService.pagination(value);
@@ -111,6 +116,7 @@ export class ShowProductBillComponent {
 
   deleteClick(): void {
     if (this.data.id) {
+      this.spinner.show();
       this.dataService.delete(this.data.id).subscribe({
         next: (res) => {
           this.count -= 1;
@@ -119,18 +125,12 @@ export class ShowProductBillComponent {
             this.current_page = this.max_page;
           }
           this.paginationClick(this.current_page);
-          this.toast.success({
-            detail: 'SUCCESS',
-            summary: 'Delete Item Successfully',
-            duration: 3000,
-          });
+          this.toast.deleteSuccess();
+          this.spinner.hide();
         },
         error: (err) => {
-          this.toast.error({
-            detail: 'FAILED',
-            summary: 'FAILED TO DELETE',
-            duration: 3000,
-          });
+          this.toast.deleteFail();
+          this.spinner.hide();
         },
       });
     }

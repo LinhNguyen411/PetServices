@@ -7,16 +7,18 @@ import { jwtDecode } from 'jwt-decode';
 import { EmployeeService } from './employee.service';
 import { CustomerService } from './customer.service';
 import { UserService } from './user.service';
+import { backendURL } from '../untils/global';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly AUTH_API = 'http://127.0.0.1:8000/api/auth/';
+  private readonly AUTH_API = backendURL + 'api/auth/';
 
   private userService = inject(UserService);
   private employeeService = inject(EmployeeService);
   private customerService = inject(CustomerService);
+  private router = inject(Router);
   private readonly JWT_TOKEN = 'JWT_TOKEN';
   public loggedIn?: BehaviorSubject<boolean>;
   public userData?: any;
@@ -33,6 +35,7 @@ export class AuthService {
         tap((tokens) => {
           this.loggedIn?.next(true);
           localStorage.setItem(this.JWT_TOKEN, JSON.stringify(tokens));
+          this.getCurrentAuthUser().subscribe((res) => {});
         })
       );
   }
@@ -60,6 +63,8 @@ export class AuthService {
       })
       .pipe(
         tap((res: any) => {
+          this.userService.setUser(res);
+
           if (res.account_type == 'e' || res.account_type == 'm') {
             this.employeeService
               .searchByAccount(res.id)
@@ -108,9 +113,15 @@ export class AuthService {
       );
   }
   reset_password(email: string): Observable<any> {
-    return this.http.post(this.AUTH_API + 'users/reset_password/', email, {
-      withCredentials: true,
-    });
+    return this.http.post(
+      this.AUTH_API + 'users/reset_password/',
+      { email: email },
+      {
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      }
+    );
   }
 
   reset_password_confirm(body: {
@@ -126,14 +137,8 @@ export class AuthService {
     );
   }
 
-  register(body: {
-    email: string;
-    name: string;
-    account_type: string;
-    password: string;
-    re_password: string;
-  }) {
-    return this.http.post(this.AUTH_API + 'users/', body, {
+  register(data: any) {
+    return this.http.post(this.AUTH_API + 'users/', data, {
       withCredentials: true,
     });
   }

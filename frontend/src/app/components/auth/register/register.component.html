@@ -1,18 +1,13 @@
-<div class="container mb-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6 text-center mb-5"></div>
-  </div>
-  <div class="row justify-content-center">
-    <div class="col-md-7 col-lg-5">
-      <div class="auth-wrap">
-        <div class="auth-img"></div>
-        <div class="auth-wrap p-4 p-md-5">
+<div class="container auth-back-wrap">
+  <div class="row justify-content-center w-100">
+    <div class="shadow col-md-7 col-lg-6 p-0 auth-wrap overflow-hidden">
+      <div class="auth-img"></div>
+
+      <div class="p-4 register-wrap" [class.is-image]="isImage">
+        <div class="account-form">
           <div class="w-100">
-            <h3 class="mb-4">Sign Up</h3>
+            <h3 class="mb-4">Đăng ký</h3>
           </div>
-          @if (message) {
-          <p>{{ message }}</p>
-          } @else {
 
           <form
             action="#"
@@ -25,7 +20,7 @@
                 formControlName="name"
                 type="text"
                 class="form-control"
-                placeholder="Username"
+                placeholder="Tên đăng nhập"
                 [ngClass]="{
                   'is-invalid': submitted && form.controls.name.errors
                 }"
@@ -33,10 +28,10 @@
               @if(submitted && form.controls.name.errors ){
               @if(form.controls.name.errors.minlength){
               <div class="text-danger">
-                Username should at least 8 characters
+                Tên đăng nhập phải có ít nhất 4 ký tự
               </div>
               } @if(form.controls.name.errors.required){
-              <div class="text-danger">Username is required</div>
+              <div class="text-danger">Vui lòng điền tên đăng nhập</div>
 
               } }
             </div>
@@ -52,9 +47,9 @@
               />
               @if(submitted && form.controls.email.errors ){
               @if(form.controls.email.errors.email){
-              <div class="text-danger">Enter valid Email</div>
+              <div class="text-danger">Vui lòng điền email hợp lệ</div>
               } @if(form.controls.email.errors.required){
-              <div class="text-danger">Email is required</div>
+              <div class="text-danger">Vui lòng điền email</div>
 
               } }
             </div>
@@ -63,18 +58,16 @@
                 formControlName="password"
                 type="password"
                 class="form-control"
-                placeholder="Password"
+                placeholder="Mật khẩu"
                 [ngClass]="{
                   'is-invalid': submitted && form.controls.password.errors
                 }"
               />
               @if(submitted && form.controls.password.errors ){
               @if(form.controls.password.errors.minlength){
-              <div class="text-danger">
-                Password should at least 8 characters
-              </div>
+              <div class="text-danger">Mật khẩu phải có ít nhất 8 ký tự</div>
               } @if(form.controls.password.errors.required){
-              <div class="text-danger">Password is required</div>
+              <div class="text-danger">Vui lòng điền mật khẩu</div>
 
               } }
             </div>
@@ -83,7 +76,7 @@
                 formControlName="re_password"
                 type="password"
                 class="form-control"
-                placeholder="Confirm Password"
+                placeholder="Xác nhận mật khẩu"
                 [ngClass]="{
                   'is-invalid':
                     submitted &&
@@ -93,23 +86,45 @@
               />
               @if(submitted && form.controls.re_password.errors ){
               @if(form.controls.re_password.errors.required){
-              <div class="text-danger">Confirm Password is required</div>
+              <div class="text-danger">Vui lòng xác nhận mật khẩu</div>
 
               }@else if(form.controls.re_password.errors.matching){
-              <div class="text-danger">Password don't match</div>
+              <div class="text-danger">Không trùng mật khẩu</div>
               } }
             </div>
             <div class="form-group mt-3">
               <button class="form-control btn auth-btn submit px-3 mb-2">
-                Register
+                Tiếp tục
               </button>
             </div>
           </form>
           <p class="text-center mt-3">
-            "Already have an account? "
-            <a [routerLink]="['/', 'home', 'login']" class="pet-link">Log In</a>
+            "Đã có tài khoản?"
+            <a [routerLink]="['/', 'home', 'login']" class="pet-link"
+              >Đăng nhập</a
+            >
           </p>
-          }
+        </div>
+        <div class="account-form">
+          <a (click)="toggleImage()" class="pet-link">Quay lại</a>
+          <div class="w-100">
+            <h3>Ảnh đại diện</h3>
+          </div>
+          <div class="text-center mt-3 d-flex flex-column align-items-center">
+            <img [src]="url" class="rounded-circle avatar" />
+            <input
+              class="mt-2"
+              type="file"
+              #fileInput
+              (change)="onSelectFile($event)"
+            />
+            <button
+              (click)="userConfirm()"
+              class="form-control btn auth-btn submit px-3 mt-4"
+            >
+              Đăng ký
+            </button>
+          </div>
         </div>
       </div>
     </div>

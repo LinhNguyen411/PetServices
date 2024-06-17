@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { NgToastService } from 'ng-angular-popup';
 import Validation from '../../../untils/validation';
 import { RouterLink } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-reset-password-confirm',
@@ -25,6 +26,7 @@ export class ResetPasswordConfirmComponent implements OnInit {
   message?: string;
   submitted?: boolean;
   toast = inject(NgToastService);
+  spinner = inject(NgxSpinnerService);
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,17 +48,20 @@ export class ResetPasswordConfirmComponent implements OnInit {
   submit(): void {
     this.submitted = true;
     if (this.form.valid) {
+      this.spinner.show();
       this.authService
         .reset_password_confirm(this.form.getRawValue())
         .subscribe({
           next: () => {
-            this.message = 'Reset password successfully!';
+            this.message = 'Thay đổi mật khẩu thành công!';
+            this.spinner.hide();
           },
           error: (e) => {
+            this, this.spinner.hide();
             this.toast.error({
               detail: 'ERROR',
               summary:
-                'Reset password failed, please try again!(Hint: change another password)',
+                'Thay đổi mật khẩu thất bại!(Gợi ý: đổi mật khẩu khác mạnh hơn)',
               duration: 3000,
             });
           },

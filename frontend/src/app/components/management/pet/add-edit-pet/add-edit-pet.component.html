@@ -11,7 +11,7 @@
     <div class="col-12 col-sm-6 row">
       <div class="col-12">
         <div class="mb-3 mb-sm-0">
-          <div class="col-form-label">Name</div>
+          <div class="col-form-label">Tên</div>
           <input
             type="text"
             class="form-control"
@@ -25,7 +25,7 @@
       </div>
       <div class="col-6">
         <div class="mb-3 mb-sm-0">
-          <div class="col-form-label">Age</div>
+          <div class="col-form-label">Tuổi</div>
           <input
             type="number"
             class="form-control"
@@ -39,7 +39,7 @@
       </div>
       <div class="col-6">
         <div class="mb-3 mb-sm-0">
-          <div class="col-form-label">Gender</div>
+          <div class="col-form-label">Giống</div>
           <input
             type="checkbox"
             class="btn-check"
@@ -47,13 +47,13 @@
             formControlName="gender"
           />
           <label class="btn pet-btn" for="btn-check">{{
-            dataForm.get("gender")?.value ? "Male" : "Female"
+            dataForm.get("gender")?.value ? "Đực" : "Cái"
           }}</label>
         </div>
       </div>
       <div class="col-12">
         <div class="mb-3 mb-sm-0">
-          <div class="col-form-label">Owner</div>
+          <div class="col-form-label">Chủ sỡ hữu</div>
           <input
             (focusout)="searchCustomer()"
             type="text"
@@ -70,16 +70,15 @@
   </div>
 
   <div class="mb-3">
-    <div class="col-form-label">Species</div>
+    <div class="col-form-label">Loài</div>
     <select
-      (change)="speciesChange()"
       class="form-select"
       formControlName="species"
       [ngClass]="{
         'is-invalid': submitted && dataForm.controls.species.errors
       }"
     >
-      <option value="" disabled>--Select Species--</option>
+      <option value="" disabled>--Chọn Loài--</option>
       @for(item of speciesList; track item){
       <option value="{{ item.id }}">{{ item.name }}</option>
       }
@@ -87,26 +86,22 @@
   </div>
 
   <div class="mb-3">
-    <div class="col-form-label">Weight</div>
-    <select
-      class="form-select"
+    <div class="col-form-label">Cân nặng</div>
+    <input
+      type="number"
+      class="form-control"
       formControlName="weight"
       [ngClass]="{
         'is-invalid': submitted && dataForm.controls.weight.errors
       }"
-    >
-      <option value="" disabled>--Select Weight--</option>
-      @for(item of weightList; track item){
-      <option value="{{ item.id }}">{{ item.weight_range }}</option>
-      }
-    </select>
+    />
   </div>
 
   <div class="pet-model-footer">
     @if(isUpdate){
-    <button class="btn pet-btn" type="submit">Update</button>
+    <button class="btn pet-btn" type="submit">Cập nhật</button>
     } @else{
-    <button class="btn pet-btn" type="submit">Add</button>
+    <button class="btn pet-btn" type="submit">Thêm</button>
     }
   </div>
 </form>

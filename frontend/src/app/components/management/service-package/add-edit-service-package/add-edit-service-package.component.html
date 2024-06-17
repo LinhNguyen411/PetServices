@@ -1,0 +1,80 @@
+<form [formGroup]="dataForm" class="form-group">
+  <div class="row">
+    <div class="col-12">
+      <div class="mb-3 mb-sm-0">
+        <div class="col-form-label">Tên gói dịch vụ</div>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="name"
+          [ngClass]="{
+            'is-invalid': submitted && dataForm.controls.name.errors
+          }"
+          placeholder="Nhập tên gói dịch vụ"
+        />
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="mb-3 mb-sm-0">
+        <div class="col-form-label">Giá</div>
+        <input
+          type="number"
+          class="form-control"
+          formControlName="price"
+          [ngClass]="{
+            'is-invalid': submitted && dataForm.controls.price.errors
+          }"
+          placeholder="Nhập giá"
+        />
+      </div>
+    </div>
+  </div>
+</form>
+<div class="col-12 mt-3">
+  <div class="col-form-label">Thêm dịch vụ, sản phẩm</div>
+  <div class="d-flex">
+    <select [(ngModel)]="goodsValue" class="form-select me-2" name="helo">
+      <option [ngValue]="undefined" disabled>--Chọn dịch vụ, sản phẩm--</option>
+      @for( item of goodsList; track item){
+      <option [ngValue]="item">{{ item.name }}</option>
+      }
+    </select>
+    <button type="button" class="pet-btn" (click)="addItem()">Thêm</button>
+  </div>
+</div>
+<table class="table mt-3">
+  <thead>
+    <tr>
+      <th>Tên</th>
+      <th>Giá gốc</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for(item of itemList; track item) {
+    <tr>
+      <td>{{ item.goods.name }}</td>
+      <td>{{ item.goods.price }}</td>
+      <td>
+        <button
+          type="button"
+          class="delete-btn mr-6"
+          (click)="deleteItem(item)"
+        >
+          <i class="bi bi-trash"></i>
+        </button>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
+
+<div class="pet-model-footer">
+  @if(isUpdate){
+  <button class="btn pet-btn" type="button" (click)="onSubmit()">
+    Cập nhật
+  </button>
+  } @else{
+  <button class="btn pet-btn" type="button" (click)="onSubmit()">Thêm</button>
+  }
+</div>

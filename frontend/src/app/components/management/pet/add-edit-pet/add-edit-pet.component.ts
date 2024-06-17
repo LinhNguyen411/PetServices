@@ -5,7 +5,6 @@ import {
   Output,
   ViewChild,
   inject,
-  viewChild,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -16,13 +15,12 @@ import {
 import { NgToastService } from 'ng-angular-popup';
 import { CommonModule } from '@angular/common';
 
-import { Weight } from '../../../../models/weight.model';
-import { WeightService } from '../../../../services/weight.service';
 import { Species } from '../../../../models/species.model';
 import { CustomerService } from '../../../../services/customer.service';
 
 import { Pet } from '../../../../models/pet.model';
 import { PetService } from '../../../../services/pet.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-add-edit-pet',
@@ -34,6 +32,7 @@ import { PetService } from '../../../../services/pet.service';
 export class AddEditPetComponent {
   private dataService = inject(PetService);
   private customerService = inject(CustomerService);
+  private spinner = inject(NgxSpinnerService);
   toast = inject(NgToastService);
   formBuilder = inject(FormBuilder);
   dataForm!: FormGroup;
@@ -48,36 +47,31 @@ export class AddEditPetComponent {
   @Output() isSubmitted = new EventEmitter<boolean>();
   @Input() speciesList?: Species[];
 
-  private weightService = inject(WeightService);
-  weightList?: Weight[];
-
   @Input() set data(value: Pet) {
     this.dataForm = this.formBuilder.group({
       id: value.id,
       name: [value.name, Validators.required],
       age: [value.age, Validators.required],
-      gender: [value.gender, Validators.required],
-      owner: [value.owner, Validators.required],
+      gender: value.gender,
+      owner: [
+        { value: value.owner, disabled: value.owner != '' },
+        Validators.required,
+      ],
       species: [value.species, Validators.required],
-      weight: [value.weight, Validators.required],
+      weight: [value.weight, [Validators.required, Validators.min(0.1)]],
       photo: value.photo,
     });
+    console.log(value.owner);
     this.submitted = false;
     this.isUpdate = !!value.id;
     this.isSubmitted.emit(false);
     this.url = value.photo ? value.photo : '../assets/no-img.jpg';
+    console.log(this.url);
 
-    this.speciesChange();
     this.searchCustomer();
   }
 
   constructor() {}
-  speciesChange() {
-    this.weightService.species_filter(this.dataForm.get('species')?.value);
-    this.weightService.getAll().subscribe((res) => {
-      this.weightList = res.results;
-    });
-  }
   searchCustomer() {
     if (this.dataForm.get('owner')?.value) {
       this.customerService
@@ -96,17 +90,19 @@ export class AddEditPetComponent {
         this.isSubmitted.emit(true);
 
         this.toast.success({
-          detail: 'SUCCESS',
-          summary: 'Add Item Successfully',
+          detail: 'Thành công',
+          summary: 'Thêm thú cưng thành công',
           duration: 2000,
         });
+        this.spinner.hide();
       },
       error: (err) => {
         this.toast.error({
-          detail: 'FAILED',
-          summary: 'Failed To Add',
+          detail: 'Thất bại',
+          summary: 'Thêm thú cưng thất bại',
           duration: 2000,
         });
+        this.spinner.hide();
       },
     });
   }
@@ -117,18 +113,20 @@ export class AddEditPetComponent {
           this.isSubmitted.emit(true);
 
           this.toast.success({
-            detail: 'SUCCESS',
-            summary: 'Update Item Successfully',
+            detail: 'Thành công',
+            summary: 'Cập nhật thú cưng thành công',
             duration: 2000,
           });
+          this.spinner.hide();
         },
         error: (err) => {
           console.log(err);
           this.toast.error({
-            detail: 'FAILED',
-            summary: 'Failed To Update',
+            detail: 'Thất bại',
+            summary: 'Cập nhật thú cưng thất bại',
             duration: 2000,
           });
+          this.spinner.hide();
         },
       });
     }
@@ -136,7 +134,8 @@ export class AddEditPetComponent {
   onSubmit(): void {
     this.submitted = true;
     if (this.dataForm.valid) {
-      console.log('hello');
+      this.spinner.show();
+
       var data = new FormData();
       data.append('name', this.dataForm.get('name')!.value);
       data.append('age', this.dataForm.get('age')!.value);

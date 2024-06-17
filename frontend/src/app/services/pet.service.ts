@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Pet } from '../models/pet.model';
+import { backendURL } from '../untils/global';
 
-const baseUrl = 'http://127.0.0.1:8000/api/pets/';
+const baseUrl = backendURL + 'api/pets/';
 
 @Injectable({
   providedIn: 'root',
@@ -12,24 +13,34 @@ const baseUrl = 'http://127.0.0.1:8000/api/pets/';
 export class PetService {
   private http = inject(HttpClient);
 
-  private pagi_number: number = 1;
-  private search_value: string = '';
-  private ordering_value: string = '-name';
-  private species_value: string = '';
-
   constructor() {}
-  getAll(): Observable<any> {
+  getAll(
+    options: {
+      search_value?: string;
+      pagi_number?: number;
+      ordering_value?: string;
+      species_value?: string;
+      owner_value?: string;
+    } = {}
+  ): Observable<any> {
+    const {
+      search_value = '',
+      pagi_number = 1,
+      ordering_value = '-name',
+      species_value = '',
+      owner_value = '',
+    } = options;
     return this.http.get<any>(
-      `${baseUrl}?${
-        this.search_value == '' ? '' : 'search=' + this.search_value
-      }${this.pagi_number == 1 ? '' : '&page=' + this.pagi_number}${
-        '&ordering=' + this.ordering_value
-      }${this.species_value == '' ? '' : '&species=' + this.species_value}`
+      `${baseUrl}?${search_value == '' ? '' : 'search=' + search_value}${
+        pagi_number == 0 ? '' : '&page=' + pagi_number
+      }${'&ordering=' + ordering_value}${
+        species_value == '' ? '' : '&species=' + species_value
+      }${owner_value == '' ? '' : '&owner=' + owner_value}`
     );
   }
 
   get(id: string): Observable<Pet> {
-    return this.http.get<Pet>(`${baseUrl}/${id}`);
+    return this.http.get<Pet>(`${baseUrl}${id}`);
   }
 
   create(data: any): Observable<any> {
@@ -42,17 +53,5 @@ export class PetService {
 
   delete(id: string): Observable<any> {
     return this.http.delete(`${baseUrl}${id}/`);
-  }
-  search(value: string): void {
-    this.search_value = value;
-  }
-  pagination(number: number): void {
-    this.pagi_number = number;
-  }
-  sort(value: string): void {
-    this.ordering_value = value;
-  }
-  species_filter(value: string): void {
-    this.species_value = value;
   }
 }

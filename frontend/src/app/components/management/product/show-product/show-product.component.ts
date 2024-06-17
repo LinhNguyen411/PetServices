@@ -14,6 +14,8 @@ import { Category } from '../../../../models/category.model';
 import { CategoryService } from '../../../../services/category.service';
 import { Supplier } from '../../../../models/supplier.model';
 import { SupplierService } from '../../../../services/supplier.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastServiceService } from '../../../../services/toast-service.service';
 
 @Component({
   selector: 'app-show-product',
@@ -23,10 +25,11 @@ import { SupplierService } from '../../../../services/supplier.service';
   styleUrl: './show-product.component.css',
 })
 export class ShowProductComponent implements OnInit {
-  private toast = inject(NgToastService);
+  private spinner = inject(NgxSpinnerService);
+  private toast = inject(ToastServiceService);
   private observer = inject(BreakpointObserver);
   private dataService = inject(ProductService);
-  componentName = 'Product';
+  componentName = 'sản phẩm';
 
   isMobile: boolean = true;
 
@@ -118,6 +121,8 @@ export class ShowProductComponent implements OnInit {
     this.refresh();
   }
   paginationClick(value: number) {
+    if (value == 0) value = 1;
+
     this.current_page = value;
 
     this.dataService.pagination(value);
@@ -162,7 +167,7 @@ export class ShowProductComponent implements OnInit {
       quantity: 0,
       photo: '',
     };
-    this.ModalTitle = 'Add ' + this.componentName;
+    this.ModalTitle = 'Thêm ' + this.componentName;
   }
 
   editClick(item: any): void {
@@ -177,7 +182,7 @@ export class ShowProductComponent implements OnInit {
       quantity: item.quantity,
       photo: item.photo,
     };
-    this.ModalTitle = 'Edit ' + this.componentName;
+    this.ModalTitle = 'Cập nhật ' + this.componentName;
   }
   triggerDelete(item: any): void {
     this.data.id = item.id;
@@ -185,6 +190,7 @@ export class ShowProductComponent implements OnInit {
 
   deleteClick(): void {
     if (this.data.id) {
+      this.spinner.show();
       this.dataService.delete(this.data.id).subscribe({
         next: (res) => {
           this.count -= 1;
@@ -193,18 +199,12 @@ export class ShowProductComponent implements OnInit {
             this.current_page = this.max_page;
           }
           this.paginationClick(this.current_page);
-          this.toast.success({
-            detail: 'SUCCESS',
-            summary: 'Delete Item Successfully',
-            duration: 3000,
-          });
+          this.toast.deleteSuccess();
+          this.spinner.hide();
         },
         error: (err) => {
-          this.toast.error({
-            detail: 'FAILED',
-            summary: 'FAILED TO DELETE',
-            duration: 3000,
-          });
+          this.toast.deleteFail();
+          this.spinner.hide();
         },
       });
     }

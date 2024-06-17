@@ -1,0 +1,229 @@
+<div
+  class="modal fade"
+  id="deleteModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Bạn có chắc không?</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">Phiếu ký gửi này sẽ bị hủy</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Hủy
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="onCancel()"
+          data-bs-dismiss="modal"
+        >
+          Xác nhận
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="d-flex justify-content-between flex-column flex-md-row">
+    <h1 class="text-pet text-center my-3">Chi tiết ký gửi</h1>
+    <!-- @if(consignment?.status != 'e' && consignment?.total_days == 1){
+    <div
+      class="d-flex align-items-end align-items-md-center justify-content-end mb-3 mb-md-0"
+    >
+      <button
+        data-bs-toggle="modal"
+        data-bs-target="#deleteModal"
+        class="ms-2 btn cancel-btn"
+      >
+        Hủy
+      </button>
+    </div>
+
+    } -->
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-md-5 me-md-2 ms-md-5">
+      <div class="card w-100 border-none">
+        <div class="row">
+          <div class="col-12 border py-1">
+            <h4 class="text-pet mt-2">Khách hàng ký gửi</h4>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <b>Mã khách hàng: </b>{{ consignment?.customer.id }}
+              </li>
+              <li class="list-group-item">
+                <b>Họ tên: </b>{{ consignment?.customer.name }}
+              </li>
+              <li class="list-group-item">
+                <b>Số điện thoại: </b>{{ consignment?.customer.phone_number }}
+              </li>
+            </ul>
+          </div>
+          <div class="col-12 border py-1 mt-3">
+            <h4 class="text-pet mt-2">Nhân viên xác nhận</h4>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <b>Mã nhân viên: </b>{{ consignment?.employee.id }}
+              </li>
+              <li class="list-group-item">
+                <b>Họ tên: </b>{{ consignment?.employee.name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 border mt-3 mt-md-0">
+      <div class="row">
+        <div class="col-12">
+          <div class="mb-1">
+            <div class="col-form-label">Id</div>
+            <input
+              type="text"
+              class="form-control"
+              [ngModel]="consignment?.id"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="mb-1">
+            <div class="col-form-label">Trạng thái</div>
+            <input
+              type="text"
+              class="form-control"
+              [value]="getStatus(consignment?.status)"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="mb-1">
+            <div class="col-form-label">Ngày ký gửi</div>
+            <input
+              type="text"
+              class="form-control"
+              [ngModel]="consignment?.date_time_create | date : 'dd-MM-yyyy'"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="mb-1">
+            <div class="col-form-label">Tổng số ngày đã gửi</div>
+            <input
+              type="text"
+              class="form-control"
+              [ngModel]="consignment?.total_days"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="col-12 col-md-6 me-md-2 border mt-3 p-2 ms-md-5 overflow-hidden"
+      style="max-height: 300px; height: 300px"
+    >
+      <div class="d-flex justify-content-between">
+        <h4 class="text-pet">Thú cưng ký gửi</h4>
+      </div>
+      <div class="d-flex flex-column overflow-y-scroll">
+        @for(item of detailList; track $index){
+        <div class="col-12 border my-1 p-1 d-flex overflow-hidden">
+          <img src="{{ item.pet.photo }}" class="pet-img me-4" />
+          <div class="row w-100">
+            <div class="col-11 row">
+              <div class="col-6"><b>Tên: </b>{{ item.pet.name }}</div>
+              <div class="col-5"><b>Loài: </b>{{ item.pet.species }}</div>
+              <div class="col-5"><b>Cân nặng: </b>{{ item.pet.weight }}kg</div>
+              <div class="col-12"><b>Buồng: </b>{{ item.room.name }}</div>
+              <div class="col-12">
+                <b>Gói dịch vụ: </b>{{ item.package.name }}
+              </div>
+            </div>
+            <div class="col-1 d-flex align-items-center justify-content-center">
+              <a
+                [routerLink]="[
+                  '/',
+                  'management',
+                  'consignment',
+                  'consignment-detail',
+                  item.id
+                ]"
+                type="button"
+                class="show-btn text-center"
+              >
+                <i class="bi bi-eye"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        }
+      </div>
+    </div>
+    <div
+      class="col-12 col-md-5 border mt-3 p-2 overflow-hidden"
+      style="max-height: 300px; height: 300px"
+    >
+      <div class="d-flex justify-content-between">
+        <h4 class="text-pet">Thú cưng đã trả</h4>
+      </div>
+      <div class="d-flex flex-column overflow-y-scroll pb-5">
+        @for(item of paidList; track $index){
+        <div class="col-12 border my-1 p-1 d-flex overflow-hidden">
+          <img src="{{ item.pet.photo }}" class="pet-img me-4" />
+          <div class="row w-100">
+            <div class="col-11 row">
+              <div class="col-6"><b>Tên: </b>{{ item.pet.name }}</div>
+              <div class="col-12">
+                <b>Gói dịch vụ: </b>{{ item.package.name }}
+              </div>
+              <div class="col-12">
+                <b>Ngày trả: </b
+                >{{
+                  item.last_diary.date_time_create | date : "dd/MM/yy H:mm:ss"
+                }}
+              </div>
+              <div class="col-12">
+                <b>Nhân viên trao trả: </b>{{ item.last_diary.employee }}
+              </div>
+            </div>
+            <div class="col-1 d-flex align-items-center justify-content-center">
+              <a
+                [routerLink]="[
+                  '/',
+                  'management',
+                  'consignment',
+                  'consignment-detail',
+                  item.id
+                ]"
+                type="button"
+                class="show-btn text-center"
+              >
+                <i class="bi bi-eye"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        }
+      </div>
+    </div>
+  </div>
+</div>

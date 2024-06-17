@@ -1,0 +1,206 @@
+<div class="row px-sm-2">
+  <div class="col-12 shadow p-2 p-sm-4 mt-3" style="min-height: 350px">
+    <div class="border-pet h-100">
+      <div class="group-title">Dịch vụ đang tiến hành</div>
+      @if(user.account_type == 'c'){
+      <div
+        class="d-flex flex-column flex-md-row overflow-x-scroll ms-2 justify-content-center"
+      >
+        @if(bookingList?.length == 0){
+        <div class="text-center">
+          Không có dịch vụ?
+          <a
+            [routerLink]="['/', 'management', 'service-booking', 'create']"
+            class="pet-link"
+            >Thêm ngay</a
+          >
+        </div>
+        } @for(item of bookingList; track $index){
+        <div class="service-card me-2 border">
+          <div class="text-center mt-2">
+            <img src="{{ item.pet.photo }}" alt="" class="card-img" />
+          </div>
+          <div class="card-body">
+            <div class="card-item">
+              <span class="text-pet">Thú cưng: </span>{{ item.pet.name }}
+            </div>
+            <div class="card-item hidden-xs-down">
+              <span class="text-pet">Ngày đặt: </span>{{ item.date_booked }}
+            </div>
+            <div class="card-item">
+              <span class="text-pet">Dịch vụ chính: </span
+              >{{ item.service.name }}
+            </div>
+            <div class="card-item">
+              <span class="text-pet">Nhật ký mới nhất: </span>({{
+                item.last_diary.time | date : "dd/MM/yy H:mm:ss"
+              }}) {{ item.last_diary.employee_name }}:
+              {{ item.last_diary.content }}
+            </div>
+          </div>
+          <div class="text-center">
+            <a
+              [routerLink]="[
+                '/',
+                'management',
+                'service-booking',
+                'detail',
+                item.id
+              ]"
+              type="button"
+              class="show-btn text-center"
+            >
+              <i class="bi bi-eye"></i>
+              Chi tiết
+            </a>
+          </div>
+        </div>
+
+        }
+      </div>
+
+      } @else {
+      <div class="px-3">
+        <div class="service-emp-wrap row overflow-y-scroll">
+          @if(bookingList?.length == 0){
+          <div class="text-center">
+            Không có dịch vụ nào được tiến hành, hãy kiểm tra
+            <a routerLink="service-booking/show" class="pet-link"
+              >dịch vụ đã chấp nhận</a
+            >
+          </div>
+          } @for(item of bookingList; track $index){
+          <div class="col-12 col-md-6 mb-2">
+            <div class="service-card-emp border d-flex align-items-center pe-2">
+              <div class="text-center mt-2">
+                <img src="{{ item.pet.photo }}" alt="" class="card-img" />
+              </div>
+              <div class="card-body">
+                <div class="card-item">
+                  <span class="text-pet">Thú cưng: </span>{{ item.pet.name }}
+                </div>
+                <div class="card-item hidden-xs-down">
+                  <span class="text-pet">Ngày đặt: </span>{{ item.date_booked }}
+                </div>
+                <div class="card-item">
+                  <span class="text-pet">Dịch vụ chính: </span
+                  >{{ item.service.name }}
+                </div>
+                <div class="card-item">
+                  <span class="text-pet">Nhật ký mới nhất: </span>({{
+                    item.last_diary.time | date : "dd/MM/yy H:mm:ss"
+                  }}) {{ item.last_diary.employee_name }}:
+                  {{ item.last_diary.content }}
+                </div>
+              </div>
+              <div class="text-center">
+                <a
+                  [routerLink]="[
+                    '/',
+                    'management',
+                    'service-booking',
+                    'detail',
+                    item.id
+                  ]"
+                  type="button"
+                  class="show-btn text-center"
+                >
+                  <i class="bi bi-eye"></i>
+                  Chi tiết
+                </a>
+              </div>
+            </div>
+          </div>
+
+          }
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  <div
+    class="col shadow p-2 p-sm-4 mt-4 mb-md-4"
+    style="max-height: 320px; height: 320px"
+  >
+    <div class="border-pet h-100">
+      <div class="group-title">Dịch vụ chưa chấp nhận</div>
+      <div class="wrap">
+        <div class="d-flex flex-column overflow-y-scroll ms-2">
+          @if(subBookingList?.length == 0){
+          <div class="text-center">
+            @if(user.account_type == 'c'){ Không có dịch vụ?
+            <a
+              [routerLink]="['/', 'management', 'service-booking', 'create']"
+              class="pet-link"
+              >Thêm ngay</a
+            >
+
+            } @else { Không có dịch vụ nào được đặt. }
+          </div>
+          } @for(item of subBookingList; track $index){
+          <div class="booking-card me-2 border d-flex align-items-center mb-1">
+            <div class="row ms-1 my-1">
+              <div class="col-12 col-md-6">
+                <span class="text-pet">Thú cưng: </span>:
+                {{ item.pet.name }}
+              </div>
+              <div class="col-12 col-md-6">
+                <span class="text-pet">Ngày đặt: </span>{{ item.date_booked }}
+              </div>
+              <div class="col-12">
+                <span class="text-pet">Dịch vụ chính: </span
+                >{{ item.service.name }}
+              </div>
+            </div>
+            <div class="ms-auto me-2">
+              <a
+                [routerLink]="[
+                  '/',
+                  'management',
+                  'service-booking',
+                  'detail',
+                  item.id
+                ]"
+                type="button"
+                class="show-btn text-center"
+              >
+                <i class="bi bi-eye"></i>
+                Chi tiết
+              </a>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  @if(user.account_type == 'c'){
+  <div
+    class="col-12 col-md-5 shadow p-2 p-sm-4 mt-4 mb-4 ms-md-4"
+    style="max-height: 320px; height: 320px"
+  >
+    <div class="border-pet h-100">
+      <div class="group-title">Thú cưng của bạn</div>
+      <div class="wrap">
+        <div class="d-flex flex-column overflow-y-scroll ms-2">
+          @if(petList?.length == 0){
+          <div class="text-center">
+            Không có thú cưng?
+            <a routerLink="pet" class="pet-link">Thêm ngay</a>
+          </div>
+          } @for(item of petList; track $index){
+          <div class="pet-card me-2 border d-flex align-items-center mb-1">
+            <div class="d-flex ms-1 my-1 align-items-center">
+              <img src="{{ item.photo }}" class="pet-img me-4" />
+              <div class="col-12 text-pet fs-4">{{ item.name }}</div>
+            </div>
+          </div>
+
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  }
+</div>

@@ -1,0 +1,40 @@
+<form [formGroup]="dataForm" (ngSubmit)="onSubmit()" class="form-group">
+  <div class="row">
+    <div class="col-12">
+      <div class="mb-3 mb-sm-0">
+        <div class="col-form-label">Tên dịch vụ, sản phẩm</div>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="name"
+          [ngClass]="{
+            'is-invalid': submitted && dataForm.controls.name.errors
+          }"
+          placeholder="Nhập tên dịch vụ, sản phẩm"
+        />
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="mb-3 mb-sm-0">
+        <div class="col-form-label">Giá</div>
+        <input
+          type="number"
+          class="form-control"
+          formControlName="price"
+          [ngClass]="{
+            'is-invalid': submitted && dataForm.controls.price.errors
+          }"
+          placeholder="Nhập giá"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="pet-model-footer">
+    @if(isUpdate){
+    <button class="btn pet-btn" type="submit">Cập nhật</button>
+    } @else{
+    <button class="btn pet-btn" type="submit">Thêm</button>
+    }
+  </div>
+</form>

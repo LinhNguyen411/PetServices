@@ -6,6 +6,8 @@ import { NgToastService } from 'ng-angular-popup';
 import { AddEditSpeciesComponent } from '../add-edit-species/add-edit-species.component';
 import { Species } from '../../../../models/species.model';
 import { SpeciesService } from '../../../../services/species.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastServiceService } from '../../../../services/toast-service.service';
 @Component({
   selector: 'app-show-species',
   standalone: true,
@@ -14,7 +16,8 @@ import { SpeciesService } from '../../../../services/species.service';
   styleUrl: './show-species.component.css',
 })
 export class ShowSpeciesComponent implements OnInit {
-  private toast = inject(NgToastService);
+  private spinner = inject(NgxSpinnerService);
+  private toast = inject(ToastServiceService);
   private speciesService = inject(SpeciesService);
 
   searchValue: string = '';
@@ -53,6 +56,7 @@ export class ShowSpeciesComponent implements OnInit {
     });
   }
   paginationClick(value: number) {
+    if (value == 0) value = 1;
     this.current_page = value;
     this.speciesService.pagination(value);
     this.refresh();
@@ -71,7 +75,7 @@ export class ShowSpeciesComponent implements OnInit {
       id: '',
       name: '',
     };
-    this.ModalTitle = 'Add Species';
+    this.ModalTitle = 'Thêm loài';
   }
 
   editClick(item: Species): void {
@@ -79,7 +83,7 @@ export class ShowSpeciesComponent implements OnInit {
       id: item.id,
       name: item.name,
     };
-    this.ModalTitle = 'Edit Species';
+    this.ModalTitle = 'Cập nhật loài';
   }
 
   triggerDelete(item: Species): void {
@@ -88,6 +92,7 @@ export class ShowSpeciesComponent implements OnInit {
 
   deleteClick(): void {
     if (this.spe.id) {
+      this.spinner.show();
       this.speciesService.delete(this.spe.id).subscribe({
         next: (res) => {
           this.count -= 1;
@@ -96,18 +101,12 @@ export class ShowSpeciesComponent implements OnInit {
             this.current_page = this.max_page;
           }
           this.paginationClick(this.current_page);
-          this.toast.success({
-            detail: 'SUCCESS',
-            summary: 'Delete Item Successfully',
-            duration: 3000,
-          });
+          this.toast.deleteSuccess();
+          this.spinner.hide();
         },
         error: (err) => {
-          this.toast.error({
-            detail: 'FAILED',
-            summary: 'FAILED TO DELETE',
-            duration: 3000,
-          });
+          this.toast.deleteFail();
+          this.spinner.hide();
         },
       });
     }
