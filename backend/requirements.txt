@@ -2,6 +2,7 @@ django
 djoser
 Pillow
 psycopg2
+Unidecode
 django-filter
 django-cleanup
 psycopg2-binary
