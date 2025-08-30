@@ -1,0 +1,63 @@
+x-app-environment: 
+  &common-app-environment-variables
+  SECRET_KEY: ${SECRET_KEY}
+  DB_NAME: ${DB_NAME}
+  DB_USER: ${DB_USER}
+  DB_PASSWORD: ${DB_PASSWORD}
+  DB_HOST: ${DB_HOST}
+  DB_PORT: ${DB_PORT}
+  BACKEND_PORT: ${BACKEND_PORT}
+  FRONTEND_PORT: ${FRONTEND_PORT}
+  EMAIL_BACKEND: ${EMAIL_BACKEND}
+  EMAIL_HOST: ${EMAIL_HOST}
+  EMAIL_HOST_USER: ${EMAIL_HOST_USER}
+  EMAIL_HOST_PASSWORD: ${EMAIL_HOST_PASSWORD}
+  EMAIL_PORT: ${EMAIL_PORT}
+  EMAIL_USE_TLS: ${EMAIL_USE_TLS}
+  DOMAIN: ${DOMAIN}
+  SITE_NAME: ${SITE_NAME}
+
+
+services:
+  petcare-frontend:
+    image: "petcare-frontend:latest"
+    depends_on:
+      - petcare-backend
+    environment:
+      <<: *common-app-environment-variables
+    command: >-
+      npx ng serve --host 0.0.0.0 --port 4200
+    ports:
+      - ${FRONTEND_PORT}:4200
+    restart: unless-stopped
+
+  
+  petcare-backend:
+    image: "petcare-backend:latest"
+    depends_on:
+      - petcare-db
+    environment:
+      <<: *common-app-environment-variables
+    command: >-
+      python manage.py runserver 0.0.0.0:8000
+    ports:
+      - ${BACKEND_PORT}:8000
+    restart: unless-stopped
+
+  petcare-db:
+    image: postgres:16
+    container_name: petcare-db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+      - ./petcare.sql:/docker-entrypoint-initdb.d/petcare.sql
+    ports:
+      - ${DB_PORT}:5432
+
+
+volumes:
+  postgres_data:
+  
